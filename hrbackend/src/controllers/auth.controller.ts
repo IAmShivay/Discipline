@@ -8,6 +8,7 @@ import crypto from 'crypto';
 export class AuthController {
   static async signup(req: Request, res: Response) {
     try {
+      console.log(req.body);
       const user = new User(req.body);
       await user.save();
       

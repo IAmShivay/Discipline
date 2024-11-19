@@ -3,8 +3,10 @@ import { z } from 'zod';
 export const signupSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
-  username: z.string().min(3),
-  mobile: z.string().optional()
+  fullName: z.string().min(3),
+  mobile: z.string().optional(),
+  companyName: z.string().min(3),
+  // terms: z.boolean()
 });
 
 export const loginSchema = z.object({
