@@ -1,4 +1,3 @@
-import React from 'react';
 import DashboardStats from '../components/DashboardStats';
 import RecentCases from '../components/RecentCases';
 import type { DashboardStats as DashboardStatsType, DisciplinaryCase } from '../types';

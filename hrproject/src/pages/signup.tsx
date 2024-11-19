@@ -88,8 +88,8 @@ const SignupPage: React.FC = () => {
     };
 
     const InputField: React.FC<InputFieldProps> = ({ icon: Icon, name, label, ...props }) => (
-        <div className="mb-6"> {/* Fixed bottom margin */}
-            <div className="relative h-[42px]"> {/* Fixed height container */}
+        <div className="mb-6">
+            <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Icon className="h-5 w-5 text-gray-400" />
                 </div>
@@ -110,7 +110,7 @@ const SignupPage: React.FC = () => {
     );
 
     return (
-        <div className="min-h-[100%] flex flex-col lg:flex-row">
+        <div className="min-h-screen flex flex-col lg:flex-row">
             <div className="hidden lg:flex lg:w-1/2 bg-blue-600 p-12 flex-col justify-between relative">
                 <div className="text-white">
                     <h1 className="text-4xl font-bold mb-4">Join HR Manager</h1>
@@ -119,7 +119,7 @@ const SignupPage: React.FC = () => {
                     </p>
                 </div>
                 <div className="absolute inset-0 opacity-10">
-                    <div className="absolute right-0 bottom-0 w-96 h-auto bg-white rounded-full transform translate-x-1/2 translate-y-1/2"></div>
+                    <div className="absolute right-0 bottom-0 w-96 h-full bg-white rounded-full transform translate-x-1/2 translate-y-1/2"></div>
                     <div className="absolute left-0 top-0 w-72 h-72 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
                 </div>
             </div>
@@ -166,7 +166,7 @@ const SignupPage: React.FC = () => {
                                         name="password"
                                         placeholder="Create a password"
                                     />
-                                    <div className="mb-6"> {/* Fixed margin for terms section */}
+                                    <div className="mb-6">
                                         <div className="flex items-center">
                                             <Field
                                                 type="checkbox"
@@ -192,7 +192,7 @@ const SignupPage: React.FC = () => {
                                     >
                                         {loading ? 'Loading...' : 'Create Account'}
                                     </button>
-                                    <div className="text-center mt-6"> {/* Fixed top margin */}
+                                    <div className="text-center mt-6">
                                         <span className="text-gray-600">Already have an account?</span>
                                         <button
                                             type="button"

@@ -1,4 +1,3 @@
-import React from 'react';
 import { LayoutDashboard, Users, FileText, Settings as SettingsIcon, Bell } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import UserProfileMenu from './UserProfileMenu';
@@ -9,10 +8,10 @@ const Sidebar = () => {
 
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
-    { icon: Users, label: 'Employees', path: '/employees' },
-    { icon: FileText, label: 'Cases', path: '/cases' },
-    { icon: Bell, label: 'Notifications', path: '/notifications' },
-    { icon: SettingsIcon, label: 'Settings', path: '/settings' },
+    { icon: Users, label: 'Employees', path: '/app/employees' },
+    { icon: FileText, label: 'Cases', path: '/app/cases' },
+    { icon: Bell, label: 'Notifications', path: '/app/notifications' },
+    { icon: SettingsIcon, label: 'Settings', path: '/app/settings' },
   ];
 
   return (
