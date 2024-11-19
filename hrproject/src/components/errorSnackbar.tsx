@@ -1,82 +1,84 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectSnackbar, hideSnackbar } from '../redux/app/error/errorSlice';
-import { XCircle, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { selectSnackbar, hideSnackbar } from "../redux/app/error/errorSlice";
+import { CheckCircle, XCircle, AlertCircle, Info, X } from "lucide-react";
 
-const Snackbar = () => {
+const Snackbar: React.FC = () => {
   const dispatch = useDispatch();
-  const { open, message, severity }:any = useSelector(selectSnackbar);
+  const { open, message, severity } = useSelector(selectSnackbar);
 
   useEffect(() => {
+    let timeoutId: any;
     if (open) {
-      const timer = setTimeout(() => {
+      timeoutId = setTimeout(() => {
         dispatch(hideSnackbar());
-      }, 6000);
-
-      return () => clearTimeout(timer);
+      }, 3000);
     }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [open, dispatch]);
 
-  const handleClose = (event?: React.MouseEvent | React.KeyboardEvent) => {
-    if (event?.type === 'click') {
-      dispatch(hideSnackbar());
+  const handleClose = (reason?: string) => {
+    if (reason === "clickaway") {
+      return;
     }
+    dispatch(hideSnackbar());
   };
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
-  const severityConfig:any = {
-    error: {
-      icon: <XCircle className="h-5 w-5" />,
-      bgColor: 'bg-red-100',
-      textColor: 'text-red-800',
-      borderColor: 'border-red-200'
-    },
+  const severityConfig = {
     success: {
-      icon: <CheckCircle className="h-5 w-5" />,
-      bgColor: 'bg-green-100',
-      textColor: 'text-green-800',
-      borderColor: 'border-green-200'
+      icon: CheckCircle,
+      classes: "bg-green-50 border-green-500 text-green-800",
+      iconColor: "text-green-500",
+    },
+    error: {
+      icon: XCircle,
+      classes: "bg-red-50 border-red-500 text-red-800",
+      iconColor: "text-red-500",
     },
     warning: {
-      icon: <AlertCircle className="h-5 w-5" />,
-      bgColor: 'bg-yellow-100',
-      textColor: 'text-yellow-800',
-      borderColor: 'border-yellow-200'
+      icon: AlertCircle,
+      classes: "bg-yellow-50 border-yellow-500 text-yellow-800",
+      iconColor: "text-yellow-500",
     },
     info: {
-      icon: <Info className="h-5 w-5" />,
-      bgColor: 'bg-blue-100',
-      textColor: 'text-blue-800',
-      borderColor: 'border-blue-200'
-    }
+      icon: Info,
+      classes: "bg-blue-50 border-blue-500 text-blue-800",
+      iconColor: "text-blue-500",
+    },
   };
 
-  const config:any = severityConfig[severity] || severityConfig.info;
+  const config = severityConfig[severity || "info"];
+  const Icon = config.icon;
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 transform z-50">
-      <div 
-        className={`flex items-center gap-2 rounded-lg border px-4 py-3 shadow-lg 
-          ${config.bgColor} ${config.textColor} ${config.borderColor}`}
+    <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 w-auto max-w-md z-50">
+      <div
+        className={`${config.classes} flex items-center p-4 rounded-lg shadow-lg border animate-slide-up`}
         role="alert"
       >
         <div className="flex-shrink-0">
-          {config.icon}
+          <Icon className={`w-5 h-5 ${config.iconColor}`} />
         </div>
-        <div className="text-sm font-medium">
-          {message}
-        </div>
+        <div className="ml-3 mr-8 text-sm font-medium">{message}</div>
         <button
-          onClick={handleClose}
-          className={`ml-4 inline-flex rounded-lg p-1.5 
-            hover:bg-opacity-20 hover:bg-black focus:outline-none`}
+          type="button"
+          className={`ml-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 inline-flex h-8 w-8 ${config.iconColor} hover:bg-opacity-10 hover:bg-gray-500`}
+          onClick={() => handleClose()}
+          aria-label="Close"
         >
-          <XCircle className="h-5 w-5" />
+          <span className="sr-only">Close</span>
+          <X className="w-5 h-5" />
         </button>
       </div>
     </div>
   );
 };
-
 export default Snackbar;

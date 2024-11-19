@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../store";
 
+// Define the initial state for the snackbar
 interface SnackbarState {
   open: boolean;
   message: string;
@@ -20,8 +21,8 @@ const snackbarSlice = createSlice({
   reducers: {
     showSnackbar: (state, action: PayloadAction<Omit<SnackbarState, "open">>) => {
       state.open = true;
-      state.message = action.payload.message || "Ready";  // Ensure there's always a message
-      state.severity = action.payload.severity || "info"; // Ensure there's always a severity
+      state.message = action.payload.message || "Ready";  // Default message
+      state.severity = action.payload.severity || "info"; // Default severity
     },
     hideSnackbar: (state) => {
       state.open = false;
@@ -31,4 +32,5 @@ const snackbarSlice = createSlice({
 
 export const { showSnackbar, hideSnackbar } = snackbarSlice.actions;
 export const selectSnackbar = (state: RootState) => state.snackbar;
+
 export default snackbarSlice.reducer;

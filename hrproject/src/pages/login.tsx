@@ -6,6 +6,8 @@ import { AppDispatch } from '../store';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { loginUser } from '../redux/app/auth/authSlice';
+import { showSnackbar } from '../redux/app/error/errorSlice';
+import snackbarMessages from '../components/messages/message';
 interface LoginFormValues {
     email: string;
     password: string;
@@ -40,11 +42,23 @@ const LoginPage: React.FC = () => {
     const handleSubmit = async (values: LoginFormValues) => {
         setLoading(true);
         try {
-            await dispatch(loginUser(values));
-            // navigate('/login');
-            console.log('Login Form Submitted:', values);
-            // Add your login logic here
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
+            const response = await dispatch(loginUser(values));
+            console.log('Login response:', response);
+            if (response?.meta?.requestStatus === 'fulfilled') {
+                dispatch(
+                    showSnackbar({
+                        message: snackbarMessages.success.loginSuccess,
+                        severity: "info",
+                    })
+                );
+            } else {
+                dispatch(
+                    showSnackbar({
+                        message: snackbarMessages.error.loginFailed,
+                        severity: "error",
+                    })
+                );
+            }
         } catch (error) {
             console.error('Login error:', error);
         } finally {
@@ -79,6 +93,7 @@ const LoginPage: React.FC = () => {
 
     return (
         <div className="min-h-screen flex">
+
             <div className="hidden lg:flex lg:w-1/2 bg-blue-600 p-12 flex-col justify-between relative overflow-hidden">
                 <div className="relative z-10">
                     <div className="text-white">
