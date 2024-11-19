@@ -1,6 +1,7 @@
 import DashboardStats from '../components/DashboardStats';
 import RecentCases from '../components/RecentCases';
-import type { DashboardStats as DashboardStatsType, DisciplinaryCase } from '../types';
+import type { DashboardStats as DashboardStatsType } from '../types';
+// import type { DisciplinaryCase } from '../types';
 
 // Temporary mock data
 const mockStats: DashboardStatsType = {
@@ -10,7 +11,7 @@ const mockStats: DashboardStatsType = {
   pendingActions: 3,
 };
 
-const mockCases: DisciplinaryCase[] = [
+const mockCases: any = [
   {
     id: '1',
     employeeName: 'John Smith',
