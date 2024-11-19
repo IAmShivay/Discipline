@@ -110,7 +110,7 @@ const SignupPage: React.FC = () => {
     );
 
     return (
-        <div className="min-h-screen flex flex-col lg:flex-row">
+        <div className="h-full flex flex-col lg:flex-row">
             <div className="hidden lg:flex lg:w-1/2 bg-blue-600 p-12 flex-col justify-between relative">
                 <div className="text-white">
                     <h1 className="text-4xl font-bold mb-4">Join HR Manager</h1>
