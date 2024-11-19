@@ -75,7 +75,7 @@ const SignupPage: React.FC = () => {
         try {
             console.log(values);
             await dispatch(registerUser(values));
-            navigate('/login');
+            navigate('/auth/login');
         } catch (error) {
             const apiError = error as ApiError;
             setErrors({

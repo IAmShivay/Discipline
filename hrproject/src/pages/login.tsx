@@ -170,7 +170,7 @@ const LoginPage: React.FC = () => {
                                         <span className="text-gray-600">Don't have an account?</span>
                                         <button
                                             type="button"
-                                            onClick={() => navigate('/signup')}
+                                            onClick={() => navigate('/auth/signup')}
                                             className="ml-2 text-blue-600 hover:text-blue-500"
                                         >
                                             Sign up
