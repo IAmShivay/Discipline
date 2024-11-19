@@ -110,7 +110,7 @@ const SignupPage: React.FC = () => {
     );
 
     return (
-        <div className="h-full flex flex-col lg:flex-row">
+        <div className="h-screen flex flex-col lg:flex-row">
             <div className="hidden lg:flex lg:w-1/2 bg-blue-600 p-12 flex-col justify-between relative">
                 <div className="text-white">
                     <h1 className="text-4xl font-bold mb-4">Join HR Manager</h1>
@@ -119,7 +119,6 @@ const SignupPage: React.FC = () => {
                     </p>
                 </div>
                 <div className="absolute inset-0 opacity-10">
-                    <div className="absolute right-0 bottom-0 w-96 h-full bg-white rounded-full transform translate-x-1/2 translate-y-1/2"></div>
                     <div className="absolute left-0 top-0 w-72 h-72 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
                 </div>
             </div>
