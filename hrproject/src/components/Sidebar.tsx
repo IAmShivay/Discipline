@@ -8,10 +8,10 @@ const Sidebar = () => {
 
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
-    { icon: Users, label: 'Employees', path: '/app/employees' },
-    { icon: FileText, label: 'Cases', path: '/app/cases' },
-    { icon: Bell, label: 'Notifications', path: '/app/notifications' },
-    { icon: SettingsIcon, label: 'Settings', path: '/app/settings' },
+    { icon: Users, label: 'Employees', path: '/employees' },
+    { icon: FileText, label: 'Cases', path: '/cases' },
+    { icon: Bell, label: 'Notifications', path: '/notifications' },
+    { icon: SettingsIcon, label: 'Settings', path: '/settings' },
   ];
 
   return (

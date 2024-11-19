@@ -51,7 +51,7 @@ const LoginPage: React.FC = () => {
                         severity: "info",
                     })
                 );
-                navigate('/app/dashboard');
+                navigate('/dashboard');
             } else {
                 dispatch(
                     showSnackbar({
