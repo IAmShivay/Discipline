@@ -16,7 +16,7 @@ export interface Manager {
 export type EmployeeStatus = "active" | "under_review" | "hold" | "terminated";
 
 export interface Employee {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -34,7 +34,9 @@ export interface Employee {
 // EmployeeForm.tsx
 import React, { useState, useEffect } from "react";
 import { Save, X } from "lucide-react";
-
+import { useDispatch } from "react-redux";
+import { createEmployee } from "../../redux/app/employees/employeeSlice";
+import { AppDispatch } from "../../store";
 interface EmployeeFormProps {
   onSubmit: (employee: Employee) => void;
   onCancel: () => void;
@@ -60,9 +62,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   companyId,
   initialData,
 }) => {
-  const [customFields, setCustomFields] = useState<CustomField[]>([]);
+  // const [customFields, setCustomFields] = useState<CustomField[]>([]);
   const [formData, setFormData] = useState<Partial<Employee>>({
-    id: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -76,7 +77,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     companyId: companyId || "",
     customFields: {},
   });
-
+  const dispatch = useDispatch<AppDispatch>();
   const [filteredManagers, setFilteredManagers] = useState<Manager[]>([]);
   useEffect(() => {
     if (initialData) {
@@ -138,6 +139,10 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     onSubmit(formData as Employee);
+    try {
+      console.log(formData);
+      dispatch(createEmployee(formData as Employee));
+    } catch (error) {}
   };
 
   return (
@@ -353,7 +358,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
           </div>
         </div>
 
-        {customFields.length > 0 && (
+        {/* {customFields.length > 0 && (
           <div className="border-t pt-6">
             <h3 className="text-lg font-medium mb-4">Custom Fields</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -396,7 +401,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               ))}
             </div>
           </div>
-        )}
+        )} */}
 
         {/* <div className="border-t pt-6">
           <CustomFieldForm onAddField={handleAddCustomField} />
