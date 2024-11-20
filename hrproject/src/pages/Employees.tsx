@@ -135,8 +135,8 @@ const Employees: React.FC = () => {
         </div>
       )}
 
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Employees</h1>
+      <div className="flex justify-between items-center mb-6 mt-5">
+        <h1 className="text-2xl font-bold mt-5">Employees</h1>
         <button
           onClick={() => setShowForm(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition duration-200"
