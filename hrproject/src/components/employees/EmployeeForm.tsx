@@ -126,15 +126,15 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCustomFieldChange = (fieldId: string, value: string): void => {
-    setFormData((prev) => ({
-      ...prev,
-      customFields: {
-        ...prev.customFields,
-        [fieldId]: value,
-      },
-    }));
-  };
+  // const handleCustomFieldChange = (fieldId: string, value: string): void => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     customFields: {
+  //       ...prev.customFields,
+  //       [fieldId]: value,
+  //     },
+  //   }));
+  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();

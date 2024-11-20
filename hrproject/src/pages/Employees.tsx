@@ -77,6 +77,7 @@ const initialEmployees: Employee[] = [
 ];
 
 const Employees: React.FC = () => {
+
   const [showForm, setShowForm] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -255,7 +256,7 @@ const Employees: React.FC = () => {
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => handleDeleteEmployee(employee.id)}
+                          onClick={() => employee.id && handleDeleteEmployee(employee.id)}
                           className="text-red-600 hover:text-red-800 transition duration-150"
                           title="Delete"
                         >
