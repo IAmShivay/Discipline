@@ -14,7 +14,7 @@ const Sidebar = () => {
     { icon: FileText, label: 'Cases', path: '/cases' },
     { icon: Bell, label: 'Notifications', path: '/notifications' },
     { icon: SettingsIcon, label: 'Settings', path: '/settings' },
-    { icon: PersonStandingIcon, label: 'Roles', path: '/settings' },
+    { icon: PersonStandingIcon, label: 'Roles', path: '/roles' },
 
   ];
 
