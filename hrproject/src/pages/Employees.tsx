@@ -14,7 +14,6 @@ export interface AlertState {
 // Employees.tsx
 import React, { useState } from "react";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
-// import type { Employee, Manager, AlertState } from "../types";
 import { Employee } from "../components/employees/EmployeeForm";
 import EmployeeForm from "../components/employees/EmployeeForm";
 
