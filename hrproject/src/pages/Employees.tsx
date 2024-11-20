@@ -17,39 +17,6 @@ import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { Employee } from "../components/employees/EmployeeForm";
 import EmployeeForm from "../components/employees/EmployeeForm";
 
-// Separate managers data
-// const availableManagers: Manager[] = [
-//   {
-//     id: "m1",
-//     name: "John Doe",
-//     role: "Engineering Manager",
-//     department: "Engineering",
-//   },
-//   {
-//     id: "m2",
-//     name: "Jane Smith",
-//     role: "HR Director",
-//     department: "Human Resources",
-//   },
-//   {
-//     id: "m3",
-//     name: "Mike Wilson",
-//     role: "Marketing Manager",
-//     department: "Marketing",
-//   },
-//   {
-//     id: "m4",
-//     name: "Sarah Brown",
-//     role: "Operations Manager",
-//     department: "Operations",
-//   },
-//   {
-//     id: "m5",
-//     name: "David Chen",
-//     role: "Technical Lead",
-//     department: "Engineering",
-//   },
-// ];
 const availableManagers = [
   { id: "1", name: "John Doe", role: "manager" },
   { id: "2", name: "Jane Smith", role: "supervisor" },

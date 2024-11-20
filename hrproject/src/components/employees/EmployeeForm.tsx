@@ -62,6 +62,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 }) => {
   const [customFields, setCustomFields] = useState<CustomField[]>([]);
   const [formData, setFormData] = useState<Partial<Employee>>({
+    id: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -136,7 +137,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log("formData", formData);
+    onSubmit(formData as Employee);
   };
 
   return (
