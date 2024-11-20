@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Users, FileText, Settings as SettingsIcon, Bell, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, Settings as SettingsIcon, Bell, Menu, X, PersonStandingIcon } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import UserProfileMenu from './UserProfileMenu';
 
@@ -14,6 +14,8 @@ const Sidebar = () => {
     { icon: FileText, label: 'Cases', path: '/cases' },
     { icon: Bell, label: 'Notifications', path: '/notifications' },
     { icon: SettingsIcon, label: 'Settings', path: '/settings' },
+    { icon: PersonStandingIcon, label: 'Roles', path: '/settings' },
+
   ];
 
   const toggleSidebar = () => {
