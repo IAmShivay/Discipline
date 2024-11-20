@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { loginUser } from '../redux/app/auth/authSlice';
 import { showSnackbar } from '../redux/app/error/errorSlice';
 import snackbarMessages from '../components/messages/message';
-
+import { Navigate } from 'react-router-dom';
 interface LoginFormValues {
     email: string;
     password: string;
@@ -52,7 +52,6 @@ const LoginPage: React.FC = () => {
                         severity: "info",
                     })
                 );
-                navigate('/dashboard');
             } else {
                 dispatch(
                     showSnackbar({
@@ -61,6 +60,7 @@ const LoginPage: React.FC = () => {
                     })
                 );
             }
+            window.location.href = '/dashboard';
         } catch (error) {
             console.error('Login error:', error);
         } finally {

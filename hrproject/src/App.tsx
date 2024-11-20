@@ -1,19 +1,25 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
-import Sidebar from './components/Sidebar';
-import Dashboard from './pages/Dashboard';
-import Employees from './pages/Employees';
-import Cases from './pages/Cases';
-import CaseDetails from './pages/CaseDetails';
-import Notifications from './pages/Notifications';
-import Settings from './pages/Settings';
-import SignupPage from './pages/signup';
-import LoginPage from './pages/login';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { loadUser } from './redux/app/auth/checkAuthSlice';
-import LoadingComponent from './components/LoadingComponent';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./pages/Dashboard";
+import Employees from "./pages/Employees";
+import Cases from "./pages/Cases";
+import CaseDetails from "./pages/CaseDetails";
+import Notifications from "./pages/Notifications";
+import Settings from "./pages/Settings";
+import SignupPage from "./pages/signup";
+import LoginPage from "./pages/login";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { loadUser } from "./redux/app/auth/checkAuthSlice";
+import LoadingComponent from "./components/LoadingComponent";
 
 // Define proper type for RootState
 interface RootState {
@@ -36,7 +42,7 @@ const App: React.FC = () => {
       try {
         await dispatch<any>(loadUser());
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load user');
+        setError(err instanceof Error ? err.message : "Failed to load user");
       } finally {
         setLoading(false);
       }
@@ -56,8 +62,11 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/auth/*" element={<PublicRoutes isAuthenticated={isAuthenticated} />} />
-        <Route path="/*" element={<ProtectedRoutes isAuthenticated={isAuthenticated} />} />
+        <Route path="/auth/*" element={<PublicRoutes />} />
+        <Route
+          path="/*"
+          element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}
+        />
       </Routes>
     </Router>
   );
@@ -67,14 +76,7 @@ interface PrivateRouteProps {
   isAuthenticated: boolean;
 }
 
-const PublicRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
-  const location = useLocation();
-  
-  if (isAuthenticated) {
-    // Preserve the intended destination if any
-    return <Navigate to="/dashboard" state={{ from: location }} replace />;
-  }
-
+const PublicRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="login" element={<LoginPage />} />
