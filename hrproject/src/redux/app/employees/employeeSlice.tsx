@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Employee } from '../../../components/employees/EmployeeForm'; // Assuming types are in a separate file
 import axiosBackend from '../../api/axiosBackend';
+import { getEmployee } from '../../api/employee/employee';
 
 // Define the initial state interface
 interface EmployeeState {
@@ -56,8 +57,9 @@ export const fetchEmployees = createAsyncThunk(
   'employees/fetchEmployees',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/api/employees');
-      return response.data;
+      const response = await getEmployee();
+      console.log(response);
+      return response;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return rejectWithValue(error.response?.data || 'Failed to fetch employees');
@@ -98,7 +100,7 @@ const employeeSlice = createSlice({
     });
     builder.addCase(updateEmployee.fulfilled, (state, action) => {
       state.loading = 'succeeded';
-      const index = state.employees.findIndex(emp => emp.id === action.payload.id);
+      const index = state.employees.findIndex(emp => emp._id === action.payload.id);
       if (index !== -1) {
         state.employees[index] = action.payload;
       }

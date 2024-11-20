@@ -2,7 +2,6 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Login, Register, Logout, Verify } from "../../api/auth/auth";
 import { getToken, clearToken, saveToken } from "../../../utility/tokenHandeling";
 import { RootState } from "../../../store";
-import showSnackbar from "../../../components/errorSnackbar";
 interface AuthState {
     user: string | "";
     token: string | "";

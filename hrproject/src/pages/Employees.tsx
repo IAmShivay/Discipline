@@ -12,82 +12,35 @@ export interface AlertState {
 }
 
 // Employees.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { Employee } from "../components/employees/EmployeeForm";
 import EmployeeForm from "../components/employees/EmployeeForm";
-
+import { useDispatch } from "react-redux";
+import { fetchEmployees } from "../redux/app/employees/employeeSlice";
+import { AppDispatch } from "../store";
+import { useSelector } from "react-redux";
 const availableManagers = [
   { id: "1", name: "John Doe", role: "manager" },
   { id: "2", name: "Jane Smith", role: "supervisor" },
   // ... more managers
 ];
-const initialEmployees: Employee[] = [
-  {
-    id: "1",
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phone: "+123456789",
-    department: "Engineering",
-    position: "Software Engineer",
-    joinDate: "2021-05-10",
-    roleId: "R1",
-    managerId: "3",
-    status: "active", // Assuming EmployeeStatus is a string enum or type
-    companyId: "C1",
-    customFields: {
-      github: "johndoe123",
-      linkedin: "linkedin.com/in/johndoe",
-    },
-  },
-  {
-    id: "2",
-    firstName: "Jane",
-    lastName: "Smith",
-    email: "jane.smith@example.com",
-    phone: "+987654321",
-    department: "Marketing",
-    position: "Marketing Specialist",
-    joinDate: "2020-03-15",
-    roleId: "R2",
-    status: "active",
-    companyId: "C1",
-    customFields: {
-      portfolio: "janesmithdesigns.com",
-      twitter: "@janesmith",
-    },
-  },
-  {
-    id: "3",
-    firstName: "Alice",
-    lastName: "Brown",
-    email: "alice.brown@example.com",
-    phone: "+1122334455",
-    department: "Human Resources",
-    position: "HR Manager",
-    joinDate: "2019-01-20",
-    roleId: "R3",
-    status: "terminated",
-    companyId: "C2",
-    customFields: {
-      certification: "SHRM-CP",
-    },
-  },
-];
 
 const Employees: React.FC = () => {
-
+  console.log();
+  const employee = useSelector((state: any) => state.employee.employees);
+  console.log(employee);
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
+  const [employees, setEmployees] = useState<Employee[]>(employee);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [alert, setAlert] = useState<AlertState | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleAddEmployee = (employee: Employee): void => {
     const newEmployee = {
       ...employee,
-      id: (employees.length + 1).toString(),
+      _id: (employees.length + 1).toString(),
     };
     setEmployees((prev) => [...prev, newEmployee]);
     setShowForm(false);
@@ -96,15 +49,15 @@ const Employees: React.FC = () => {
 
   const handleEditEmployee = (employee: Employee): void => {
     setEmployees((prev) =>
-      prev.map((emp) => (emp.id === employee.id ? employee : emp))
+      prev.map((emp) => (emp._id === employee._id ? employee : emp))
     );
     setEditingEmployee(null);
     showAlert("Employee updated successfully!", "success");
   };
 
-  const handleDeleteEmployee = (id: string): void => {
+  const handleDeleteEmployee = (_id: string): void => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
-      setEmployees((prev) => prev.filter((emp) => emp.id !== id));
+      setEmployees((prev) => prev.filter((emp) => emp._id !== _id));
       showAlert("Employee deleted successfully!", "success");
     }
   };
@@ -121,6 +74,9 @@ const Employees: React.FC = () => {
       employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.department.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  useEffect(() => {
+    dispatch(fetchEmployees());
+  }, [dispatch]);
 
   return (
     <div className="p-6">
@@ -204,7 +160,7 @@ const Employees: React.FC = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredEmployees.map((employee) => (
                   <tr
-                    key={employee.id}
+                    key={employee._id}
                     className="hover:bg-gray-50 transition-colors duration-150"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -256,7 +212,9 @@ const Employees: React.FC = () => {
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => employee.id && handleDeleteEmployee(employee.id)}
+                          onClick={() =>
+                            employee._id && handleDeleteEmployee(employee._id)
+                          }
                           className="text-red-600 hover:text-red-800 transition duration-150"
                           title="Delete"
                         >

@@ -16,7 +16,7 @@ export interface Manager {
 export type EmployeeStatus = "active" | "under_review" | "hold" | "terminated";
 
 export interface Employee {
-  id?: string;
+  _id?: string;
   firstName: string;
   lastName: string;
   email: string;
