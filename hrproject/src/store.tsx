@@ -7,7 +7,6 @@ const store = configureStore({
         auth: authReducer,
         snackbar: snackbarReducer,
         verify: verifyReducer,
-
     }
 });
 

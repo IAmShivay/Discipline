@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
@@ -13,25 +13,46 @@ import LoginPage from './pages/login';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { loadUser } from './redux/app/auth/checkAuthSlice';
-import { useEffect } from 'react';
 import LoadingComponent from './components/LoadingComponent';
+
+// Define proper type for RootState
+interface RootState {
+  verify: {
+    isAuthenticated: boolean;
+    user: any; // Replace 'any' with proper user type
+  };
+}
+
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector(
-    (state: any) => state.verify
+    (state: RootState) => state.verify
   );
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
-      await dispatch<any>(loadUser());
-      setLoading(false);
+      try {
+        await dispatch<any>(loadUser());
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load user');
+      } finally {
+        setLoading(false);
+      }
     };
     loadData();
   }, [dispatch]);
+
   if (loading) {
     return <LoadingComponent />;
   }
+
+  if (error) {
+    // You might want to add proper error handling UI here
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <Router>
       <Routes>
@@ -40,15 +61,17 @@ const App: React.FC = () => {
       </Routes>
     </Router>
   );
-}
+};
+
 interface PrivateRouteProps {
   isAuthenticated: boolean;
 }
+
 const PublicRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
-
   const location = useLocation();
-
+  
   if (isAuthenticated) {
+    // Preserve the intended destination if any
     return <Navigate to="/dashboard" state={{ from: location }} replace />;
   }
 
@@ -59,12 +82,13 @@ const PublicRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
       <Route path="*" element={<Navigate to="/auth/login" replace />} />
     </Routes>
   );
-}
+};
 
 const ProtectedRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
   const location = useLocation();
 
   if (!isAuthenticated) {
+    // Save the current location they were trying to go to
     return <Navigate to="/auth/login" state={{ from: location }} replace />;
   }
 
@@ -85,6 +109,6 @@ const ProtectedRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
       </main>
     </div>
   );
-}
+};
 
 export default App;
