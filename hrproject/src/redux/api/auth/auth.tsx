@@ -45,7 +45,8 @@ export const Logout = async () => {
 export const Verify = async () => {
   try {
     const response = await axiosInstance.get("/verify"); // Use the instance directly
-    return response.data.user;
+    console.log(response.data);
+    return response.data;
   } catch (error) {
     handleAxiosError(error); // Ensure you have a proper error handling function
   }

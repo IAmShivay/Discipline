@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
@@ -10,20 +11,41 @@ import Settings from './pages/Settings';
 import SignupPage from './pages/signup';
 import LoginPage from './pages/login';
 import React from 'react';
-
+import { useDispatch } from 'react-redux';
+import { loadUser } from './redux/app/auth/checkAuthSlice';
+import { useEffect } from 'react';
+import LoadingComponent from './components/LoadingComponent';
 const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector(
+    (state: any) => state.verify
+  );
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      await dispatch<any>(loadUser());
+      setLoading(false);
+    };
+    loadData();
+  }, [dispatch]);
+  if (loading) {
+    return <LoadingComponent />;
+  }
   return (
     <Router>
       <Routes>
-        <Route path="/auth/*" element={<PublicRoutes />} />
-        <Route path="/*" element={<ProtectedRoutes />} />
+        <Route path="/auth/*" element={<PublicRoutes isAuthenticated={isAuthenticated} />} />
+        <Route path="/*" element={<ProtectedRoutes isAuthenticated={isAuthenticated} />} />
       </Routes>
     </Router>
   );
 }
+interface PrivateRouteProps {
+  isAuthenticated: boolean;
+}
+const PublicRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
 
-const PublicRoutes: React.FC = () => {
-  const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
   const location = useLocation();
 
   if (isAuthenticated) {
@@ -39,8 +61,7 @@ const PublicRoutes: React.FC = () => {
   );
 }
 
-const ProtectedRoutes: React.FC = () => {
-  const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
+const ProtectedRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
   const location = useLocation();
 
   if (!isAuthenticated) {
