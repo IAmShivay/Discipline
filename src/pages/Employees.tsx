@@ -21,7 +21,10 @@ import { fetchEmployees } from "../redux/app/employees/employeeSlice";
 import { AppDispatch } from "../store";
 import { createEmployee } from "../redux/app/employees/employeeSlice";
 import { useSelector } from "react-redux";
-import { updateEmployee } from "../redux/app/employees/employeeSlice";
+import {
+  updateEmployee,
+  deleteEmployee,
+} from "../redux/app/employees/employeeSlice";
 const availableManagers = [
   { id: "1", name: "John Doe", role: "manager" },
   { id: "2", name: "Jane Smith", role: "supervisor" },
@@ -64,6 +67,7 @@ const Employees: React.FC = () => {
   const handleDeleteEmployee = (_id: string): void => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
       setEmployees((prev) => prev.filter((emp) => emp._id !== _id));
+      dispatch(deleteEmployee(_id));
       showAlert("Employee deleted successfully!", "success");
     }
   };

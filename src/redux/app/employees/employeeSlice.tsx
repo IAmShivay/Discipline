@@ -35,7 +35,21 @@ export const createEmployee = createAsyncThunk(
     }
   }
 );
-
+// Async thunk for deleting an employee
+export const deleteEmployee = createAsyncThunk(
+  'employees/deleteEmployee',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      await axiosBackend.delete(`/employees/${id}`);
+      return id; // Return the id of the deleted employee
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data || 'Failed to delete employee');
+      }
+      return rejectWithValue('An unexpected error occurred');
+    }
+  }
+);
 // Async thunk for updating an employee
 export const updateEmployee = createAsyncThunk(
   'employees/updateEmployee',
@@ -90,6 +104,19 @@ const employeeSlice = createSlice({
       state.currentEmployee = action.payload;
     });
     builder.addCase(createEmployee.rejected, (state, action) => {
+      state.loading = 'failed';
+      state.error = action.payload as string;
+    });
+    // Handling delete employee
+    builder
+    .addCase(deleteEmployee.pending, (state) => {
+      state.loading = 'pending';
+    })
+    .addCase(deleteEmployee.fulfilled, (state, action) => {
+      state.loading = 'succeeded';
+      state.employees = state.employees.filter(employee => employee._id !== action.payload);
+    })
+    .addCase(deleteEmployee.rejected, (state, action) => {
       state.loading = 'failed';
       state.error = action.payload as string;
     });
