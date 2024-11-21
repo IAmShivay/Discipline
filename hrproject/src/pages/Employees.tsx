@@ -19,6 +19,7 @@ import EmployeeForm from "../components/employees/EmployeeForm";
 import { useDispatch } from "react-redux";
 import { fetchEmployees } from "../redux/app/employees/employeeSlice";
 import { AppDispatch } from "../store";
+import { createEmployee } from "../redux/app/employees/employeeSlice";
 import { useSelector } from "react-redux";
 const availableManagers = [
   { id: "1", name: "John Doe", role: "manager" },
@@ -27,9 +28,7 @@ const availableManagers = [
 ];
 
 const Employees: React.FC = () => {
-  console.log();
   const employee = useSelector((state: any) => state.employee.employees);
-  console.log(employee);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>(employee);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -44,6 +43,11 @@ const Employees: React.FC = () => {
     };
     setEmployees((prev) => [...prev, newEmployee]);
     setShowForm(false);
+    try {
+      dispatch(createEmployee(employee as Employee));
+    } catch (error) {
+      console.log(error);
+    }
     showAlert("Employee added successfully!", "success");
   };
 

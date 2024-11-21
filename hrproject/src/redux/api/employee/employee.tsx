@@ -1,11 +1,5 @@
 import axiosBackend from "../axiosBackend";
 import { Employee } from "../../../components/employees/EmployeeForm";
-import axios from "axios";
-
-
-
-
-
 
 export const createEmployee = async (employee: Employee) => {
   try {

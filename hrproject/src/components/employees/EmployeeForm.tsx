@@ -77,7 +77,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     companyId: companyId || "",
     customFields: {},
   });
-  const dispatch = useDispatch<AppDispatch>();
   const [filteredManagers, setFilteredManagers] = useState<Manager[]>([]);
   useEffect(() => {
     if (initialData) {
@@ -139,10 +138,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     onSubmit(formData as Employee);
-    try {
-      console.log(formData);
-      dispatch(createEmployee(formData as Employee));
-    } catch (error) {}
+    
   };
 
   return (
