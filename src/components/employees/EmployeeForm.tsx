@@ -34,9 +34,7 @@ export interface Employee {
 // EmployeeForm.tsx
 import React, { useState, useEffect } from "react";
 import { Save, X } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { createEmployee } from "../../redux/app/employees/employeeSlice";
-import { AppDispatch } from "../../store";
+
 interface EmployeeFormProps {
   onSubmit: (employee: Employee) => void;
   onCancel: () => void;

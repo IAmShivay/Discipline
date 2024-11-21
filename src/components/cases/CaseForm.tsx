@@ -1,25 +1,44 @@
-import React, { useState } from 'react';
-import { Save, X, Upload } from 'lucide-react';
-import type { DisciplinaryCase } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
-
+import React, { useEffect, useState } from "react";
+import { Save, X, Upload } from "lucide-react";
+import type { DisciplinaryCase } from "../../types";
+import { v4 as uuidv4 } from "uuid";
+import { useDispatch } from "react-redux";
+import { fetchEmployees } from "../../redux/app/employees/employeeSlice";
+import { AppDispatch } from "../../store";
+import { useSelector } from "react-redux";
+import { Employee } from "../employees/EmployeeForm";
 interface CaseFormProps {
   onSubmit: (case_: DisciplinaryCase) => void;
   onCancel: () => void;
+  initialData?: DisciplinaryCase | null;
 }
 
-const CaseForm: React.FC<CaseFormProps> = ({ onSubmit, onCancel }) => {
-  const [formData, setFormData] = useState({
-    title: '',
-    employeeName: '',
-    category: '',
-    incidentDate: '',
-    description: '',
-    attachments: [] as File[],
-  });
+const CaseForm: React.FC<CaseFormProps> = ({
+  onSubmit,
+  onCancel,
+  initialData,
+}) => {
+  const employee = useSelector((state: any) => state.employee.employees);
+  const dispatch = useDispatch<AppDispatch>();
+  console.log("ok", employee);
+  const [formData, setFormData] = useState<DisciplinaryCase>(
+    initialData || {
+      title: "",
+      employeeName: "",
+      category: "",
+      incidentDate: "",
+      description: "",
+      attachments: [] as File[],
+    }
+  );
+  useEffect(() => {
+    dispatch(fetchEmployees());
+  }, [dispatch]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -39,10 +58,11 @@ const CaseForm: React.FC<CaseFormProps> = ({ onSubmit, onCancel }) => {
     const newCase: DisciplinaryCase = {
       id: uuidv4(),
       ...formData,
-      status: 'DRAFT',
+      status: "DRAFT",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
+    console.log(newCase);
     onSubmit(newCase);
   };
 
@@ -50,7 +70,10 @@ const CaseForm: React.FC<CaseFormProps> = ({ onSubmit, onCancel }) => {
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Create New Case</h2>
-        <button onClick={onCancel} className="text-gray-500 hover:text-gray-700">
+        <button
+          onClick={onCancel}
+          className="text-gray-500 hover:text-gray-700"
+        >
           <X className="w-6 h-6" />
         </button>
       </div>
@@ -83,8 +106,14 @@ const CaseForm: React.FC<CaseFormProps> = ({ onSubmit, onCancel }) => {
               required
             >
               <option value="">Select Employee</option>
-              <option value="John Doe">John Doe</option>
-              <option value="Jane Smith">Jane Smith</option>
+              {employee.map((employee: Employee) => (
+                <option
+                  key={employee._id}
+                  value={`${employee.firstName} ${employee.lastName}`}
+                >
+                  {`${employee.firstName} ${employee.lastName}`}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -157,7 +186,7 @@ const CaseForm: React.FC<CaseFormProps> = ({ onSubmit, onCancel }) => {
           </div>
           {formData.attachments.length > 0 && (
             <ul className="mt-2 space-y-1">
-              {formData.attachments.map((file, index) => (
+              {formData.attachments.map((file: any, index: number) => (
                 <li
                   key={index}
                   className="text-sm text-gray-600 flex items-center space-x-2"
@@ -168,7 +197,9 @@ const CaseForm: React.FC<CaseFormProps> = ({ onSubmit, onCancel }) => {
                     onClick={() =>
                       setFormData((prev) => ({
                         ...prev,
-                        attachments: prev.attachments.filter((_, i) => i !== index),
+                        attachments: prev.attachments.filter(
+                          (_: any, i: number) => i !== index
+                        ),
                       }))
                     }
                     className="text-red-500 hover:text-red-700"

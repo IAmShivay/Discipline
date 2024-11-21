@@ -1,18 +1,24 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ChevronRight, AlertCircle, CheckCircle, Clock } from 'lucide-react';
-import type { DisciplinaryCase } from '../../types';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  Edit,
+  Trash2,
+} from "lucide-react";
+import type { DisciplinaryCase } from "../../types";
 
 interface CaseListProps {
   cases: DisciplinaryCase[];
 }
 
 const statusColors = {
-  DRAFT: 'bg-gray-100 text-gray-800',
-  OPEN: 'bg-blue-100 text-blue-800',
-  PENDING_RESPONSE: 'bg-yellow-100 text-yellow-800',
-  UNDER_REVIEW: 'bg-purple-100 text-purple-800',
-  CLOSED: 'bg-green-100 text-green-800',
+  DRAFT: "bg-gray-100 text-gray-800",
+  OPEN: "bg-blue-100 text-blue-800",
+  PENDING_RESPONSE: "bg-yellow-100 text-yellow-800",
+  UNDER_REVIEW: "bg-purple-100 text-purple-800",
+  CLOSED: "bg-green-100 text-green-800",
 };
 
 const statusIcons = {
@@ -23,16 +29,25 @@ const statusIcons = {
   CLOSED: CheckCircle,
 };
 
-const CaseList: React.FC<CaseListProps> = ({ cases }) => {
+interface CaseListProps {
+  cases: DisciplinaryCase[];
+  onEdit: (caseToEdit: DisciplinaryCase) => void;
+  onDelete: (caseId: string) => void;
+}
+
+const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
   const navigate = useNavigate();
 
   if (cases.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
         <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No Cases Found</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">
+          No Cases Found
+        </h3>
         <p className="text-gray-500">
-          There are no disciplinary cases to display. Create a new case to get started.
+          There are no disciplinary cases to display. Create a new case to get
+          started.
         </p>
       </div>
     );
@@ -59,53 +74,91 @@ const CaseList: React.FC<CaseListProps> = ({ cases }) => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Date
               </th>
-              <th className="relative px-6 py-3">
-                <span className="sr-only">Actions</span>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {cases.map((case_) => {
-              const StatusIcon = statusIcons[case_.status];
+              const StatusIcon =
+                statusIcons[case_.status as keyof typeof statusIcons] ||
+                AlertCircle;
               return (
-                <tr
-                  key={case_.id}
-                  className="hover:bg-gray-50 cursor-pointer"
-                  onClick={() => navigate(`/cases/${case_.id}`)}
-                >
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-gray-900">
-                      {case_.title}
-                    </div>
-                    <div className="text-sm text-gray-500 truncate max-w-md">
-                      {case_.description}
+                <tr key={case_.id} className="hover:bg-gray-50 cursor-pointer">
+                  <td
+                    className="px-6 py-4 whitespace-nowrap"
+                    onClick={() => navigate(`/cases/${case_.id}`)}
+                  >
+                    <div className="flex items-center">
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">
+                          {case_.title}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {case_.description}
+                        </div>
+                      </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td
+                    className="px-6 py-4 whitespace-nowrap"
+                    onClick={() => navigate(`/cases/${case_.id}`)}
+                  >
                     <div className="text-sm text-gray-900">
                       {case_.employeeName}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td
+                    className="px-6 py-4 whitespace-nowrap"
+                    onClick={() => navigate(`/cases/${case_.id}`)}
+                  >
                     <div className="text-sm text-gray-900">
                       {case_.category}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td
+                    className="px-6 py-4 whitespace-nowrap"
+                    onClick={() => navigate(`/cases/${case_.id}`)}
+                  >
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        statusColors[case_.status]
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        statusColors[
+                          case_.status as keyof typeof statusColors
+                        ] || "bg-gray-100 text-gray-800"
                       }`}
                     >
                       <StatusIcon className="w-4 h-4 mr-1" />
-                      {case_.status.replace('_', ' ')}
+                      {case_.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td
+                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    onClick={() => navigate(`/cases/${case_.id}`)}
+                  >
                     {new Date(case_.incidentDate).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <ChevronRight className="w-5 h-5 text-blue-600" />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit(case_);
+                      }}
+                      className="text-indigo-600 hover:text-indigo-900 mr-2"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (case_.id) {
+                          onDelete(case_.id);
+                        }
+                      }}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </td>
                 </tr>
               );

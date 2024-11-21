@@ -1,22 +1,42 @@
-import React, { useState } from 'react';
-import { Plus, Filter } from 'lucide-react';
-import CaseList from '../components/cases/CaseList';
-import CaseForm from '../components/cases/CaseForm';
-import { DisciplinaryCase } from '../types';
+import React, { useState } from "react";
+import { Plus, Filter } from "lucide-react";
+import CaseList from "../components/cases/CaseList";
+import CaseForm from "../components/cases/CaseForm";
+import { DisciplinaryCase } from "../types";
 
 const Cases: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [cases, setCases] = useState<DisciplinaryCase[]>([]);
+  const [editingCase, setEditingCase] = useState<DisciplinaryCase | null>(null);
   const [filters, setFilters] = useState({
-    search: '',
-    status: '',
-    category: '',
-    dateRange: '',
+    search: "",
+    status: "",
+    category: "",
+    dateRange: "",
   });
 
   const handleAddCase = (newCase: DisciplinaryCase) => {
     setCases((prev) => [...prev, newCase]);
     setShowForm(false);
+  };
+
+  const handleEditCase = (caseToEdit: DisciplinaryCase) => {
+    setEditingCase(caseToEdit);
+    setShowForm(true);
+  };
+
+  const handleUpdateCase = (updatedCase: DisciplinaryCase) => {
+    setCases((prev) =>
+      prev.map((c) => (c.id === updatedCase.id ? updatedCase : c))
+    );
+    setEditingCase(null);
+    setShowForm(false);
+  };
+
+  const handleDeleteCase = (caseId: string) => {
+    if (window.confirm("Are you sure you want to delete this case?")) {
+      setCases((prev) => prev.filter((c) => c.id !== caseId));
+    }
   };
 
   const handleFilterChange = (
@@ -40,7 +60,14 @@ const Cases: React.FC = () => {
       </div>
 
       {showForm ? (
-        <CaseForm onSubmit={handleAddCase} onCancel={() => setShowForm(false)} />
+        <CaseForm
+          onSubmit={editingCase ? handleUpdateCase : handleAddCase}
+          onCancel={() => {
+            setShowForm(false);
+            setEditingCase(null);
+          }}
+          initialData={editingCase}
+        />
       ) : (
         <>
           <div className="bg-white rounded-lg shadow-md p-4 mb-6">
@@ -94,7 +121,11 @@ const Cases: React.FC = () => {
             </div>
           </div>
 
-          <CaseList cases={cases} />
+          <CaseList
+            cases={cases}
+            onEdit={handleEditCase}
+            onDelete={handleDeleteCase}
+          />
         </>
       )}
     </div>
