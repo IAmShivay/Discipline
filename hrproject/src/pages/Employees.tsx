@@ -37,18 +37,18 @@ const Employees: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleAddEmployee = (employee: Employee): void => {
-    const newEmployee = {
-      ...employee,
-      _id: (employees.length + 1).toString(),
-    };
-    setEmployees((prev) => [...prev, newEmployee]);
-    setShowForm(false);
     try {
       dispatch(createEmployee(employee as Employee));
     } catch (error) {
       console.log(error);
     }
     showAlert("Employee added successfully!", "success");
+    const newEmployee = {
+      ...employee,
+      _id: (employees.length + 1).toString(),
+    };
+    setShowForm(false);
+    setEmployees((prev) => [...prev, newEmployee]);
   };
 
   const handleEditEmployee = (employee: Employee): void => {
@@ -71,8 +71,8 @@ const Employees: React.FC = () => {
     setTimeout(() => setAlert(null), 3000);
   };
 
-  const filteredEmployees = employees.filter(
-    (employee) =>
+  const filteredEmployees = employee.filter(
+    (employee: Employee) =>
       employee.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -162,7 +162,7 @@ const Employees: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredEmployees.map((employee) => (
+                {filteredEmployees.map((employee: Employee) => (
                   <tr
                     key={employee._id}
                     className="hover:bg-gray-50 transition-colors duration-150"
