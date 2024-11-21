@@ -39,9 +39,9 @@ export const createEmployee = createAsyncThunk(
 // Async thunk for updating an employee
 export const updateEmployee = createAsyncThunk(
   'employees/updateEmployee',
-  async ({ id, employeeData }: { id: string, employeeData: Partial<Employee> }, { rejectWithValue }) => {
+  async ({ id, employeeData }: { id: any, employeeData: Partial<Employee> }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`/api/employees/${id}`, employeeData);
+      const response = await axiosBackend.put(`/employees/${id}`, employeeData);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

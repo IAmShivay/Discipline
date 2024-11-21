@@ -21,6 +21,7 @@ import { fetchEmployees } from "../redux/app/employees/employeeSlice";
 import { AppDispatch } from "../store";
 import { createEmployee } from "../redux/app/employees/employeeSlice";
 import { useSelector } from "react-redux";
+import { updateEmployee } from "../redux/app/employees/employeeSlice";
 const availableManagers = [
   { id: "1", name: "John Doe", role: "manager" },
   { id: "2", name: "Jane Smith", role: "supervisor" },
@@ -55,6 +56,7 @@ const Employees: React.FC = () => {
     setEmployees((prev) =>
       prev.map((emp) => (emp._id === employee._id ? employee : emp))
     );
+    dispatch(updateEmployee({ id: employee._id, employeeData: employee }));
     setEditingEmployee(null);
     showAlert("Employee updated successfully!", "success");
   };
