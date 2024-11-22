@@ -9,6 +9,7 @@ import { AppDispatch } from "../store";
 import { fetchCases } from "../redux/app/cases/caseSlice";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { updateCase } from "../redux/app/cases/caseSlice";
 const Cases: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [showForm, setShowForm] = useState(false);
@@ -39,10 +40,16 @@ const Cases: React.FC = () => {
 
   const handleUpdateCase = (updatedCase: DisciplinaryCase) => {
     setCases((prev) =>
-      prev.map((c) => (c.id === updatedCase.id ? updatedCase : c))
+      prev.map((c) => (c._id === updatedCase._id ? updatedCase : c))
     );
     setEditingCase(null);
     setShowForm(false);
+    console.log(updatedCase,"");
+    if (updatedCase._id) {
+      dispatch(updateCase({ id: updatedCase._id, caseData: updatedCase }));
+    } else {
+      console.error("Updated case id is undefined");
+    }
   };
 
   const handleDeleteCase = (caseId: string) => {

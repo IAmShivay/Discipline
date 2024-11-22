@@ -78,6 +78,7 @@ export const updateCase = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
+      console.log(caseData,"jijiji")
       const formData = new FormData();
 
       // Add all case data to the FormData object
@@ -88,11 +89,13 @@ export const updateCase = createAsyncThunk(
             formData.append(`attachments`, file);
           });
         } else {
-          formData.append(key, caseData[key as keyof DisciplinaryCase] as any);
+          formData.append(key, (caseData as any)[key]);
         }
       });
-
-      const response = await axiosBackend.put(`/update/${id}`, formData, {
+      console.log("FormData contents:");
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }      const response = await axiosBackend.put(`/cases/update/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -168,12 +171,9 @@ const caseSlice = createSlice({
       })
       .addCase(updateCase.fulfilled, (state, action) => {
         state.loading = "succeeded";
-        const index = state.cases.findIndex(
-          (case_) => case_.id === action.payload.id
+        state.cases = state.cases.map(case_ => 
+          case_.id === action.payload.id ? action.payload : case_
         );
-        if (index !== -1) {
-          state.cases[index] = action.payload;
-        }
         state.currentCase = action.payload;
       })
       .addCase(updateCase.rejected, (state, action) => {

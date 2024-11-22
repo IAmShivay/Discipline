@@ -10,6 +10,7 @@ export type NotificationType =
   | 'STRIKE_RECORDED';
 
 export interface DisciplinaryCase {
+  _id?: string;
   id?: string;
   title: string;
   employeeName: string;
