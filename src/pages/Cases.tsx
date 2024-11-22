@@ -10,6 +10,7 @@ import { fetchCases } from "../redux/app/cases/caseSlice";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { updateCase } from "../redux/app/cases/caseSlice";
+import { deleteCase } from "../redux/app/cases/caseSlice";
 const Cases: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [showForm, setShowForm] = useState(false);
@@ -56,6 +57,8 @@ const Cases: React.FC = () => {
     if (window.confirm("Are you sure you want to delete this case?")) {
       setCases((prev) => prev.filter((c) => c.id !== caseId));
     }
+    console.log(caseId);
+    dispatch(deleteCase(caseId));
   };
 
   const handleFilterChange = (

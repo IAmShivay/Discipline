@@ -37,7 +37,7 @@ interface CaseListProps {
 
 const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
   const navigate = useNavigate();
-console
+
   if (cases.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
@@ -151,9 +151,7 @@ console
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (case_.id) {
-                          onDelete(case_.id);
-                        }
+                        console.log(case_.id);
                       }}
                       className="text-red-600 hover:text-red-900"
                     >

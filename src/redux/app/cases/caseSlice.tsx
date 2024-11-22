@@ -59,7 +59,7 @@ export const deleteCase = createAsyncThunk(
   "cases/deleteCase",
   async (id: string, { rejectWithValue }) => {
     try {
-      await axiosBackend.delete(`/cases/${id}`);
+      await axiosBackend.delete(`/delete/cases/${id}`);
       return id; // Return the id of the deleted case
     } catch (error) {
       if (axios.isAxiosError(error)) {
