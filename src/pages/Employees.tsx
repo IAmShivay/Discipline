@@ -86,6 +86,7 @@ const Employees: React.FC = () => {
   );
   useEffect(() => {
     dispatch(fetchEmployees());
+    
   }, [dispatch]);
 
   return (

@@ -78,7 +78,26 @@ export const updateCase = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axiosBackend.put(`/cases/${id}`, caseData);
+      const formData = new FormData();
+
+      // Add all case data to the FormData object
+      Object.keys(caseData).forEach((key) => {
+        if (key === "attachments" && Array.isArray(caseData.attachments)) {
+          // Handle file attachments
+          caseData.attachments.forEach((file, index) => {
+            formData.append(`attachments`, file);
+          });
+        } else {
+          formData.append(key, caseData[key as keyof DisciplinaryCase] as any);
+        }
+      });
+
+      const response = await axiosBackend.put(`/update/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -94,7 +113,7 @@ export const fetchCases = createAsyncThunk(
   "cases/fetchCases",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosBackend.get("/cases");
+      const response = await axiosBackend.get("/cases/get");
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

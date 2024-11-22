@@ -6,10 +6,17 @@ import { DisciplinaryCase } from "../types";
 import { createCase } from "../redux/app/cases/caseSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
+import { fetchCases } from "../redux/app/cases/caseSlice";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 const Cases: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [showForm, setShowForm] = useState(false);
-  const [cases, setCases] = useState<DisciplinaryCase[]>([]);
+  const casesState = useSelector(
+    (state: { cases: { cases: DisciplinaryCase[] } }) => state.cases.cases
+  );
+  console.log(casesState);
+  const [cases, setCases] = useState<DisciplinaryCase[]>(casesState);
   const [editingCase, setEditingCase] = useState<DisciplinaryCase | null>(null);
   const [filters, setFilters] = useState({
     search: "",
@@ -50,6 +57,9 @@ const Cases: React.FC = () => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
+  useEffect(() => {
+    dispatch(fetchCases());
+  }, [dispatch]);
 
   return (
     <div className="p-6">
