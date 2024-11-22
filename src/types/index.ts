@@ -17,7 +17,8 @@ export interface DisciplinaryCase {
   description: string;
   status?: CaseStatus;
   incidentDate: string;
-  attachments?: any |[];
+  type: string;
+  attachments: any;
   createdAt?: string;
   updatedAt?: string;
 }

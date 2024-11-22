@@ -23,14 +23,16 @@ const CaseForm: React.FC<CaseFormProps> = ({
   console.log("ok", employee);
   const [formData, setFormData] = useState<DisciplinaryCase>(
     initialData || {
+      type: "",
       title: "",
       employeeName: "",
       category: "",
       incidentDate: "",
       description: "",
-      attachments: [] as File[],
+      attachments:"",
     }
   );
+
   useEffect(() => {
     dispatch(fetchEmployees());
   }, [dispatch]);
@@ -62,7 +64,6 @@ const CaseForm: React.FC<CaseFormProps> = ({
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    console.log(newCase);
     onSubmit(newCase);
   };
 
@@ -122,8 +123,8 @@ const CaseForm: React.FC<CaseFormProps> = ({
               Category
             </label>
             <select
-              name="category"
-              value={formData.category}
+              name="type"
+              value={formData.type}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
@@ -132,7 +133,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
               <option value="ATTENDANCE">Attendance</option>
               <option value="MISCONDUCT">Misconduct</option>
               <option value="POLICY_VIOLATION">Policy Violation</option>
-              <option value="PERFORMANCE">Performance</option>
+              <option value="performance">Performance</option>
             </select>
           </div>
 

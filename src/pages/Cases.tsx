@@ -3,8 +3,11 @@ import { Plus, Filter } from "lucide-react";
 import CaseList from "../components/cases/CaseList";
 import CaseForm from "../components/cases/CaseForm";
 import { DisciplinaryCase } from "../types";
-
+import { createCase } from "../redux/app/cases/caseSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
 const Cases: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [showForm, setShowForm] = useState(false);
   const [cases, setCases] = useState<DisciplinaryCase[]>([]);
   const [editingCase, setEditingCase] = useState<DisciplinaryCase | null>(null);
@@ -18,6 +21,8 @@ const Cases: React.FC = () => {
   const handleAddCase = (newCase: DisciplinaryCase) => {
     setCases((prev) => [...prev, newCase]);
     setShowForm(false);
+    console.log(newCase.attachments);
+    dispatch(createCase(newCase));
   };
 
   const handleEditCase = (caseToEdit: DisciplinaryCase) => {
