@@ -136,7 +136,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     onSubmit(formData as Employee);
-    
   };
 
   return (
@@ -414,7 +413,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             className="btn btn-primary flex items-center gap-2"
           >
             <Save className="w-4 h-4" />
-            Save Employee
+            {initialData ? "Update Employee" : "Add Employee"}
           </button>
         </div>
       </form>

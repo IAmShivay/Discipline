@@ -18,9 +18,10 @@ const CaseForm: React.FC<CaseFormProps> = ({
   onCancel,
   initialData,
 }) => {
+  const isUpdating = !!initialData;
+
   const employee = useSelector((state: any) => state.employee.employees);
   const dispatch = useDispatch<AppDispatch>();
-  console.log("ok", employee);
   const [formData, setFormData] = useState<DisciplinaryCase>(
     initialData || {
       type: "",
@@ -29,7 +30,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
       category: "",
       incidentDate: "",
       description: "",
-      attachments:"",
+      attachments: "",
     }
   );
 
@@ -226,7 +227,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
             className="btn btn-primary flex items-center gap-2"
           >
             <Save className="w-4 h-4" />
-            Create Case
+            {isUpdating ? "Update Case" : "Create Case"}
           </button>
         </div>
       </form>
