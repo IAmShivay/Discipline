@@ -37,7 +37,7 @@ const CaseDetails: React.FC = () => {
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-2">{case_.title}</h1>
           <div className="flex items-center gap-4 text-sm text-gray-500">
-            <span>Case ID: {case_.id}</span>
+            <span>Case ID: {case_._id}</span>
             <span>•</span>
             <span>
               Created on{" "}
