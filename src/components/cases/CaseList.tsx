@@ -1,12 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  AlertCircle,
-  CheckCircle,
-  Clock,
-  Edit,
-  Trash2,
-} from "lucide-react";
+import { AlertCircle, CheckCircle, Clock, Edit, Trash2 } from "lucide-react";
 import type { DisciplinaryCase } from "../../types";
 
 interface CaseListProps {
@@ -136,7 +130,8 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
                     className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                     onClick={() => navigate(`/cases/${case_.id}`)}
                   >
-                    {new Date(case_.incidentDate).toLocaleDateString()}
+                    {case_.incidentDate &&
+                      new Date(case_.incidentDate).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
@@ -151,7 +146,16 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        console.log(case_.id);
+                        const caseId = case_._id;
+                        console.log(
+                          "Attempting to delete case with id:",
+                          caseId
+                        );
+                        if (caseId) {
+                          onDelete(caseId);
+                        } else {
+                          console.error("Case id is undefined", case_);
+                        }
                       }}
                       className="text-red-600 hover:text-red-900"
                     >
