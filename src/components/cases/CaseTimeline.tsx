@@ -69,7 +69,7 @@ const CaseTimeline: React.FC<CaseTimelineProps> = ({ case_ }) => {
                     </p>
                   </div>
                   <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                    {new Date(event.date).toLocaleString()}
+                    {event.date ? new Date(event.date).toLocaleString() : 'Date not available'}
                   </div>
                 </div>
               </div>

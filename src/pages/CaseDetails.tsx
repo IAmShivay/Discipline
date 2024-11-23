@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  FileText,
-  Clock,
-  MessageSquare,
-  Paperclip,
-  Download,
-} from "lucide-react";
+import { FileText, Clock, MessageSquare, Download } from "lucide-react";
 import CaseTimeline from "../components/cases/CaseTimeline";
 import CaseResponse from "../components/cases/CaseResponse";
 import CaseStatusUpdate from "../components/cases/CaseStatusUpdate";
@@ -93,9 +87,7 @@ const CaseDetails: React.FC = () => {
                   <h3 className="text-sm font-medium text-gray-500">
                     Category
                   </h3>
-                  <p className="mt-1 text-sm text-gray-900">
-                    {case_?.category}
-                  </p>
+                  <p className="mt-1 text-sm text-gray-900">{case_?.type}</p>
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500">

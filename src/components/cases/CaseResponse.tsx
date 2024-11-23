@@ -2,18 +2,36 @@ import React, { useState } from 'react';
 import { Send } from 'lucide-react';
 import type { DisciplinaryCase } from '../../types';
 
+interface Message {
+  id: string;
+  content: string;
+  timestamp: Date;
+  attachments?: File[];
+}
+
 interface CaseResponseProps {
   case_: DisciplinaryCase;
 }
 
 const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
+  console.log("case_", case_);
   const [response, setResponse] = useState('');
   const [attachments, setAttachments] = useState<File[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle response submission
-    console.log('Response submitted:', { response, attachments });
+    if (response.trim()) {
+      const newMessage: Message = {
+        id: Date.now().toString(),
+        content: response,
+        timestamp: new Date(),
+        attachments,
+      };
+      setMessages([...messages, newMessage]);
+      setResponse('');
+      setAttachments([]);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +51,36 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Previous Messages Display */}
+      <div className="space-y-4">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className="border rounded-md p-4 bg-blue-50"
+          >
+            <div className="flex justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">
+                Your Response
+              </span>
+              <span className="text-sm text-gray-500">
+                {message.timestamp.toLocaleString()}
+              </span>
+            </div>
+            <p className="text-gray-800 whitespace-pre-wrap">{message.content}</p>
+            {message.attachments && message.attachments.length > 0 && (
+              <div className="mt-2 text-sm text-gray-600">
+                <p className="font-medium">Attachments:</p>
+                <ul className="list-disc pl-5">
+                  {message.attachments.map((file, index) => (
+                    <li key={index}>{file.name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -86,9 +134,9 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="btn btn-primary flex items-center gap-2"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4 h-4 mr-2" />
             Submit Response
           </button>
         </div>
