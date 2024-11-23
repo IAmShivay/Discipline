@@ -147,7 +147,7 @@ const Cases: React.FC = () => {
           </div>
 
           <CaseList
-            cases={cases}
+            cases={casesState}
             onEdit={handleEditCase}
             onDelete={handleDeleteCase}
           />

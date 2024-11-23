@@ -75,6 +75,7 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {cases.map((case_) => {
+              console.log(case_);
               const StatusIcon =
                 statusIcons[case_.status as keyof typeof statusIcons] ||
                 AlertCircle;
@@ -108,7 +109,7 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
                     onClick={() => navigate(`/cases/${case_.id}`)}
                   >
                     <div className="text-sm text-gray-900">
-                      {case_.category}
+                      {case_.type}
                     </div>
                   </td>
                   <td
