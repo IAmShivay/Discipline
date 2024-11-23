@@ -126,7 +126,20 @@ export const fetchCases = createAsyncThunk(
     }
   }
 );
-
+export const fetchCaseById = createAsyncThunk(
+  "cases/fetchCaseById",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await axiosBackend.get(`/cases/caseId/${id}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data || "Failed to fetch case");
+      }
+      return rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
 // Create the slice
 const caseSlice = createSlice({
   name: "cases",
@@ -191,7 +204,19 @@ const caseSlice = createSlice({
       .addCase(fetchCases.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.payload as string;
-      });
+      })
+      .addCase(fetchCaseById.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(fetchCaseById.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        state.currentCase = action.payload.data;
+      })
+      .addCase(fetchCaseById.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.payload as string;
+      })
+      
   },
 });
 

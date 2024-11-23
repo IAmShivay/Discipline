@@ -83,7 +83,7 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
                 <tr key={case_.id} className="hover:bg-gray-50 cursor-pointer">
                   <td
                     className="px-6 py-4 whitespace-nowrap"
-                    onClick={() => navigate(`/cases/${case_.id}`)}
+                    onClick={() => navigate(`/cases/${case_._id}`)}
                   >
                     <div className="flex items-center">
                       <div className="ml-4">
