@@ -12,6 +12,7 @@ export type NotificationType =
 export interface DisciplinaryCase {
   _id?: string;
   id?: string;
+  employeeId: string;
   title: string;
   employeeName: string;
   category: string;

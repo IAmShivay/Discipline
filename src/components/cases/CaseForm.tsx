@@ -29,6 +29,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
       employeeName: "",
       category: "",
       incidentDate: "",
+      employeeId: "",
       description: "",
       attachments: "",
     }
@@ -44,7 +45,22 @@ const CaseForm: React.FC<CaseFormProps> = ({
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "employeeId") {
+      const selectedEmployee = employee.find(
+        (employee: Employee) => employee._id === value
+      );
+      setFormData((prev) => ({
+        ...prev,
+        employeeName: `${selectedEmployee?.firstName} ${selectedEmployee?.lastName}`,
+        // employeeId: value,
+        [name]: value,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,18 +117,15 @@ const CaseForm: React.FC<CaseFormProps> = ({
               Employee Name
             </label>
             <select
-              name="employeeName"
-              value={formData.employeeName}
+              name="employeeId"
+              value={formData.employeeId}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
             >
               <option value="">Select Employee</option>
               {employee.map((employee: Employee) => (
-                <option
-                  key={employee._id}
-                  value={`${employee.firstName} ${employee.lastName}`}
-                >
+                <option key={employee._id} value={employee._id}>
                   {`${employee.firstName} ${employee.lastName}`}
                 </option>
               ))}
