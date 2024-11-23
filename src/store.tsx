@@ -4,6 +4,7 @@ import snackbarReducer from "./redux/app/error/errorSlice";
 import verifyReducer from "./redux/app/auth/checkAuthSlice";
 import employeeReducer from "./redux/app/employees/employeeSlice";
 import caseReducer from "./redux/app/cases/caseSlice";
+import timelineReducer from "./redux/app/timline/timeline";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -11,6 +12,7 @@ const store = configureStore({
     verify: verifyReducer,
     employee: employeeReducer,
     cases: caseReducer,
+    timline: timelineReducer,
   },
 });
 
