@@ -23,6 +23,7 @@ export interface DisciplinaryCase {
   attachments: any;
   createdAt?: string;
   updatedAt?: string;
+  responses?: any[];
 }
 
 export interface Notification {

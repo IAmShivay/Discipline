@@ -140,6 +140,67 @@ export const fetchCaseById = createAsyncThunk(
     }
   }
 );
+
+
+// Async thunk for adding an employee response
+export const addEmployeeResponse = createAsyncThunk(
+  "cases/addEmployeeResponse",
+  async ({ caseId, responseData }: { caseId: string, responseData: { message: string, attachments?: File[] } }, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      formData.append('message', responseData.message);
+      
+      if (responseData.attachments) {
+        responseData.attachments.forEach((file, index) => {
+          formData.append(`attachments`, file);
+        });
+      }
+
+      const response = await axiosBackend.post(`/cases/${caseId}/employee-response`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data || "Failed to add employee response");
+      }
+      return rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
+// Async thunk for adding an admin response
+export const addAdminResponse = createAsyncThunk(
+  "cases/addAdminResponse",
+  async ({ caseId, responseData }: { caseId: string, responseData: { message: string, attachments?: File[] } }, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      formData.append('message', responseData.message);
+      
+      if (responseData.attachments) {
+        responseData.attachments.forEach((file, index) => {
+          formData.append(`attachments`, file);
+        });
+      }
+
+      const response = await axiosBackend.post(`/cases/${caseId}/admin-response`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data || "Failed to add admin response");
+      }
+      return rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
 // Create the slice
 const caseSlice = createSlice({
   name: "cases",
@@ -216,6 +277,42 @@ const caseSlice = createSlice({
         state.loading = "failed";
         state.error = action.payload as string;
       })
+      .addCase(addEmployeeResponse.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(addEmployeeResponse.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        // If currentCase matches the updated one, update it with the new response
+        if (state.currentCase && state.currentCase.id === action.payload.caseId) {
+          state.currentCase.responses = [
+            ...(state.currentCase.responses || []),
+            action.payload,
+          ];
+        }
+      })
+      .addCase(addEmployeeResponse.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.payload as string;
+      })
+      // Handle admin response
+      .addCase(addAdminResponse.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(addAdminResponse.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        // If currentCase matches the updated one, update it with the new response
+        if (state.currentCase && state.currentCase.id === action.payload.caseId) {
+          state.currentCase.responses = [
+            ...(state.currentCase.responses || []),
+            action.payload,
+          ];
+        }
+      })
+      .addCase(addAdminResponse.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.payload as string;
+      });
+      
       
   },
 });
