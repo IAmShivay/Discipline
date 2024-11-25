@@ -51,7 +51,7 @@ function Dashboard() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mt-5">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mt-14">Dashboard</h1>
         <p className="text-gray-500 mt-5">Welcome back, Admin</p>
       </div>
 
