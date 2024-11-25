@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import { LayoutDashboard, Users, FileText, Settings as SettingsIcon, Bell, Menu, X, PersonStandingIcon } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import UserProfileMenu from './UserProfileMenu';
-
+import { RootState } from '../store';
+import { useSelector } from 'react-redux';
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
+  const { isAuthenticated, user } = useSelector(
+    (state: RootState) => state.verify
+  );
+  const role = user?.role || '';
   const menuItems = [
+    
     { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
     { icon: Users, label: 'Employees', path: '/employees' },
     { icon: FileText, label: 'Cases', path: '/cases' },
@@ -17,7 +22,12 @@ const Sidebar = () => {
     { icon: PersonStandingIcon, label: 'Roles', path: '/roles' },
 
   ];
-
+  const getFilteredMenuItems = (role: string) => {
+    if (role === 'employee') {
+      return menuItems.filter(item => ['Cases', 'Settings'].includes(item.label));
+    }
+    return menuItems; // Default to all menu items for other roles
+  };
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -62,7 +72,7 @@ const Sidebar = () => {
         </div>
         
         <nav className="flex-1">
-          {menuItems.map((item) => {
+          {getFilteredMenuItems(role).map((item) => {
             const isActive = location.pathname === item.path;
             return (
               <button
