@@ -180,10 +180,15 @@ export const addAdminResponse = createAsyncThunk(
       const formData = new FormData();
       formData.append('message', responseData.message);
       
-      if (responseData.attachments) {
+      if (responseData.attachments && responseData.attachments.length > 0) {
         responseData.attachments.forEach((file, index) => {
-          formData.append(`attachments`, file);
+          formData.append(`attachments`, file, file.name);
         });
+      }
+
+      console.log('FormData contents:');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
       }
 
       const response = await axiosBackend.post(`/cases/${caseId}/admin-response`, formData, {
@@ -195,8 +200,10 @@ export const addAdminResponse = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        console.error('Error details:', error.response?.data);
         return rejectWithValue(error.response?.data || "Failed to add admin response");
       }
+      console.error('Unexpected error:', error);
       return rejectWithValue("An unexpected error occurred");
     }
   }

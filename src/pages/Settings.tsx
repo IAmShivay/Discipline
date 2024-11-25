@@ -128,7 +128,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
 const Settings = () => {
-  const [activeTab, setActiveTab] = useState("user-management");
+  const [activeTab, setActiveTab] = useState("general");
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.verify
   );

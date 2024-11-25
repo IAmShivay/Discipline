@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import { Send } from 'lucide-react';
-import type { DisciplinaryCase } from '../../types';
-
+import React, { useState } from "react";
+import { Send } from "lucide-react";
+import type { DisciplinaryCase } from "../../types";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../store";
+import { addAdminResponse,addEmployeeResponse } from "../../redux/app/cases/caseSlice";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 interface Message {
   id: string;
   content: string;
@@ -15,9 +19,10 @@ interface CaseResponseProps {
 
 const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
   console.log("case_", case_);
-  const [response, setResponse] = useState('');
+  const {user} = useSelector((state: RootState) => state.verify);
+  const [response, setResponse] = useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,8 +33,12 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
         timestamp: new Date(),
         attachments,
       };
-      setMessages([...messages, newMessage]);
-      setResponse('');
+      if (user?.role === "admin" && case_._id) {
+        dispatch(addAdminResponse({ caseId: case_._id, responseData: { message: newMessage.content, attachments: newMessage.attachments } }));
+      } else if (user?.role === "employee" && case_._id) {
+        dispatch(addEmployeeResponse({ caseId: case_._id, responseData: { message: newMessage.content, attachments: newMessage.attachments } }));
+      }
+      setResponse("");
       setAttachments([]);
     }
   };
@@ -46,20 +55,17 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
         <div className="flex">
           <div className="ml-3">
             <p className="text-sm text-yellow-700">
-              Please provide your response to this case. Include any relevant details
-              or justification.
+              Please provide your response to this case. Include any relevant
+              details or justification.
             </p>
           </div>
         </div>
       </div>
 
       {/* Previous Messages Display */}
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         {messages.map((message) => (
-          <div
-            key={message.id}
-            className="border rounded-md p-4 bg-blue-50"
-          >
+          <div key={message.id} className="border rounded-md p-4 bg-blue-50">
             <div className="flex justify-between mb-2">
               <span className="text-sm font-medium text-gray-700">
                 Your Response
@@ -68,7 +74,9 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
                 {message.timestamp.toLocaleString()}
               </span>
             </div>
-            <p className="text-gray-800 whitespace-pre-wrap">{message.content}</p>
+            <p className="text-gray-800 whitespace-pre-wrap">
+              {message.content}
+            </p>
             {message.attachments && message.attachments.length > 0 && (
               <div className="mt-2 text-sm text-gray-600">
                 <p className="font-medium">Attachments:</p>
@@ -81,7 +89,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
             )}
           </div>
         ))}
-      </div>
+      </div> */}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
