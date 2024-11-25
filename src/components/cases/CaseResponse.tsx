@@ -1,16 +1,20 @@
-import React, { useState } from "react";
-import { Send } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Send, UserCircle, Shield, Download } from "lucide-react";
 import type { DisciplinaryCase } from "../../types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../store";
-import { addAdminResponse,addEmployeeResponse } from "../../redux/app/cases/caseSlice";
+import {
+  addAdminResponse,
+  addEmployeeResponse,
+  fetchCaseById,
+} from "../../redux/app/cases/caseSlice";
 import { RootState } from "../../store";
-import { useSelector } from "react-redux";
+
 interface Message {
-  id: string;
-  content: string;
-  timestamp: Date;
-  attachments?: File[];
+  message: string;
+  createdAt: Date;
+  type: "admin" | "employee";
+  attachments?: any[];
 }
 
 interface CaseResponseProps {
@@ -18,35 +22,105 @@ interface CaseResponseProps {
 }
 
 const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
-  console.log("case_", case_);
-  const {user} = useSelector((state: RootState) => state.verify);
+  const caseNow = useSelector((state: RootState) => state.cases.currentCase);
+  const { user } = useSelector((state: RootState) => state.verify);
   const [response, setResponse] = useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
+  const [allResponses, setAllResponses] = useState<Message[]>([]);
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Initialize responses from Redux state
+  useEffect(() => {
+    if (caseNow) {
+      const adminResponses = (caseNow.adminResponses || []).map((resp) => ({
+        ...resp,
+        type: "admin" as const,
+      }));
+
+      const employeeResponses = (caseNow.employeeResponse || []).map(
+        (resp) => ({
+          ...resp,
+          type: "employee" as const,
+        })
+      );
+
+      const sortedResponses = [...adminResponses, ...employeeResponses].sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+
+      setAllResponses(sortedResponses);
+    }
+  }, [caseNow]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (response.trim()) {
       const newMessage: Message = {
-        id: Date.now().toString(),
-        content: response,
-        timestamp: new Date(),
+        message: response,
+        createdAt: new Date(),
+        type: user?.role === "admin" ? "admin" : "employee",
         attachments,
       };
-      if (user?.role === "admin" && case_._id) {
-        dispatch(addAdminResponse({ caseId: case_._id, responseData: { message: newMessage.content, attachments: newMessage.attachments } }));
-      } else if (user?.role === "employee" && case_._id) {
-        dispatch(addEmployeeResponse({ caseId: case_._id, responseData: { message: newMessage.content, attachments: newMessage.attachments } }));
+
+      // Add to local state immediately
+      setAllResponses((prev) => [...prev, newMessage]);
+
+      // Dispatch to Redux
+      if (case_._id) {
+        if (user?.role === "admin") {
+          await dispatch(
+            addAdminResponse({
+              caseId: case_._id,
+              responseData: {
+                message: response,
+                attachments,
+              },
+            })
+          );
+        } else {
+          await dispatch(
+            addEmployeeResponse({
+              caseId: case_._id,
+              responseData: {
+                message: response,
+                attachments,
+              },
+            })
+          );
+        }
+
+        // Fetch updated case data
+        dispatch(fetchCaseById(case_._id));
       }
+
       setResponse("");
       setAttachments([]);
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: any) => {
     if (e.target.files) {
-      setAttachments(Array.from(e.target.files));
+      setAttachments((prev: any) => [...prev, ...Array.from(e.target.files)]);
     }
+  };
+  const handleDownload = (file: {
+    name: string;
+    url: string;
+    createdAt: Date;
+  }) => {
+    const url = file.url;
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = file.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const formatDate = (date: string | Date) => {
+    return new Date(date).toLocaleString();
   };
 
   return (
@@ -62,35 +136,79 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
         </div>
       </div>
 
-      {/* Previous Messages Display */}
-      {/* <div className="space-y-4">
-        {messages.map((message) => (
-          <div key={message.id} className="border rounded-md p-4 bg-blue-50">
-            <div className="flex justify-between mb-2">
+      {/* Message Thread Display */}
+      <div className="space-y-4 max-h-96 overflow-y-auto p-4 bg-gray-50 rounded-lg">
+        {/* Initial case description */}
+        <div className="border rounded-md p-4 bg-gray-100">
+          <div className="flex items-center gap-2 mb-2">
+            <UserCircle className="w-5 h-5 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">
+              Initial Case
+            </span>
+            <span className="text-sm text-gray-500">
+              {case_.createdAt ? formatDate(case_.createdAt) : "N/A"}
+            </span>
+          </div>
+          <p className="text-gray-800 whitespace-pre-wrap">
+            {case_.description}
+          </p>
+        </div>
+
+        {/* Display all responses */}
+        {allResponses.map((response, index) => (
+          <div
+            key={index}
+            className={`border rounded-md p-4 ${
+              response.type === "admin" ? "bg-blue-50 ml-4" : "bg-green-50 mr-4"
+            }`}
+          >
+            <div className="flex items-center gap-2 mb-2">
+              {response.type === "admin" ? (
+                <Shield className="w-5 h-5 text-blue-600" />
+              ) : (
+                <UserCircle className="w-5 h-5 text-green-600" />
+              )}
               <span className="text-sm font-medium text-gray-700">
-                Your Response
+                {response.type === "admin"
+                  ? "Admin Response"
+                  : "Employee Response"}
               </span>
               <span className="text-sm text-gray-500">
-                {message.timestamp.toLocaleString()}
+                {formatDate(response.createdAt)}
               </span>
             </div>
             <p className="text-gray-800 whitespace-pre-wrap">
-              {message.content}
+              {response.message}
             </p>
-            {message.attachments && message.attachments.length > 0 && (
+            {response.attachments && response.attachments.length > 0 && (
               <div className="mt-2 text-sm text-gray-600">
                 <p className="font-medium">Attachments:</p>
-                <ul className="list-disc pl-5">
-                  {message.attachments.map((file, index) => (
-                    <li key={index}>{file.name}</li>
-                  ))}
+                <ul className="list-none pl-5">
+                  {response.attachments.map(
+                    (
+                      file: { name: string; url: string; createdAt: Date },
+                      idx: number
+                    ) => (
+                      <li key={idx} className="flex items-center gap-2">
+                        <span>{file.name}</span>
+                        <button
+                          onClick={() => handleDownload(file)}
+                          className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-600 hover:text-blue-800"
+                        >
+                          <Download className="w-4 h-4 mr-1" />
+                          Download
+                        </button>
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
             )}
           </div>
         ))}
-      </div> */}
+      </div>
 
+      {/* Response Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label

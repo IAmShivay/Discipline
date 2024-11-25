@@ -9,6 +9,8 @@ interface CaseState {
   currentCase: DisciplinaryCase | null;
   loading: "idle" | "pending" | "succeeded" | "failed";
   error: string | null;
+  employeeResponses: any[]; // Update this type as needed
+  adminResponses: any[];
 }
 
 // Initial state
@@ -17,6 +19,8 @@ const initialState: CaseState = {
   currentCase: null,
   loading: "idle",
   error: null,
+  employeeResponses: [],
+  adminResponses: [],
 };
 
 // Async thunk for creating a case
@@ -78,7 +82,7 @@ export const updateCase = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      console.log(caseData,"jijiji")
+      console.log(caseData, "jijiji");
       const formData = new FormData();
 
       // Add all case data to the FormData object
@@ -95,7 +99,8 @@ export const updateCase = createAsyncThunk(
       console.log("FormData contents:");
       for (let [key, value] of formData.entries()) {
         console.log(key, value);
-      }      const response = await axiosBackend.put(`/cases/update/${id}`, formData, {
+      }
+      const response = await axiosBackend.put(`/cases/update/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -141,31 +146,45 @@ export const fetchCaseById = createAsyncThunk(
   }
 );
 
-
 // Async thunk for adding an employee response
 export const addEmployeeResponse = createAsyncThunk(
   "cases/addEmployeeResponse",
-  async ({ caseId, responseData }: { caseId: string, responseData: { message: string, attachments?: File[] } }, { rejectWithValue }) => {
+  async (
+    {
+      caseId,
+      responseData,
+    }: {
+      caseId: string;
+      responseData: { message: string; attachments?: File[] };
+    },
+    { rejectWithValue }
+  ) => {
     try {
       const formData = new FormData();
-      formData.append('message', responseData.message);
-      
+      formData.append("message", responseData.message);
+
       if (responseData.attachments) {
         responseData.attachments.forEach((file, index) => {
           formData.append(`attachments`, file);
         });
       }
 
-      const response = await axiosBackend.post(`/cases/${caseId}/employee-response`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axiosBackend.post(
+        `/cases/${caseId}/employee-response`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data || "Failed to add employee response");
+        return rejectWithValue(
+          error.response?.data || "Failed to add employee response"
+        );
       }
       return rejectWithValue("An unexpected error occurred");
     }
@@ -175,35 +194,70 @@ export const addEmployeeResponse = createAsyncThunk(
 // Async thunk for adding an admin response
 export const addAdminResponse = createAsyncThunk(
   "cases/addAdminResponse",
-  async ({ caseId, responseData }: { caseId: string, responseData: { message: string, attachments?: File[] } }, { rejectWithValue }) => {
+  async (
+    {
+      caseId,
+      responseData,
+    }: {
+      caseId: string;
+      responseData: { message: string; attachments?: File[] };
+    },
+    { rejectWithValue }
+  ) => {
     try {
       const formData = new FormData();
-      formData.append('message', responseData.message);
-      
+      formData.append("message", responseData.message);
+
       if (responseData.attachments && responseData.attachments.length > 0) {
         responseData.attachments.forEach((file, index) => {
           formData.append(`attachments`, file, file.name);
         });
       }
 
-      console.log('FormData contents:');
+      console.log("FormData contents:");
       for (let [key, value] of formData.entries()) {
         console.log(key, value);
       }
 
-      const response = await axiosBackend.post(`/cases/${caseId}/admin-response`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axiosBackend.post(
+        `/cases/${caseId}/admin-response`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error('Error details:', error.response?.data);
-        return rejectWithValue(error.response?.data || "Failed to add admin response");
+        console.error("Error details:", error.response?.data);
+        return rejectWithValue(
+          error.response?.data || "Failed to add admin response"
+        );
       }
-      console.error('Unexpected error:', error);
+      console.error("Unexpected error:", error);
+      return rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
+export const fetchEmployeeResponses = createAsyncThunk(
+  "cases/fetchEmployeeResponses",
+  async (caseId: string, { rejectWithValue }) => {
+    console.log("Fetching employee responses for case:", caseId);
+    try {
+      const response = await axiosBackend.get(
+        `/cases/employee-responses/${caseId}`
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(
+          error.response?.data || "Failed to fetch employee responses"
+        );
+      }
       return rejectWithValue("An unexpected error occurred");
     }
   }
@@ -252,7 +306,7 @@ const caseSlice = createSlice({
       })
       .addCase(updateCase.fulfilled, (state, action) => {
         state.loading = "succeeded";
-        state.cases = state.cases.map(case_ => 
+        state.cases = state.cases.map((case_) =>
           case_.id === action.payload.id ? action.payload : case_
         );
         state.currentCase = action.payload;
@@ -290,9 +344,12 @@ const caseSlice = createSlice({
       .addCase(addEmployeeResponse.fulfilled, (state, action) => {
         state.loading = "succeeded";
         // If currentCase matches the updated one, update it with the new response
-        if (state.currentCase && state.currentCase.id === action.payload.caseId) {
-          state.currentCase.responses = [
-            ...(state.currentCase.responses || []),
+        if (
+          state.currentCase &&
+          state.currentCase.id === action.payload.caseId
+        ) {
+          state.currentCase.adminResponses = [
+            ...(state.currentCase.adminResponses || []),
             action.payload,
           ];
         }
@@ -308,9 +365,12 @@ const caseSlice = createSlice({
       .addCase(addAdminResponse.fulfilled, (state, action) => {
         state.loading = "succeeded";
         // If currentCase matches the updated one, update it with the new response
-        if (state.currentCase && state.currentCase.id === action.payload.caseId) {
-          state.currentCase.responses = [
-            ...(state.currentCase.responses || []),
+        if (
+          state.currentCase &&
+          state.currentCase.id === action.payload.caseId
+        ) {
+          state.currentCase.employeeResponse = [
+            ...(state.currentCase.employeeResponse || []),
             action.payload,
           ];
         }
@@ -318,9 +378,18 @@ const caseSlice = createSlice({
       .addCase(addAdminResponse.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.payload as string;
+      })
+      .addCase(fetchEmployeeResponses.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(fetchEmployeeResponses.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        state.employeeResponses = action.payload;
+      })
+      .addCase(fetchEmployeeResponses.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.payload as string;
       });
-      
-      
   },
 });
 
