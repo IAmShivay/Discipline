@@ -30,7 +30,6 @@ const Cases: React.FC = () => {
   const handleAddCase = (newCase: DisciplinaryCase) => {
     setCases((prev) => [...prev, newCase]);
     setShowForm(false);
-    console.log(newCase.attachments);
     dispatch(createCase(newCase));
   };
 

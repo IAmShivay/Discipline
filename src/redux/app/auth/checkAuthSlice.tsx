@@ -3,7 +3,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Verify } from '../../api/auth/auth';
 
 interface User {
-  name: string; // Adjust according to your user object structure
+  name: string;
+  role: string;
+  companyId: string;
+  companyName: string;
+  fullName: string;
+  userId: string; // Adjust according to your user object structure
   // Add other fields as needed
 }
 
