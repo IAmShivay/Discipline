@@ -116,7 +116,7 @@ export const fetchCases = createAsyncThunk(
   "cases/fetchCases",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosBackend.get("/cases/get");
+      const response = await axiosBackend.get("/cases/employee");
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -260,7 +260,7 @@ const caseSlice = createSlice({
       })
       .addCase(fetchCases.fulfilled, (state, action) => {
         state.loading = "succeeded";
-        state.cases = action.payload;
+        state.cases = action.payload.data;
       })
       .addCase(fetchCases.rejected, (state, action) => {
         state.loading = "failed";
