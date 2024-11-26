@@ -1,122 +1,183 @@
-import React from 'react';
-import { Globe, Clock } from 'lucide-react';
+import React, { useState } from 'react';
+import { User, Lock, Globe, Clock, Check, ChevronRight } from 'lucide-react';
 
 const GeneralSettings = () => {
+  const [profileData, setProfileData] = useState({
+    fullName: '',
+    email: '',
+    phoneNumber: ''
+  });
+
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+
+  const handleProfileUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProfileData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPasswordData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const submitProfileUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Profile updated:', profileData);
+  };
+
+  const submitPasswordChange = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      alert('New passwords do not match');
+      return;
+    }
+    console.log('Password change submitted');
+  };
+
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">
-          General Settings
-        </h2>
-        <p className="text-sm text-gray-500">
-          Configure system-wide preferences
-        </p>
+    <div className="bg-white shadow-xl rounded-2xl max-w-2xl mx-auto overflow-hidden">
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+        <h2 className="text-2xl font-bold text-white">Account Settings</h2>
+        <p className="text-blue-100">Personalize and secure your account</p>
       </div>
 
-      <div className="space-y-6">
-        <section>
-          <h3 className="text-sm font-medium text-gray-900 mb-4">
-            Date & Time
+      <div className="p-6 space-y-8">
+        <section className="bg-gray-50 rounded-xl p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <User className="mr-3 h-6 w-6 text-blue-600" /> Profile Details
           </h3>
-          <div className="space-y-4">
+          <form onSubmit={submitProfileUpdate} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                value={profileData.fullName}
+                onChange={handleProfileUpdate}
+                className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                placeholder="Enter your full name"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={profileData.email}
+                onChange={handleProfileUpdate}
+                className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                placeholder="Enter your email"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={profileData.phoneNumber}
+                onChange={handleProfileUpdate}
+                className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                placeholder="Enter your phone number"
+              />
+            </div>
+            <button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg hover:opacity-90 transition flex items-center justify-center"
+            >
+              <Check className="mr-2" /> Update Profile
+            </button>
+          </form>
+        </section>
+
+        <section className="bg-gray-50 rounded-xl p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <Lock className="mr-3 h-6 w-6 text-red-600" /> Change Password
+          </h3>
+          <form onSubmit={submitPasswordChange} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Current Password
+              </label>
+              <input
+                type="password"
+                name="currentPassword"
+                value={passwordData.currentPassword}
+                onChange={handlePasswordChange}
+                className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                placeholder="Enter current password"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                New Password
+              </label>
+              <input
+                type="password"
+                name="newPassword"
+                value={passwordData.newPassword}
+                onChange={handlePasswordChange}
+                className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                placeholder="Enter new password"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Confirm New Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={passwordData.confirmPassword}
+                onChange={handlePasswordChange}
+                className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                placeholder="Confirm new password"
+              />
+            </div>
+            <button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-red-600 to-pink-600 text-white py-3 rounded-lg hover:opacity-90 transition flex items-center justify-center"
+            >
+              <Lock className="mr-2" /> Change Password
+            </button>
+          </form>
+        </section>
+
+        {/* <section className="bg-gray-50 rounded-xl p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <Clock className="mr-3 h-6 w-6 text-green-600" /> Date & Time
+          </h3>
+          <div className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Date Format
               </label>
-              <select className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                <option>MM/DD/YYYY</option>
-                <option>DD/MM/YYYY</option>
-                <option>YYYY-MM-DD</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Time Format
-              </label>
-              <select className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                <option>12-hour (AM/PM)</option>
-                <option>24-hour</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Time Zone
-              </label>
-              <select className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                <option>UTC</option>
-                <option>(GMT-05:00) Eastern Time</option>
-                <option>(GMT-08:00) Pacific Time</option>
-                <option>(GMT+00:00) London</option>
-              </select>
-            </div>
-          </div>
-        </section>
-
-        <section className="pt-6 border-t border-gray-200">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">
-            Language & Localization
-          </h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                System Language
-              </label>
-              <select className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                <option>English (US)</option>
-                <option>English (UK)</option>
-                <option>Spanish</option>
-                <option>French</option>
-                <option>German</option>
-              </select>
-            </div>
-          </div>
-        </section>
-
-        <section className="pt-6 border-t border-gray-200">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">
-            Branding
-          </h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Company Logo
-              </label>
-              <div className="mt-1 flex items-center">
-                <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                  <svg
-                    className="h-full w-full text-gray-300"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                </span>
-                <button
-                  type="button"
-                  className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Change
-                </button>
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Primary Color
-              </label>
-              <div className="mt-1">
-                <input
-                  type="color"
-                  className="h-8 w-16 rounded border border-gray-300"
-                  defaultValue="#3B82F6"
-                />
+              <div className="relative">
+                <select className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 appearance-none pr-10">
+                  <option>MM/DD/YYYY</option>
+                  <option>DD/MM/YYYY</option>
+                  <option>YYYY-MM-DD</option>
+                </select>
+                <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 rotate-90" />
               </div>
             </div>
           </div>
-        </section>
-
-        <div className="pt-6 border-t border-gray-200">
-          <button className="btn btn-primary">Save Changes</button>
-        </div>
+        </section> */}
       </div>
     </div>
   );

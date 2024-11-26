@@ -20,6 +20,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { loadUser } from "./redux/app/auth/checkAuthSlice";
 import LoadingComponent from "./components/LoadingComponent";
+import RoleManagement from "./components/role";
 
 // Define proper type for RootState
 interface RootState {
@@ -101,6 +102,7 @@ const ProtectedRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="roles" element={<RoleManagement />} />
           <Route path="employees" element={<Employees />} />
           <Route path="cases" element={<Cases />} />
           <Route path="cases/:id" element={<CaseDetails />} />

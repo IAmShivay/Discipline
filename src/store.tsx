@@ -5,6 +5,7 @@ import verifyReducer from "./redux/app/auth/checkAuthSlice";
 import employeeReducer from "./redux/app/employees/employeeSlice";
 import caseReducer from "./redux/app/cases/caseSlice";
 import timelineReducer from "./redux/app/timline/timeline";
+import roleReducer from "./redux/app/role/roleSlice";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -13,6 +14,7 @@ const store = configureStore({
     employee: employeeReducer,
     cases: caseReducer,
     timline: timelineReducer,
+    roles: roleReducer,
   },
 });
 

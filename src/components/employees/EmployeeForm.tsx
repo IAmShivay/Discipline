@@ -34,7 +34,11 @@ export interface Employee {
 // EmployeeForm.tsx
 import React, { useState, useEffect } from "react";
 import { Save, X } from "lucide-react";
-
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { RootState } from "../../store";
+import { fetchRoles } from "../../redux/app/role/roleSlice";
+import { useSelector } from "react-redux";
 interface EmployeeFormProps {
   onSubmit: (employee: Employee) => void;
   onCancel: () => void;
@@ -75,6 +79,9 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     companyId: companyId || "",
     customFields: {},
   });
+  const dispatch = useDispatch<AppDispatch>();
+  const roless = useSelector((state: RootState) => state.roles.roles);
+  console.log(roless);
   const [filteredManagers, setFilteredManagers] = useState<Manager[]>([]);
   useEffect(() => {
     if (initialData) {
@@ -87,6 +94,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       }));
     }
   }, [initialData, companyId]);
+
   const roles: Role[] = [
     { id: "employee", name: "Employee" },
     { id: "team_leader", name: "Team Leader" },
@@ -137,7 +145,9 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     e.preventDefault();
     onSubmit(formData as Employee);
   };
-
+  useEffect(() => {
+    dispatch(fetchRoles());
+  }, [dispatch]);
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-6">
