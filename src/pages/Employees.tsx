@@ -78,7 +78,22 @@ const Employees: React.FC = () => {
     setEmployees((prev) =>
       prev.map((emp) => (emp._id === employee._id ? employee : emp))
     );
-    dispatch(updateEmployee({ id: employee._id, employeeData: employee }));
+    const roleObject = roles.find((role: any) => role._id === employee.roleId);
+
+    const roleName = roleObject ? roleObject.name : employee.roleId;
+
+    // Create a new employee object with the role name
+    const employeeWithRoleName = {
+      ...employee,
+      role: roleName,
+    };
+    dispatch(
+      updateEmployee({
+        id: employee._id,
+        employeeData: employeeWithRoleName as Employee,
+      })
+    );
+    setShowForm(false);
     setEditingEmployee(null);
     showAlert("Employee updated successfully!", "success");
   };

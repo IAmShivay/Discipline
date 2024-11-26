@@ -44,7 +44,6 @@ const LoginPage: React.FC = () => {
         setLoading(true);
         try {
             const response = await dispatch(loginUser(values));
-            console.log('Login response:', response);
             if (response?.meta?.requestStatus === 'fulfilled') {
                 dispatch(
                     showSnackbar({
