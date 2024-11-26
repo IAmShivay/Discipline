@@ -18,44 +18,63 @@ import { Employee } from "../components/employees/EmployeeForm";
 import EmployeeForm from "../components/employees/EmployeeForm";
 import { useDispatch } from "react-redux";
 import { fetchEmployees } from "../redux/app/employees/employeeSlice";
-import { AppDispatch } from "../store";
+import { AppDispatch, RootState } from "../store";
 import { createEmployee } from "../redux/app/employees/employeeSlice";
 import { useSelector } from "react-redux";
 import {
   updateEmployee,
   deleteEmployee,
 } from "../redux/app/employees/employeeSlice";
-const availableManagers = [
-  { id: "1", name: "John Doe", role: "manager" },
-  { id: "2", name: "Jane Smith", role: "supervisor" },
-  // ... more managers
-];
+
+import { fetchRolesByCompanyId } from "../redux/app/role/roleSlice";
 
 const Employees: React.FC = () => {
   const employee = useSelector((state: any) => state.employee.employees);
+  const availableManagers = useSelector((state: any) => state.roles.role);
+  const companyId = useSelector(
+    (state: RootState) => state.verify.user?.companyId
+  );
   const [showForm, setShowForm] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>(employee);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [alert, setAlert] = useState<AlertState | null>(null);
   const dispatch = useDispatch<AppDispatch>();
+  const roles = useSelector((state: RootState) => state.roles.roles);
 
   const handleAddEmployee = (employee: Employee): void => {
     try {
-      dispatch(createEmployee(employee as Employee));
-    } catch (error) {
-      console.log(error);
-    }
-    showAlert("Employee added successfully!", "success");
-    const newEmployee = {
-      ...employee,
-      _id: (employees.length + 1).toString(),
-    };
-    setShowForm(false);
-    setEmployees((prev) => [...prev, newEmployee]);
-  };
+      const roleObject = roles.find(
+        (role: any) => role._id === employee.roleId
+      );
 
+      const roleName = roleObject ? roleObject.name : employee.roleId;
+
+      // Create a new employee object with the role name
+      const employeeWithRoleName = {
+        ...employee,
+        role: roleName,
+      };
+
+      console.log("Employee with role name:", employeeWithRoleName);
+
+      dispatch(createEmployee(employeeWithRoleName as Employee));
+
+      showAlert("Employee added successfully!", "success");
+      const newEmployee = {
+        ...employeeWithRoleName,
+        _id: (employees.length + 1).toString(),
+      };
+      setShowForm(false);
+      setEmployees((prev) => [...prev, newEmployee]);
+    } catch (error) {
+      console.error("Error in handleAddEmployee:", error);
+      showAlert("Failed to add employee", "error");
+    }
+  };
   const handleEditEmployee = (employee: Employee): void => {
+    setEditingEmployee(employee);
+    setShowForm(true);
     setEmployees((prev) =>
       prev.map((emp) => (emp._id === employee._id ? employee : emp))
     );
@@ -86,7 +105,9 @@ const Employees: React.FC = () => {
   );
   useEffect(() => {
     dispatch(fetchEmployees());
-    
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchRolesByCompanyId(companyId as any));
   }, [dispatch]);
 
   return (
@@ -105,7 +126,7 @@ const Employees: React.FC = () => {
 
       <div className="flex justify-between items-center mb-6 mt-14">
         <h1 className="text-2xl font-bold mt-5">Employees</h1>
-        
+
         <button
           onClick={() => setShowForm(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition duration-200"
@@ -208,7 +229,7 @@ const Employees: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {availableManagers.find(
-                        (m) => m.id === employee.managerId
+                        (m: Manager) => m.id === employee.managerId
                       )?.name || "No Manager"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">

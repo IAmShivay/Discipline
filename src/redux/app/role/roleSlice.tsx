@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axiosBackend from '../../api/axiosBackend';
+import axiosInstance from '../../api/axiosInstance';
 
 interface Role {
   _id: number | string;
@@ -12,6 +13,7 @@ interface Role {
 }
 
 interface RoleState {
+  role: Role[];
   roles: Role[];
   currentRole: Role | null;
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
@@ -19,6 +21,7 @@ interface RoleState {
 }
 
 const initialState: RoleState = {
+  role:[],
   roles: [],
   currentRole: null,
   loading: 'idle',
@@ -72,7 +75,19 @@ export const deleteRole = createAsyncThunk(
     }
   }
 );
+export const fetchRolesByCompanyId = createAsyncThunk(
+  'roles/fetchRolesByCompanyId',
+  async (companyId: string, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`/getuser/${companyId}`);
+      console.log(response.data)
 
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || 'Failed to fetch roles for company');
+    }
+  }
+);
 const roleSlice = createSlice({
   name: 'roles',
   initialState,
@@ -108,6 +123,17 @@ const roleSlice = createSlice({
       })
       .addCase(deleteRole.fulfilled, (state, action) => {
         state.roles = state.roles.filter(role => role._id !== action.payload);
+      })
+      .addCase(fetchRolesByCompanyId.pending, (state) => {
+        state.loading = 'pending';
+      })
+      .addCase(fetchRolesByCompanyId.fulfilled, (state, action) => {
+        state.loading = 'succeeded';
+        state.role = action.payload;
+      })
+      .addCase(fetchRolesByCompanyId.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = action.payload as string;
       });
   },
 });

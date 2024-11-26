@@ -8,9 +8,10 @@ export interface CustomField {
 }
 
 export interface Manager {
-  id: string;
+  _id: string;
   name: string;
   role: string;
+  fullName: string;
 }
 
 export type EmployeeStatus = "active" | "under_review" | "hold" | "terminated";
@@ -20,6 +21,7 @@ export interface Employee {
   firstName: string;
   lastName: string;
   email: string;
+  role?: string;
   phone: string;
   department: string;
   position: string;
@@ -65,12 +67,15 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   initialData,
 }) => {
   // const [customFields, setCustomFields] = useState<CustomField[]>([]);
+  const [canAssignManager, setCanAssignManager] = useState(false);
+
   const [formData, setFormData] = useState<Partial<Employee>>({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
     department: "",
+    role: "",
     position: "",
     joinDate: "",
     roleId: "",
@@ -80,66 +85,54 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     customFields: {},
   });
   const dispatch = useDispatch<AppDispatch>();
-  const roless = useSelector((state: RootState) => state.roles.roles);
-  console.log(roless);
+  const roles = useSelector((state: RootState) => state.roles.roles);
   const [filteredManagers, setFilteredManagers] = useState<Manager[]>([]);
   useEffect(() => {
+    if (formData.roleId) {
+      const selectedRole = roles.find((role) => role._id === formData.roleId);
+
+      if (selectedRole) {
+        const isEmployeeRole = selectedRole.name.toLowerCase() === "employee";
+        setCanAssignManager(isEmployeeRole);
+
+        if (!isEmployeeRole) {
+          setFormData((prev) => ({ ...prev, managerId: "" }));
+        }
+      }
+
+      // Filter out the "employee" role
+      const managerRoles = roles.filter(
+        (role) => role.name.toLowerCase() !== "employee"
+      );
+
+      // Filter available managers based on the non-employee roles
+      const filtered = availableManagers.filter((manager) =>
+        managerRoles.some((role) => role.name === manager.role)
+      );
+      setFilteredManagers(filtered);
+    }
+  }, [formData.roleId, roles, availableManagers]);
+  useEffect(() => {
     if (initialData) {
-      setFormData((prev) => ({
-        ...prev,
+      setFormData((prevData) => ({
+        ...prevData,
         ...initialData,
-        // Ensure we don't lose any required fields if they're missing in initialData
-        companyId: initialData.companyId || companyId || "",
-        customFields: initialData.customFields || {},
       }));
     }
-  }, [initialData, companyId]);
-
-  const roles: Role[] = [
-    { id: "employee", name: "Employee" },
-    { id: "team_leader", name: "Team Leader" },
-    { id: "supervisor", name: "Supervisor" },
-    { id: "manager", name: "Manager" },
-  ];
-
+  }, [initialData]);
   const statusOptions: StatusOption[] = [
     { value: "active", label: "Active" },
     { value: "under_review", label: "Under Review" },
     { value: "hold", label: "On Hold" },
     { value: "terminated", label: "Terminated" },
   ];
-
-  useEffect(() => {
-    if (formData.roleId) {
-      const roleIndex = roles.findIndex((role) => role.id === formData.roleId);
-      const availableManagerRoles = roles.slice(roleIndex + 1);
-      const filtered = availableManagers.filter((manager) =>
-        availableManagerRoles.some((role) => role.id === manager.role)
-      );
-      setFilteredManagers(filtered);
-
-      if (!filtered.find((m) => m.id === formData.managerId)) {
-        setFormData((prev) => ({ ...prev, managerId: "" }));
-      }
-    }
-  }, [formData.roleId, availableManagers]);
-
+  console.log(filteredManagers);
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
-  // const handleCustomFieldChange = (fieldId: string, value: string): void => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     customFields: {
-  //       ...prev.customFields,
-  //       [fieldId]: value,
-  //     },
-  //   }));
-  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -216,7 +209,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             >
               <option value="">Select Role</option>
               {roles.map((role) => (
-                <option key={role.id} value={role.id}>
+                <option key={role._id} value={role._id}>
                   {role.name}
                 </option>
               ))}
@@ -236,12 +229,12 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               value={formData.managerId}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              disabled={!formData.roleId || filteredManagers.length === 0}
+              disabled={!filteredManagers || filteredManagers.length === 0}
             >
               <option value="">Select Manager</option>
               {filteredManagers.map((manager) => (
-                <option key={manager.id} value={manager.id}>
-                  {manager.name} ({manager.role})
+                <option key={manager._id} value={manager._id}>
+                  {manager.fullName} ({manager.role})
                 </option>
               ))}
             </select>
