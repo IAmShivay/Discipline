@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from 'react';
-import { Users, UserPlus, Edit3, Save, Trash2, Search } from 'lucide-react';
-import { useDispatch } from 'react-redux';
-import { RootState } from '../store';
-import { useSelector } from 'react-redux';
-import { AppDispatch } from '../store';
-import { createRole } from '../redux/app/role/roleSlice';
+import React, { useState, useCallback, useEffect } from "react";
+import { Users, UserPlus, Edit3, Save, Trash2, Search } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
+import { AppDispatch } from "../store";
+import { createRole, fetchRoles } from "../redux/app/role/roleSlice";
+
 interface Role {
   _id: string | number;
   name: string;
@@ -16,137 +17,134 @@ interface Role {
 }
 
 const RoleManagement: React.FC = () => {
-  const [roles, setRoles] = useState<Role[]>([
-    { 
-      _id: 1, 
-      name: 'Admin', 
-      description: 'Full system access', 
-      permissions: ['create', 'read', 'update', 'delete'] 
-    },
-    { 
-      _id: 2, 
-      name: 'Manager', 
-      description: 'Partial system access', 
-      permissions: ['read', 'update'] 
-    },
-    { 
-      _id: 3, 
-      name: 'User', 
-      description: 'Limited system access', 
-      permissions: ['read'] 
-    }
-  ]);
+  const { roles, loading, error } = useSelector(
+    (state: RootState) => state.roles
+  );
+  const [roless, setRoles] = useState<Role[]>(roles);
   const dispatch = useDispatch<AppDispatch>();
-  // const { roles, loading, error } = useSelector((state: RootState) => state.roles);
 
-  const [newRole, setNewRole] = useState<Omit<Role, '_id'>>({ 
-    name: '', 
-    description: '', 
-    permissions: [], 
-    companyId: ''
+  const [newRole, setNewRole] = useState<Omit<Role, "_id">>({
+    name: "",
+    description: "",
+    permissions: [],
+    companyId: "",
   });
   const [editingRole, setEditingRole] = useState<Role | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [mobileView, setMobileView] = useState<'create' | 'list'>('list');
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [mobileView, setMobileView] = useState<"create" | "list">("list");
 
-  const permissionOptions = ['create', 'read', 'update', 'delete'];
+  const permissionOptions = ["create", "read", "update", "delete"];
 
-  const filteredRoles = roles.filter(role => 
+  const filteredRoles = roles.filter((role) =>
     role.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleAddRole = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newRole.name) return;
+  const handleAddRole = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!newRole.name) return;
 
-    const roleToAdd: Role = {
-      ...newRole,
-      _id: Date.now()
-    };
-    dispatch(createRole(newRole));
-    setRoles(prev => [...prev, roleToAdd]);
-    setNewRole({ name: '', description: '', permissions: [] });
-    setMobileView('list');
-  }, [newRole]);
+      const roleToAdd: Role = {
+        ...newRole,
+        _id: Date.now(),
+      };
+      dispatch(createRole(newRole));
+      setRoles((prev) => [...prev, roleToAdd]);
+      setNewRole({ name: "", description: "", permissions: [] });
+      setMobileView("list");
+    },
+    [newRole]
+  );
 
-  const handleUpdateRole = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editingRole?.name) return;
+  const handleUpdateRole = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!editingRole?.name) return;
 
-    setRoles(prev => 
-      prev.map(role => 
-        role._id === editingRole._id ? editingRole : role
-      )
-    );
-    setEditingRole(null);
-    setMobileView('list');
-  }, [editingRole]);
+      setRoles((prev) =>
+        prev.map((role) => (role._id === editingRole._id ? editingRole : role))
+      );
+      setEditingRole(null);
+      setMobileView("list");
+    },
+    [editingRole]
+  );
 
   const handleDeleteRole = useCallback((roleId: string | number) => {
-      setRoles(prev => prev.filter(role => role._id !== roleId));
-    }, []);
-
+    setRoles((prev) => prev.filter((role) => role._id !== roleId));
+  }, []);
+  useEffect(() => {
+    if (roles.length === 0) {
+      dispatch(fetchRoles());
+    }
+  }, [dispatch, roles]);
   const RoleForm = () => (
     <div className="bg-white shadow-lg rounded-xl p-6">
       <h3 className="text-lg font-semibold mb-4 flex items-center">
-        {editingRole ? <Edit3 className="mr-2" /> : <UserPlus className="mr-2" />}
-        {editingRole ? 'Edit Role' : 'Create New Role'}
+        {editingRole ? (
+          <Edit3 className="mr-2" />
+        ) : (
+          <UserPlus className="mr-2" />
+        )}
+        {editingRole ? "Edit Role" : "Create New Role"}
       </h3>
-      <form 
-        onSubmit={editingRole ? handleUpdateRole : handleAddRole} 
+      <form
+        onSubmit={editingRole ? handleUpdateRole : handleAddRole}
         className="space-y-4"
       >
         <input
           type="text"
           placeholder="Role Name"
           value={editingRole ? editingRole.name : newRole.name}
-          onChange={(e) => 
-            editingRole 
-              ? setEditingRole({...editingRole, name: e.target.value}) 
-              : setNewRole({...newRole, name: e.target.value})
+          onChange={(e) =>
+            editingRole
+              ? setEditingRole({ ...editingRole, name: e.target.value })
+              : setNewRole({ ...newRole, name: e.target.value })
           }
           className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
         />
         <textarea
           placeholder="Description"
           value={editingRole ? editingRole.description : newRole.description}
-          onChange={(e) => 
-            editingRole 
-              ? setEditingRole({...editingRole, description: e.target.value}) 
-              : setNewRole({...newRole, description: e.target.value})
+          onChange={(e) =>
+            editingRole
+              ? setEditingRole({ ...editingRole, description: e.target.value })
+              : setNewRole({ ...newRole, description: e.target.value })
           }
           className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
           rows={3}
         />
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Permissions
           </label>
           <div className="grid grid-cols-2 gap-2">
-            {permissionOptions.map(perm => (
+            {permissionOptions.map((perm) => (
               <label key={perm} className="inline-flex items-center">
                 <input
                   type="checkbox"
                   checked={
-                    editingRole 
+                    editingRole
                       ? editingRole.permissions.includes(perm)
                       : newRole.permissions.includes(perm)
                   }
                   onChange={() => {
-                    const updatePermissions = (current: string[]) => 
+                    const updatePermissions = (current: string[]) =>
                       current.includes(perm)
-                        ? current.filter(p => p !== perm)
+                        ? current.filter((p) => p !== perm)
                         : [...current, perm];
 
                     editingRole
                       ? setEditingRole({
-                          ...editingRole, 
-                          permissions: updatePermissions(editingRole.permissions)
+                          ...editingRole,
+                          permissions: updatePermissions(
+                            editingRole.permissions
+                          ),
                         })
                       : setNewRole({
-                          ...newRole, 
-                          permissions: updatePermissions(newRole.permissions)
+                          ...newRole,
+                          permissions: updatePermissions(newRole.permissions),
                         });
                   }}
                   className="mr-2"
@@ -158,17 +156,17 @@ const RoleManagement: React.FC = () => {
         </div>
 
         <div className="flex space-x-2">
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition flex items-center justify-center"
           >
-            <Save className="mr-2" /> 
-            {editingRole ? 'Update Role' : 'Create Role'}
+            <Save className="mr-2" />
+            {editingRole ? "Update Role" : "Create Role"}
           </button>
           {/* Mobile view toggle back to list */}
-          <button 
+          <button
             type="button"
-            onClick={() => setMobileView('list')}
+            onClick={() => setMobileView("list")}
             className="sm:hidden bg-gray-200 text-gray-800 py-2 px-4 rounded-md"
           >
             Cancel
@@ -197,18 +195,18 @@ const RoleManagement: React.FC = () => {
       </div>
 
       <div className="space-y-4">
-        {filteredRoles.map(role => (
-          <div 
-            key={role._id} 
+        {filteredRoles.map((role) => (
+          <div
+            key={role._id}
             className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border rounded-md hover:bg-gray-50 transition"
           >
             <div className="mb-2 sm:mb-0">
               <div className="font-semibold text-gray-800">{role.name}</div>
               <div className="text-sm text-gray-500">{role.description}</div>
               <div className="mt-2 flex flex-wrap gap-2">
-                {role.permissions.map(perm => (
-                  <span 
-                    key={perm} 
+                {role.permissions.map((perm) => (
+                  <span
+                    key={perm}
                     className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
                   >
                     {perm}
@@ -217,16 +215,16 @@ const RoleManagement: React.FC = () => {
               </div>
             </div>
             <div className="flex space-x-2">
-              <button 
+              <button
                 onClick={() => {
                   setEditingRole(role);
-                  setMobileView('create');
+                  setMobileView("create");
                 }}
                 className="text-blue-600 hover:bg-blue-50 p-2 rounded"
               >
                 <Edit3 className="h-5 w-5" />
               </button>
-              <button 
+              <button
                 onClick={() => handleDeleteRole(role?._id)}
                 className="text-red-600 hover:bg-red-50 p-2 rounded"
               >
@@ -238,8 +236,8 @@ const RoleManagement: React.FC = () => {
       </div>
 
       {/* Mobile Add Role Button */}
-      <button 
-        onClick={() => setMobileView('create')}
+      <button
+        onClick={() => setMobileView("create")}
         className="sm:hidden w-full mt-4 bg-blue-600 text-white py-2 rounded-md flex items-center justify-center"
       >
         <UserPlus className="mr-2" /> Add New Role
@@ -259,14 +257,18 @@ const RoleManagement: React.FC = () => {
         {/* Mobile View Toggle */}
         <div className="sm:hidden flex mb-4">
           <button
-            onClick={() => setMobileView('list')}
-            className={`w-1/2 py-2 ${mobileView === 'list' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => setMobileView("list")}
+            className={`w-1/2 py-2 ${
+              mobileView === "list" ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
           >
             Role List
           </button>
           <button
-            onClick={() => setMobileView('create')}
-            className={`w-1/2 py-2 ${mobileView === 'create' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => setMobileView("create")}
+            className={`w-1/2 py-2 ${
+              mobileView === "create" ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
           >
             Create Role
           </button>
@@ -275,16 +277,12 @@ const RoleManagement: React.FC = () => {
         {/* Responsive Layout */}
         <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {/* Desktop View */}
-          <div className="hidden sm:block md:col-span-1">
-            {RoleForm()}
-          </div>
-          <div className="hidden sm:block md:col-span-2">
-            {RoleList()}
-          </div>
+          <div className="hidden sm:block md:col-span-1">{RoleForm()}</div>
+          <div className="hidden sm:block md:col-span-2">{RoleList()}</div>
 
           {/* Mobile View */}
           <div className="sm:hidden w-full">
-            {mobileView === 'create' ? RoleForm() : RoleList()}
+            {mobileView === "create" ? RoleForm() : RoleList()}
           </div>
         </div>
       </div>
