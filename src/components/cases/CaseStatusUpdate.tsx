@@ -3,6 +3,7 @@ import type { DisciplinaryCase, CaseStatus } from '../../types';
 
 interface CaseStatusUpdateProps {
   case_: DisciplinaryCase;
+  onStatusChange: (newStatus: CaseStatus) => void;
 }
 
 const statusOptions: { value: CaseStatus; label: string }[] = [
@@ -21,30 +22,42 @@ const statusColors = {
   CLOSED: 'bg-green-100 text-green-800',
 };
 
-const CaseStatusUpdate: React.FC<CaseStatusUpdateProps> = ({ case_ }) => {
+const CaseStatusUpdate: React.FC<CaseStatusUpdateProps> = ({ case_, onStatusChange }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [status, setStatus] = useState<CaseStatus>(case_.status);
+  const [status, setStatus] = useState<CaseStatus>(case_.status ?? 'DRAFT');
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setStatus(e.target.value as CaseStatus);
+  };
+
+  const handleSave = () => {
     setIsEditing(false);
-    // Handle status update
+    onStatusChange(status);
+    console.log("Saving status:", status);
   };
 
   if (isEditing) {
     return (
-      <select
-        value={status}
-        onChange={handleStatusChange}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        autoFocus
-      >
-        {statusOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div className="flex items-center space-x-2">
+        <select
+          value={status}
+          onChange={handleStatusChange}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          autoFocus
+        >
+          {statusOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <button
+          onClick={handleSave}
+          className="px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Save
+        </button>
+      </div>
     );
   }
 

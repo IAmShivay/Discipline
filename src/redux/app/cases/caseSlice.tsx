@@ -262,6 +262,25 @@ export const fetchEmployeeResponses = createAsyncThunk(
     }
   }
 );
+export const updateCaseStatus = createAsyncThunk(
+  "cases/updateCaseStatus",
+  async (
+    { caseId, status }: { caseId: string; status: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axiosBackend.post(`/cases/status/${caseId}`, { status });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(
+          error.response?.data || "Failed to update case status"
+        );
+      }
+      return rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
 // Create the slice
 const caseSlice = createSlice({
   name: "cases",

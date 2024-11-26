@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { fetchCaseById } from "../redux/app/cases/caseSlice";
+import { updateCaseStatus } from "../redux/app/cases/caseSlice";
 const CaseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
@@ -30,12 +31,13 @@ const CaseDetails: React.FC = () => {
     { id: "response", label: "Response", icon: MessageSquare },
     { id: "timeline", label: "Timeline", icon: Clock },
   ] as const;
-
   return (
     <div className="p-6">
       {case_ ? (
         <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-2">{case_.title.toUpperCase()}</h1>
+          <h1 className="text-2xl font-bold mb-2">
+            {case_.title.toUpperCase()}
+          </h1>
           <div className="flex items-center gap-4 text-sm text-gray-500">
             <span>Case ID: {case_._id}</span>
             <span>•</span>
@@ -101,7 +103,23 @@ const CaseDetails: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500">Status</h3>
-                  {case_ && <CaseStatusUpdate case_={case_} />}
+                  {case_ && (
+                    <div className="flex items-center space-x-2">
+                      <CaseStatusUpdate
+                        case_={case_}
+                        onStatusChange={(newStatus) => {
+                          if (case_ && case_._id) {
+                            dispatch(
+                              updateCaseStatus({
+                                caseId: case_._id,
+                                status: newStatus,
+                              })
+                            );
+                          }
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
