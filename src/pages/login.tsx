@@ -147,16 +147,16 @@ const LoginPage: React.FC = () => {
                   />
 
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center">
+                    {/* <div className="flex items-center">
                       <Field
                         type="checkbox"
                         name="rememberMe"
                         className="h-4 w-4 text-blue-600 rounded border-gray-300"
                       />
-                      {/* <label className="ml-2 block text-sm text-gray-700">
+                      <label className="ml-2 block text-sm text-gray-700">
                         Remember me
-                      </label> */}
-                    </div>
+                      </label>
+                    </div> */}
                     <button
                       onClick={() => navigate("/auth/forgot-password")}
                       className="text-sm text-blue-600 hover:text-blue-500"
