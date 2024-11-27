@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AppDispatch, RootState } from "../store";
-import {Settings, LogOut } from "lucide-react";
+import { Settings, LogOut } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../redux/app/auth/authSlice";
 import snackbarMessages from "./messages/message";
 import { showSnackbar } from "../redux/app/error/errorSlice";
+import { useNavigate } from "react-router-dom";
 interface UserProfile {
   name: string;
   email: string;
@@ -13,10 +14,12 @@ interface UserProfile {
 }
 
 const UserProfileMenu: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { user, error } = useSelector((state: RootState) => state.verify);
   const { fullName, email }: any = user;
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [profile, setProfile] = useState<UserProfile>({
     name: fullName,
     email: email,
@@ -53,9 +56,24 @@ const UserProfileMenu: React.FC = () => {
     const { name, value } = e.target;
     setEditForm((prev) => ({ ...prev, [name]: value }));
   };
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors"
@@ -135,7 +153,7 @@ const UserProfileMenu: React.FC = () => {
               </div>
               <div className="border-t border-gray-100 mt-2">
                 <button
-                  onClick={() => setIsEditing(true)}
+                  onClick={() => navigate("/settings")}
                   className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                 >
                   <Settings className="w-4 h-4 mr-3" />

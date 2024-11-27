@@ -31,10 +31,10 @@ const Settings = () => {
     // { id: "user-management", label: "User Management", icon: Users },
     { id: "categories-tags", label: "Categories & Tags", icon: Tags },
     { id: "notifications", label: "Notifications", icon: Bell },
-    { id: "workflow", label: "Workflow", icon: GitBranch },
-    { id: "email-templates", label: "Email Templates", icon: Mail },
-    { id: "data-privacy", label: "Data & Privacy", icon: Shield },
-    { id: "integrations", label: "Integrations", icon: Link },
+    // { id: "workflow", label: "Workflow", icon: GitBranch },
+    // { id: "email-templates", label: "Email Templates", icon: Mail },
+    // { id: "data-privacy", label: "Data & Privacy", icon: Shield },
+    // { id: "integrations", label: "Integrations", icon: Link },
     { id: "general", label: "General", icon: SettingsIcon },
   ];
 

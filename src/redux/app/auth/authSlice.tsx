@@ -15,6 +15,7 @@ import {
 } from "../../../utility/tokenHandeling";
 import { RootState } from "../../../store";
 import axiosBackend from "../../api/axiosBackend";
+import axiosInstance from "../../api/axiosInstance";
 interface AuthState {
   user: string | "";
   token: string | "";
@@ -105,11 +106,11 @@ export const resetUserPassword = createAsyncThunk(
 export const changeUserPassword = createAsyncThunk(
   "auth/changeUserPassword",
   async (
-    passwordData: { currentPassword: string; newPassword: string },
+    passwordData: {token: string, currentPassword: string; newPassword: string },
     thunkAPI
   ) => {
     try {
-      const data = await axiosBackend.post("/change-password", passwordData);
+      const data = await axiosInstance.post("/reset-password", passwordData);
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);

@@ -6,13 +6,8 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { showSnackbar } from "../redux/app/error/errorSlice";
-
-// Type for change password form
-interface ChangePasswordFormValues {
-  currentPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
-}
+import { changeUserPassword } from "../redux/app/auth/authSlice";
+import { useLocation } from "react-router-dom";
 
 // Validation Schema
 const ChangePasswordSchema = Yup.object().shape({
@@ -28,7 +23,7 @@ const ChangePasswordSchema = Yup.object().shape({
       "New password must be different from current password"
     )
     .required("New password is required"),
-  confirmNewPassword: Yup.string()
+  confirmPassword: Yup.string()
     .oneOf([Yup.ref("newPassword")], "Passwords must match")
     .required("Please confirm new password"),
 });
@@ -37,10 +32,31 @@ const ChangePasswordPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-
+  const query = new URLSearchParams(useLocation().search);
+  const token = query.get("token");
   // Handle password change
-  const handlePasswordChange = async (values: ChangePasswordFormValues) => {
-    console.log(values);
+  const handlePasswordChange = async (values: any) => {
+    const valuesWithToken = {
+      ...values,
+      token: token, // This is the token from the URL query parameter
+    };
+    const response = await dispatch(changeUserPassword(valuesWithToken));
+    if (response.meta.requestStatus === "fulfilled") {
+      dispatch(
+        showSnackbar({
+          message: "Password changed successfully",
+          severity: "success",
+        })
+      );
+      navigate("/dashboard");
+    } else {
+      dispatch(
+        showSnackbar({
+          message: "An error occurred",
+          severity: "error",
+        })
+      );
+    }
   };
 
   // Reusable input field component
@@ -102,15 +118,22 @@ const ChangePasswordPage: React.FC = () => {
 
             <Formik
               initialValues={{
-                currentPassword: "",
                 newPassword: "",
-                confirmNewPassword: "",
+                confirmPassword: "",
+                currentPassword: "",
               }}
               validationSchema={ChangePasswordSchema}
               onSubmit={handlePasswordChange}
             >
               {({ isSubmitting }) => (
                 <Form>
+                  <InputField
+                    icon={Lock}
+                    type="currentPassword"
+                    name="currentPassword"
+                    label="Current Password"
+                    // placeholder="Enter new password"
+                  />
                   <InputField
                     icon={Lock}
                     type="password"
@@ -122,7 +145,7 @@ const ChangePasswordPage: React.FC = () => {
                   <InputField
                     icon={Lock}
                     type="password"
-                    name="confirmNewPassword"
+                    name="confirmPassword"
                     label="Confirm New Password"
                     // placeholder="Confirm new password"
                   />
