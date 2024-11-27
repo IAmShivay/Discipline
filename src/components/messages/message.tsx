@@ -1,5 +1,7 @@
 // snackbarMessages.ts
 
+import { logout } from "../../redux/app/auth/authSlice";
+
 interface SnackbarMessages {
     success: {
         [key: string]: string;
@@ -38,6 +40,7 @@ const snackbarMessages: SnackbarMessages = {
         caseDeleted: "Case deleted successfully.",
     },
     error: {
+        
         employeeOnboardingFailed: "Failed to onboard the employee. Please try again.",
         payrollProcessFailed: "Payroll processing failed. Please try again later.",
         profileUpdateError: "Error updating employee profile. Please try again.",
@@ -67,6 +70,8 @@ const snackbarMessages: SnackbarMessages = {
         caseNotFound: "The requested case could not be found. Please verify the case ID.",
     },
     info: {
+        passwordResetMessage: "Enter your email to receive a password reset link.",
+        logoutMessage: "You have been logged out. Redirecting to login page...",
         employeeEditing: "Employee data updated successfully.",
         fillEmployeeDetails: "Please ensure all employee details are filled before proceeding.",
         reviewPerformance: "Review employee performance and provide feedback during appraisal cycles.",

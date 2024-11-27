@@ -19,6 +19,15 @@ export const Register = async (credentials: Credentials) => {
   }
 };
 
+export const resetPassword = async (email: string) => {
+  try {
+    const response = await axiosInstance.post("/forgot-password", { email });
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
+};
+
 export const Login = async (credentials: Credentials) => {
   try {
     const response = await axiosInstance.post("/login", credentials);

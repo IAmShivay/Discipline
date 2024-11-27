@@ -1,78 +1,78 @@
 import React, { useState } from "react";
-import { Mail, Lock } from "lucide-react";
+import { Lock, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { loginUser } from "../redux/app/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
 import { showSnackbar } from "../redux/app/error/errorSlice";
+import { sendPasswordResetLink } from "../redux/app/auth/authSlice";
 import snackbarMessages from "../components/messages/message";
-import { Navigate } from "react-router-dom";
-interface LoginFormValues {
+// Type for email verification form
+interface EmailVerificationFormValues {
   email: string;
-  password: string;
-  rememberMe: boolean;
 }
 
-interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  icon: React.FC<{ className?: string }>;
-  name: string;
-  label: string;
-}
-
-const LoginSchema = Yup.object().shape({
+// Validation Schema
+const EmailVerificationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email format")
     .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
 });
 
-const initialValues: LoginFormValues = {
-  email: "",
-  password: "",
-  rememberMe: false,
-};
-
-const LoginPage: React.FC = () => {
+const ResetPasswordInitiatePage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const handleSubmit = async (values: LoginFormValues) => {
+
+  // Handle email verification and initiate reset process
+  const handleEmailVerification = async (
+    values: EmailVerificationFormValues
+  ) => {
     setLoading(true);
     try {
-      const response = await dispatch(loginUser(values));
+      // TODO: Replace with actual backend API call to initiate password reset
+
+      const response = await dispatch(sendPasswordResetLink(values.email));
+
       if (response?.meta?.requestStatus === "fulfilled") {
         dispatch(
           showSnackbar({
-            message: snackbarMessages.success.loginSuccess,
+            message: snackbarMessages.info.passwordResetMessage,
             severity: "info",
           })
         );
+
+        // Optionally navigate to a confirmation page
+        // navigate("/auth/reset-password-sent");
       } else {
         dispatch(
           showSnackbar({
-            message: snackbarMessages.error.loginFailed,
+            message: snackbarMessages.info.passwordResetFailed,
             severity: "error",
           })
         );
       }
-      window.location.href = "/dashboard";
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Password reset initiation error:", error);
+      dispatch(
+        showSnackbar({
+          message: "An error occurred. Please try again.",
+          severity: "error",
+        })
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const InputField: React.FC<InputFieldProps> = ({
-    icon: Icon,
-    name,
-    label,
-    ...props
-  }) => (
+  // Reusable input field component
+  const InputField: React.FC<{
+    icon: React.FC<{ className?: string }>;
+    name: string;
+    label: string;
+    type?: string;
+  }> = ({ icon: Icon, name, label, type = "text", ...props }) => (
     <div className="mb-6">
       <label className="block text-sm font-medium text-gray-700 mb-1">
         {label}
@@ -83,6 +83,7 @@ const LoginPage: React.FC = () => {
         </div>
         <Field
           {...props}
+          type={type}
           name={name}
           className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg 
                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
@@ -102,10 +103,9 @@ const LoginPage: React.FC = () => {
       <div className="hidden lg:flex lg:w-1/2 bg-blue-600 p-12 flex-col justify-between relative overflow-hidden">
         <div className="relative z-10">
           <div className="text-white">
-            <h1 className="text-4xl font-bold mb-4">Welcome Back!</h1>
+            <h1 className="text-4xl font-bold mb-4">Forgot Password?</h1>
             <p className="text-blue-100 text-lg">
-              Log in to access your HR dashboard and manage your workforce
-              efficiently.
+              Enter your email to receive a password reset link.
             </p>
           </div>
         </div>
@@ -120,13 +120,13 @@ const LoginPage: React.FC = () => {
         <div className="w-full max-w-md">
           <div className="bg-white rounded-xl shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              Login to HR Manager
+              Reset Your Password
             </h2>
 
             <Formik
-              initialValues={initialValues}
-              validationSchema={LoginSchema}
-              onSubmit={handleSubmit}
+              initialValues={{ email: "" }}
+              validationSchema={EmailVerificationSchema}
+              onSubmit={handleEmailVerification}
             >
               {({ isSubmitting }) => (
                 <Form>
@@ -135,35 +135,8 @@ const LoginPage: React.FC = () => {
                     type="email"
                     name="email"
                     label="Email"
-                    placeholder="Enter your email"
+                    // placeholder="Enter your email"
                   />
-
-                  <InputField
-                    icon={Lock}
-                    type="password"
-                    name="password"
-                    label="Password"
-                    placeholder="Enter your password"
-                  />
-
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center">
-                      <Field
-                        type="checkbox"
-                        name="rememberMe"
-                        className="h-4 w-4 text-blue-600 rounded border-gray-300"
-                      />
-                      <label className="ml-2 block text-sm text-gray-700">
-                        Remember me
-                      </label>
-                    </div>
-                    <button
-                      onClick={() => navigate("/auth/forgot-password")}
-                      className="text-sm text-blue-600 hover:text-blue-500"
-                    >
-                      Forgot password?
-                    </button>
-                  </div>
 
                   <button
                     type="submit"
@@ -173,19 +146,16 @@ const LoginPage: React.FC = () => {
                                         focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed
                                         transition-colors duration-200"
                   >
-                    {loading ? "Loading..." : "Login"}
+                    {loading ? "Sending..." : "Send Reset Link"}
                   </button>
 
                   <div className="text-center mt-6">
-                    <span className="text-gray-600">
-                      Don't have an account?
-                    </span>
                     <button
                       type="button"
-                      onClick={() => navigate("/auth/signup")}
-                      className="ml-2 text-blue-600 hover:text-blue-500"
+                      onClick={() => navigate("/auth/login")}
+                      className="text-blue-600 hover:text-blue-500"
                     >
-                      Sign up
+                      Back to Login
                     </button>
                   </div>
                 </Form>
@@ -198,4 +168,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default ResetPasswordInitiatePage;

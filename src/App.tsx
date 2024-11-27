@@ -21,6 +21,8 @@ import { useDispatch } from "react-redux";
 import { loadUser } from "./redux/app/auth/checkAuthSlice";
 import LoadingComponent from "./components/LoadingComponent";
 import RoleManagement from "./components/role";
+import ResetPasswordPage from "./pages/ForgotPassword";
+import TwoStepForgotPasswordPage from "./pages/ForgotPassword";
 
 // Define proper type for RootState
 interface RootState {
@@ -80,6 +82,7 @@ interface PrivateRouteProps {
 const PublicRoutes: React.FC = () => {
   return (
     <Routes>
+      <Route path="forgot-password" element={<TwoStepForgotPasswordPage />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="signup" element={<SignupPage />} />
       <Route path="*" element={<Navigate to="/auth/login" replace />} />

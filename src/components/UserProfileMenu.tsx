@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
-import { User, Settings, LogOut } from 'lucide-react';
-
+import React, { useState } from "react";
+import { AppDispatch, RootState } from "../store";
+import {Settings, LogOut } from "lucide-react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../redux/app/auth/authSlice";
+import snackbarMessages from "./messages/message";
+import { showSnackbar } from "../redux/app/error/errorSlice";
 interface UserProfile {
   name: string;
   email: string;
@@ -8,10 +13,13 @@ interface UserProfile {
 }
 
 const UserProfileMenu: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { user, error } = useSelector((state: RootState) => state.verify);
+  const { fullName, email }: any = user;
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState<UserProfile>({
-    name: 'Admin User',
-    email: 'admin@company.com'
+    name: fullName,
+    email: email,
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -22,10 +30,28 @@ const UserProfileMenu: React.FC = () => {
     setProfile(editForm);
     setIsEditing(false);
   };
-
+  const handleLogout = async () => {
+    const response = await dispatch(logoutUser());
+    if (response.meta.requestStatus === "fulfilled") {
+      dispatch(
+        showSnackbar({
+          message: snackbarMessages.info.logoutMessage,
+          severity: "info",
+        })
+      );
+    } else if (error) {
+      const { errors }: any = error;
+      dispatch(
+        showSnackbar({
+          message: errors?.map((e: any) => e.message) || "An error occurred",
+          severity: "error",
+        })
+      );
+    }
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setEditForm(prev => ({ ...prev, [name]: value }));
+    setEditForm((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -115,7 +141,10 @@ const UserProfileMenu: React.FC = () => {
                   <Settings className="w-4 h-4 mr-3" />
                   Edit Profile
                 </button>
-                <button className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
+                <button
+                  className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+                  onClick={handleLogout}
+                >
                   <LogOut className="w-4 h-4 mr-3" />
                   Sign Out
                 </button>
