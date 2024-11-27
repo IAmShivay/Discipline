@@ -8,11 +8,11 @@ import * as Yup from "yup";
 import { loginUser } from "../redux/app/auth/authSlice";
 import { showSnackbar } from "../redux/app/error/errorSlice";
 import snackbarMessages from "../components/messages/message";
-import { Navigate } from "react-router-dom";
+
 interface LoginFormValues {
   email: string;
   password: string;
-  rememberMe: boolean;
+  // rememberMe: boolean;
 }
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -33,7 +33,7 @@ const LoginSchema = Yup.object().shape({
 const initialValues: LoginFormValues = {
   email: "",
   password: "",
-  rememberMe: false,
+  // rememberMe: false,
 };
 
 const LoginPage: React.FC = () => {
@@ -153,9 +153,9 @@ const LoginPage: React.FC = () => {
                         name="rememberMe"
                         className="h-4 w-4 text-blue-600 rounded border-gray-300"
                       />
-                      <label className="ml-2 block text-sm text-gray-700">
+                      {/* <label className="ml-2 block text-sm text-gray-700">
                         Remember me
-                      </label>
+                      </label> */}
                     </div>
                     <button
                       onClick={() => navigate("/auth/forgot-password")}
