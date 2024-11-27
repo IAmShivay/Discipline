@@ -25,15 +25,18 @@ import {
   updateEmployee,
   deleteEmployee,
 } from "../redux/app/employees/employeeSlice";
-
+import snackbarMessages from "../components/messages/message";
 import { fetchRolesByCompanyId } from "../redux/app/role/roleSlice";
-
+import { showSnackbar } from "../redux/app/error/errorSlice";
 const Employees: React.FC = () => {
   const employee = useSelector((state: any) => state.employee.employees);
   const availableManagers = useSelector((state: any) => state.roles.role);
   const companyId = useSelector(
     (state: RootState) => state.verify.user?.companyId
   );
+
+  const { error, loading } = useSelector((state: RootState) => state.employee);
+  console.log("Employee", error);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>(employee);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -42,37 +45,39 @@ const Employees: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const roles = useSelector((state: RootState) => state.roles.roles);
 
-  const handleAddEmployee = (employee: Employee): void => {
-    try {
-      const roleObject = roles.find(
-        (role: any) => role._id === employee.roleId
+  const handleAddEmployee = async (employee: Employee): Promise<void> => {
+    const roleObject = roles.find((role: any) => role._id === employee.roleId);
+
+    const roleName = roleObject ? roleObject.name : employee.roleId;
+
+    // Create a new employee object with the role name
+    const employeeWithRoleName = {
+      ...employee,
+      role: roleName,
+    };
+
+    const response = await dispatch(
+      createEmployee(employeeWithRoleName as Employee)
+    );
+    if (response.meta.requestStatus === "fulfilled") {
+      dispatch(
+        showSnackbar({
+          message: snackbarMessages.success.employeeOnboarded,
+          severity: "info",
+        })
       );
-
-      const roleName = roleObject ? roleObject.name : employee.roleId;
-
-      // Create a new employee object with the role name
-      const employeeWithRoleName = {
-        ...employee,
-        role: roleName,
-      };
-
-      console.log("Employee with role name:", employeeWithRoleName);
-
-      dispatch(createEmployee(employeeWithRoleName as Employee));
-
-      showAlert("Employee added successfully!", "success");
-      const newEmployee = {
-        ...employeeWithRoleName,
-        _id: (employees.length + 1).toString(),
-      };
-      setShowForm(false);
-      setEmployees((prev) => [...prev, newEmployee]);
-    } catch (error) {
-      console.error("Error in handleAddEmployee:", error);
-      showAlert("Failed to add employee", "error");
+    } else if (error) {
+      const { errors }: any = error;
+      dispatch(
+        showSnackbar({
+          message: errors?.map((e: any) => e.message) || "An error occurred",
+          severity: "error",
+        })
+      );
     }
+    setShowForm(false);
   };
-  const handleEditEmployee = (employee: Employee): void => {
+  const handleEditEmployee = async (employee: Employee): Promise<void> => {
     setEditingEmployee(employee);
     setShowForm(true);
     setEmployees((prev) =>
@@ -87,21 +92,52 @@ const Employees: React.FC = () => {
       ...employee,
       role: roleName,
     };
-    dispatch(
+    const response = await dispatch(
       updateEmployee({
         id: employee._id,
         employeeData: employeeWithRoleName as Employee,
       })
     );
+    if (response.meta.requestStatus === "fulfilled") {
+      dispatch(
+        showSnackbar({
+          message: snackbarMessages.info.employeeEditing,
+          severity: "info",
+        })
+      );
+    } else if (error) {
+      const { errors }: any = error;
+      dispatch(
+        showSnackbar({
+          message: errors?.map((e: any) => e.message) || "An error occurred",
+          severity: "error",
+        })
+      );
+    }
     setShowForm(false);
     setEditingEmployee(null);
-    showAlert("Employee updated successfully!", "success");
   };
 
-  const handleDeleteEmployee = (_id: string): void => {
+  const handleDeleteEmployee = async (_id: string): Promise<void> => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
       setEmployees((prev) => prev.filter((emp) => emp._id !== _id));
-      dispatch(deleteEmployee(_id));
+      const response = await dispatch(deleteEmployee(_id));
+      if (response.meta.requestStatus === "fulfilled") {
+        dispatch(
+          showSnackbar({
+            message: snackbarMessages.success.employeeDeleted,
+            severity: "info",
+          })
+        );
+      } else if (error) {
+        const { errors }: any = error;
+        dispatch(
+          showSnackbar({
+            message: errors?.map((e: any) => e.message) || "An error occurred",
+            severity: "error",
+          })
+        );
+      }
       showAlert("Employee deleted successfully!", "success");
     }
   };
@@ -120,10 +156,10 @@ const Employees: React.FC = () => {
   );
   useEffect(() => {
     dispatch(fetchEmployees());
-  }, [dispatch]);
+  }, [updateEmployee, deleteEmployee, editingEmployee]);
   useEffect(() => {
     dispatch(fetchRolesByCompanyId(companyId as any));
-  }, [dispatch]);
+  }, [companyId, updateEmployee, deleteEmployee]);
 
   return (
     <div className="p-6">

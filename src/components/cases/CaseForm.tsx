@@ -8,6 +8,8 @@ import { AppDispatch } from "../../store";
 import { useSelector } from "react-redux";
 import { Employee } from "../employees/EmployeeForm";
 import snackbarMessages from "../messages/message";
+import showSnackbar from "../messages";
+
 interface CaseFormProps {
   onSubmit: (case_: DisciplinaryCase) => void;
   onCancel: () => void;

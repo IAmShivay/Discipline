@@ -20,7 +20,9 @@ const Cases: React.FC = () => {
   const casesState = useSelector(
     (state: { cases: { cases: DisciplinaryCase[] } }) => state.cases.cases
   );
-  console.log(casesState);
+  const { error, loading } = useSelector(
+    (state: { cases: { error: string; loading: boolean } }) => state.cases
+  );
   const [cases, setCases] = useState<DisciplinaryCase[]>(casesState);
   const [editingCase, setEditingCase] = useState<DisciplinaryCase | null>(null);
   const [filters, setFilters] = useState({
@@ -30,10 +32,27 @@ const Cases: React.FC = () => {
     dateRange: "",
   });
 
-  const handleAddCase = (newCase: DisciplinaryCase) => {
+  // console.log(errors.map((e: any) => e.message));
+  const handleAddCase = async (newCase: DisciplinaryCase) => {
     setCases((prev) => [...prev, newCase]);
     setShowForm(false);
-    dispatch(createCase(newCase));
+    const response = await dispatch(createCase(newCase));
+    if (response.meta.requestStatus === "fulfilled") {
+      dispatch(
+        showSnackbar({
+          message: snackbarMessages.success.caseCreated,
+          severity: "info",
+        })
+      );
+    } else if (error) {
+      const { errors }: any = error;
+      dispatch(
+        showSnackbar({
+          message: errors?.map((e: any) => e.message) || "An error occurred",
+          severity: "error",
+        })
+      );
+    }
   };
 
   const handleEditCase = (caseToEdit: DisciplinaryCase) => {
@@ -47,7 +66,7 @@ const Cases: React.FC = () => {
     );
     setEditingCase(null);
     setShowForm(false);
-    console.log(updatedCase,"");
+    console.log(updatedCase, "");
     if (updatedCase._id) {
       dispatch(updateCase({ id: updatedCase._id, caseData: updatedCase }));
     } else {

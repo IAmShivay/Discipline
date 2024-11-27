@@ -14,6 +14,7 @@ interface SnackbarMessages {
 
 const snackbarMessages: SnackbarMessages = {
     success: {
+        employeeDeleted: "Employee deleted successfully.",
         employeeOnboarded: "Employee successfully onboarded.",
         payrollProcessed: "Payroll has been processed successfully.",
         profileUpdated: "Employee profile updated successfully.",
@@ -31,6 +32,10 @@ const snackbarMessages: SnackbarMessages = {
         passwordResetSuccess: "Password reset successfully. You can now log in.",
         emailVerificationSuccess: "Email successfully verified.",
         accountActivated: "Account has been activated successfully.",
+        caseCreated: "Case created successfully.",
+        caseUpdated: "Case updated successfully.",
+        caseClosed: "Case closed successfully.",
+        caseDeleted: "Case deleted successfully.",
     },
     error: {
         employeeOnboardingFailed: "Failed to onboard the employee. Please try again.",
@@ -55,8 +60,14 @@ const snackbarMessages: SnackbarMessages = {
         invalidCredentials: "Invalid credentials. Please check your email and password.",
         emailAlreadyInUse: "This email is already associated with an existing account. Try logging in.",
         weakPassword: "Password is too weak. Please choose a stronger password.",
+        caseCreationFailed: "Failed to create the case. Please try again.",
+        caseUpdateFailed: "Error updating the case. Please try again later.",
+        caseCloseFailed: "Error closing the case. Please try again later.",
+        caseDeletionFailed: "Failed to delete the case. Please check the details and try again.",
+        caseNotFound: "The requested case could not be found. Please verify the case ID.",
     },
     info: {
+        employeeEditing: "Employee data updated successfully.",
         fillEmployeeDetails: "Please ensure all employee details are filled before proceeding.",
         reviewPerformance: "Review employee performance and provide feedback during appraisal cycles.",
         trackPayrollStatus: "You can track payroll status in the payroll dashboard.",
@@ -72,6 +83,10 @@ const snackbarMessages: SnackbarMessages = {
         emailVerificationReminder: "Don't forget to verify your email after signing up to complete your registration.",
         passwordResetReminder: "Forgot your password? Reset it by following the instructions sent to your email.",
         sessionTimeoutReminder: "For security, your session will expire after a period of inactivity.",
+        caseStatusReminder: "Regularly update the case status to reflect the current progress.",
+        caseDetailsInfo: "Ensure all necessary details are provided when creating or updating a case.",
+        caseCloseInfo: "Once resolved, remember to close the case and notify relevant stakeholders.",
+        caseDeletionWarning: "Deleting a case is permanent. Make sure this action is intentional.",
     }
 };
 
