@@ -81,20 +81,27 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
-// export const updateUserProfile = createAsyncThunk(
-//   "auth/updateUserProfile",
-//   async (profileData: Partial<AuthState>, thunkAPI) => {
-//     try {
-//       const data = await axiosBackend.put("/user", profileData);
-//       return data;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(error.response.data);
-//     }
-//   }
-// );
+export const updateUserProfile = createAsyncThunk(
+  "auth/updateUserProfile",
+  async (profileData: any, thunkAPI) => {
+    try {
+      const response = await axiosInstance.put("/profile", profileData);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 export const resetUserPassword = createAsyncThunk(
   "auth/resetUserPassword",
-  async (resetData: { currentPassword: string; newPassword: string ,confirmPassword: string }, thunkAPI) => {
+  async (
+    resetData: {
+      currentPassword: string;
+      newPassword: string;
+      confirmPassword: string;
+    },
+    thunkAPI
+  ) => {
     try {
       const data = await axiosInstance.post("/change-password", resetData);
       return data;
@@ -106,7 +113,11 @@ export const resetUserPassword = createAsyncThunk(
 export const changeUserPassword = createAsyncThunk(
   "auth/changeUserPassword",
   async (
-    passwordData: {token: string, currentPassword: string; newPassword: string },
+    passwordData: {
+      token: string;
+      currentPassword: string;
+      newPassword: string;
+    },
     thunkAPI
   ) => {
     try {
@@ -200,18 +211,18 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
-    //   .addCase(updateUserProfile.pending, (state) => {
-    //     state.isLoading = true;
-    //   })
-    //   .addCase(updateUserProfile.fulfilled, (state, action) => {
-    //     state.isLoading = false;
-    //     state.user = action.payload.user;
-    //     // Update other relevant state properties
-    //   })
-    //   .addCase(updateUserProfile.rejected, (state, action) => {
-    //     state.isLoading = false;
-    //     state.error = action.payload as string;
-    //   })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        // Update other relevant state properties
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
 
       .addCase(resetUserPassword.pending, (state) => {
         state.isLoading = true;

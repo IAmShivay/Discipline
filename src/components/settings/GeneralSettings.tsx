@@ -3,7 +3,10 @@ import { User, Lock, Edit, Check, X } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useDispatch } from "react-redux";
-import { resetUserPassword } from "../../redux/app/auth/authSlice";
+import {
+  resetUserPassword,
+  updateUserProfile,
+} from "../../redux/app/auth/authSlice";
 import { AppDispatch } from "../../store";
 const GeneralSettings = () => {
   const profileDatas: any = useSelector(
@@ -12,7 +15,7 @@ const GeneralSettings = () => {
   const [profileData, setProfileData] = useState({
     fullName: profileDatas.fullName,
     email: profileDatas.email,
-    phoneNumber: profileDatas.mobile,
+    mobile: profileDatas.mobile,
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -36,25 +39,24 @@ const GeneralSettings = () => {
     }));
   };
 
-  const handlePasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPasswordData((prev) => ({
       ...prev,
       [name]: value,
     }));
-
   };
 
   const submitProfileUpdate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setProfileData(editedProfileData);
     setIsEditing((prev) => ({ ...prev, profile: false }));
+    const response = dispatch(updateUserProfile(editedProfileData));
+    console.log(response)
     console.log("Profile updated:", editedProfileData);
   };
 
-  const submitPasswordChange = async(e: React.FormEvent<HTMLFormElement>) => {
+  const submitPasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       alert("New passwords do not match");
@@ -160,15 +162,15 @@ const GeneralSettings = () => {
                 {isEditing.profile ? (
                   <input
                     type="tel"
-                    name="phoneNumber"
-                    value={editedProfileData.phoneNumber}
+                    name="mobile"
+                    value={editedProfileData.mobile}
                     onChange={handleProfileUpdate}
                     className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
                     placeholder="Enter your phone number"
                   />
                 ) : (
                   <p className="py-2.5 px-4 text-gray-800">
-                    {profileData.phoneNumber}
+                    {profileData.mobile}
                   </p>
                 )}
               </div>
