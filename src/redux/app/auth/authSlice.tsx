@@ -94,9 +94,9 @@ export const registerUser = createAsyncThunk(
 // );
 export const resetUserPassword = createAsyncThunk(
   "auth/resetUserPassword",
-  async (resetData: { token: string; newPassword: string }, thunkAPI) => {
+  async (resetData: { currentPassword: string; newPassword: string ,confirmPassword: string }, thunkAPI) => {
     try {
-      const data = await axiosBackend.post("/reset-password", resetData);
+      const data = await axiosInstance.post("/change-password", resetData);
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);

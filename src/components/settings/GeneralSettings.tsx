@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { User, Lock, Edit, Check, X } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { useDispatch } from "react-redux";
+import { resetUserPassword } from "../../redux/app/auth/authSlice";
+import { AppDispatch } from "../../store";
 const GeneralSettings = () => {
   const profileDatas: any = useSelector(
     (state: RootState) => state.verify.user
@@ -24,7 +27,7 @@ const GeneralSettings = () => {
   });
 
   const [editedProfileData, setEditedProfileData] = useState(profileData);
-
+  const dispatch = useDispatch<AppDispatch>();
   const handleProfileUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditedProfileData((prev) => ({
@@ -33,12 +36,15 @@ const GeneralSettings = () => {
     }));
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     setPasswordData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
   };
 
   const submitProfileUpdate = (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,7 +54,7 @@ const GeneralSettings = () => {
     console.log("Profile updated:", editedProfileData);
   };
 
-  const submitPasswordChange = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitPasswordChange = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       alert("New passwords do not match");
@@ -61,6 +67,12 @@ const GeneralSettings = () => {
       confirmPassword: "",
     });
     setIsEditing((prev) => ({ ...prev, password: false }));
+    const response = await dispatch(resetUserPassword(passwordData));
+    if (response.meta.requestStatus === "fulfilled") {
+      console.log("Password changed successfully");
+    } else {
+      console.log("An error occurred");
+    }
   };
 
   const cancelProfileEdit = () => {
