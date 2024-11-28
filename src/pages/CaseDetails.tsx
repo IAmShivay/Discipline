@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { fetchCaseById } from "../redux/app/cases/caseSlice";
 import { updateCaseStatus } from "../redux/app/cases/caseSlice";
+import { showSnackbar } from "../redux/app/error/errorSlice";
+
 const CaseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
@@ -107,13 +109,43 @@ const CaseDetails: React.FC = () => {
                     <div className="flex items-center space-x-2">
                       <CaseStatusUpdate
                         case_={case_}
-                        onStatusChange={(newStatus) => {
+                        onStatusChange={async (newStatus) => {
                           if (case_ && case_._id) {
-                            dispatch(
-                              updateCaseStatus({
-                                caseId: case_._id,
-                                status: newStatus,
-                              })
+                            try {
+                              const response = await dispatch(
+                                updateCaseStatus({
+                                  caseId: case_._id,
+                                  status: newStatus,
+                                })
+                              );
+
+                              if (response.meta.requestStatus === "fulfilled") {
+                                dispatch(
+                                  showSnackbar({
+                                    message: "Case status updated successfully",
+                                    severity: "success",
+                                  })
+                                );
+                              } else {
+                                dispatch(
+                                  showSnackbar({
+                                    message: "Failed to update case status",
+                                    severity: "error",
+                                  })
+                                );
+                              }
+                            } catch (error) {
+                              console.error(
+                                "Error updating case status:",
+                                error
+                              );
+                              alert(
+                                "An unexpected error occurred. Please try again."
+                              );
+                            }
+                          } else {
+                            alert(
+                              "Invalid case data. Unable to update status."
                             );
                           }
                         }}
