@@ -1,13 +1,18 @@
-export type CaseStatus = 'DRAFT' | 'OPEN' | 'PENDING_RESPONSE' | 'UNDER_REVIEW' | 'CLOSED';
+export type CaseStatus =
+  | "DRAFT"
+  | "OPEN"
+  | "PENDING_RESPONSE"
+  | "UNDER_REVIEW"
+  | "CLOSED";
 
-export type NotificationType = 
-  | 'CASE_CREATED'
-  | 'CASE_UPDATED'
-  | 'CASE_CLOSED'
-  | 'EMPLOYEE_JOINED'
-  | 'RESPONSE_SUBMITTED'
-  | 'REMINDER'
-  | 'STRIKE_RECORDED';
+export type NotificationType =
+  | "CASE_CREATED"
+  | "CASE_UPDATED"
+  | "CASE_CLOSED"
+  | "EMPLOYEE_JOINED"
+  | "RESPONSE_SUBMITTED"
+  | "REMINDER"
+  | "STRIKE_RECORDED";
 
 export interface DisciplinaryCase {
   _id?: string;
@@ -28,9 +33,11 @@ export interface DisciplinaryCase {
 }
 
 export interface Notification {
-  id: string;
+  _id: string;
   type: NotificationType;
   title: string;
+  companyId: string;
+  userId: string;
   message: string;
   caseId?: string;
   employeeId?: string;
@@ -45,7 +52,13 @@ export interface DashboardStats {
   pendingActions: number;
 }
 
-export type FieldType = 'text' | 'number' | 'date' | 'select' | 'email' | 'phone';
+export type FieldType =
+  | "text"
+  | "number"
+  | "date"
+  | "select"
+  | "email"
+  | "phone";
 
 export interface CustomField {
   id: string;

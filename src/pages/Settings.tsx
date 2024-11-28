@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Users,
@@ -30,7 +29,7 @@ const Settings = () => {
   const tabs = [
     // { id: "user-management", label: "User Management", icon: Users },
     { id: "categories-tags", label: "Categories & Tags", icon: Tags },
-    { id: "notifications", label: "Notifications", icon: Bell },
+    // { id: "notifications", label: "Notifications", icon: Bell },
     // { id: "workflow", label: "Workflow", icon: GitBranch },
     // { id: "email-templates", label: "Email Templates", icon: Mail },
     // { id: "data-privacy", label: "Data & Privacy", icon: Shield },
@@ -71,7 +70,9 @@ const Settings = () => {
   return (
     <div className="p-4 lg:p-6">
       <div className="mb-6">
-        <h1 className="text-xl lg:text-2xl font-bold text-gray-900 mt-14">Settings</h1>
+        <h1 className="text-xl lg:text-2xl font-bold text-gray-900 mt-14">
+          Settings
+        </h1>
         <p className="text-sm lg:text-base text-gray-500">
           Manage your system preferences and configurations
         </p>

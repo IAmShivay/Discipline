@@ -58,7 +58,7 @@ const NotificationList: React.FC<NotificationListProps> = ({
 
   const handleClick = (notification: Notification) => {
     if (!notification.isRead) {
-      onMarkAsRead(notification.id);
+      onMarkAsRead(notification._id);
     }
     
     if (notification.caseId) {
@@ -74,7 +74,7 @@ const NotificationList: React.FC<NotificationListProps> = ({
         const Icon = notificationIcons[notification.type];
         return (
           <div
-            key={notification.id}
+            key={notification._id}
             className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
               !notification.isRead ? 'bg-blue-50' : ''
             }`}
@@ -109,7 +109,7 @@ const NotificationList: React.FC<NotificationListProps> = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onMarkAsRead(notification.id);
+                    onMarkAsRead(notification._id);
                   }}
                   className="flex-shrink-0 ml-4"
                 >

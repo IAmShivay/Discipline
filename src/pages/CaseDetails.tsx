@@ -16,11 +16,14 @@ const CaseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    if (id) {
-      dispatch(fetchCaseById(id));
-    }
-  }, [dispatch, id]);
+    const fetchData = async () => {
+      if (id) {
+        await dispatch(fetchCaseById(id));
+      }
+    };
 
+    fetchData();
+  }, [dispatch, id]);
   const [activeTab, setActiveTab] = useState<
     "details" | "response" | "timeline"
   >("details");
@@ -33,7 +36,7 @@ const CaseDetails: React.FC = () => {
     { id: "response", label: "Response", icon: MessageSquare },
     { id: "timeline", label: "Timeline", icon: Clock },
   ] as const;
- 
+
   return (
     <div className="p-6">
       {case_ ? (

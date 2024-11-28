@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
-import { Bell, CheckCircle2, Filter, Search } from 'lucide-react';
-import NotificationList from '../components/notifications/NotificationList';
-import { Notification } from '../types';
-import { mockNotifications } from '../data/mockData';
+import React, { useState, useEffect } from "react";
+import { CheckCircle2, Filter, Search } from "lucide-react";
+import NotificationList from "../components/notifications/NotificationList";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import { AppDispatch } from "../store";
+import type { Notification } from "../types";
+import { fetchNotifications } from "../redux/app/notification/notificationSlice";
+import { showSnackbar } from "../redux/app/error/errorSlice";
 
 const Notifications: React.FC = () => {
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+  const dispatch = useDispatch<AppDispatch>();
+  const caseNotifications = useSelector(
+    (state: RootState) => state.notificationReducer.notifications
+  ) as Notification[];
+
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [filters, setFilters] = useState({
-    search: '',
-    type: '',
-    readStatus: '',
+    search: "",
+    type: "",
+    readStatus: "",
   });
 
   const handleFilterChange = (
@@ -28,7 +38,7 @@ const Notifications: React.FC = () => {
   const handleMarkAsRead = (notificationId: string) => {
     setNotifications((prev) =>
       prev.map((notification) =>
-        notification.id === notificationId
+        notification._id === notificationId
           ? { ...notification, isRead: true }
           : notification
       )
@@ -39,17 +49,37 @@ const Notifications: React.FC = () => {
     const matchesSearch =
       notification.title.toLowerCase().includes(filters.search.toLowerCase()) ||
       notification.message.toLowerCase().includes(filters.search.toLowerCase());
-    
-    const matchesType = filters.type ? notification.type === filters.type : true;
-    
+
+    const matchesType = filters.type
+      ? notification.type === filters.type
+      : true;
+
     const matchesReadStatus = filters.readStatus
-      ? (filters.readStatus === 'read') === notification.isRead
+      ? (filters.readStatus === "read") === notification.isRead
       : true;
 
     return matchesSearch && matchesType && matchesReadStatus;
   });
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchNotifications());
+        setNotifications(caseNotifications);
+      } catch (error) {
+        dispatch(
+          showSnackbar({
+            message: "Error fetching notifications",
+            severity: "error",
+          })
+        );
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   return (
     <div className="p-6">

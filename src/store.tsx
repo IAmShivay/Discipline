@@ -6,6 +6,7 @@ import employeeReducer from "./redux/app/employees/employeeSlice";
 import caseReducer from "./redux/app/cases/caseSlice";
 import timelineReducer from "./redux/app/timline/timeline";
 import roleReducer from "./redux/app/role/roleSlice";
+import notificationReducer from "./redux/app/notification/notificationSlice";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -15,6 +16,7 @@ const store = configureStore({
     cases: caseReducer,
     timline: timelineReducer,
     roles: roleReducer,
+    notificationReducer: notificationReducer,
   },
 });
 
