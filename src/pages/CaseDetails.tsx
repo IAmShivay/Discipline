@@ -33,6 +33,7 @@ const CaseDetails: React.FC = () => {
     { id: "response", label: "Response", icon: MessageSquare },
     { id: "timeline", label: "Timeline", icon: Clock },
   ] as const;
+ 
   return (
     <div className="p-6">
       {case_ ? (

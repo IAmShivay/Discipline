@@ -60,7 +60,7 @@ const Cases: React.FC = () => {
     setShowForm(true);
   };
 
-  const handleUpdateCase = (updatedCase: DisciplinaryCase) => {
+  const handleUpdateCase = async(updatedCase: DisciplinaryCase) => {
     setCases((prev) =>
       prev.map((c) => (c._id === updatedCase._id ? updatedCase : c))
     );
@@ -68,18 +68,35 @@ const Cases: React.FC = () => {
     setShowForm(false);
     console.log(updatedCase, "");
     if (updatedCase._id) {
-      dispatch(updateCase({ id: updatedCase._id, caseData: updatedCase }));
+      const response = await dispatch(updateCase({ id: updatedCase._id, caseData: updatedCase }));
+      window.location.reload();
+      if (response.meta.requestStatus === "fulfilled") {
+        dispatch(
+          showSnackbar({
+            message: snackbarMessages.success.caseUpdated,
+            severity: "info",
+          })
+        );
+      }
     } else {
       console.error("Updated case id is undefined");
     }
   };
 
-  const handleDeleteCase = (caseId: string) => {
+  const handleDeleteCase = async(caseId: string) => {
     if (window.confirm("Are you sure you want to delete this case?")) {
       setCases((prev) => prev.filter((c) => c.id !== caseId));
     }
     console.log(caseId);
-    dispatch(deleteCase(caseId));
+    const response = await dispatch(deleteCase(caseId));
+    if (response.meta.requestStatus === "fulfilled") {
+      dispatch(
+        showSnackbar({
+          message: snackbarMessages.success.caseDeleted,
+          severity: "info",
+        })
+      );
+    }
   };
 
   const handleFilterChange = (
@@ -90,7 +107,7 @@ const Cases: React.FC = () => {
   };
   useEffect(() => {
     dispatch(fetchCases());
-  }, [dispatch]);
+  }, [dispatch,updateCase,deleteCase]);
 
   return (
     <div className="p-6">
