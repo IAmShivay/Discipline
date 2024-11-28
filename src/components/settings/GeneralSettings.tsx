@@ -7,7 +7,10 @@ import {
   resetUserPassword,
   updateUserProfile,
 } from "../../redux/app/auth/authSlice";
+import snackbarMessages from "../messages/message";
 import { AppDispatch } from "../../store";
+import { showSnackbar } from "../../redux/app/error/errorSlice";
+import useselector from "react-redux";
 const GeneralSettings = () => {
   const profileDatas: any = useSelector(
     (state: RootState) => state.verify.user
@@ -28,7 +31,7 @@ const GeneralSettings = () => {
     profile: false,
     password: false,
   });
-
+  const error = useSelector((state: RootState) => state.auth.error);
   const [editedProfileData, setEditedProfileData] = useState(profileData);
   const dispatch = useDispatch<AppDispatch>();
   const handleProfileUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,22 +50,33 @@ const GeneralSettings = () => {
     }));
   };
 
-  const submitProfileUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setProfileData(editedProfileData);
     setIsEditing((prev) => ({ ...prev, profile: false }));
-    const response = dispatch(updateUserProfile(editedProfileData));
-    console.log(response)
-    console.log("Profile updated:", editedProfileData);
+    const response = await dispatch(updateUserProfile(editedProfileData));
+    if (response.meta.requestStatus === "fulfilled") {
+      dispatch(
+        showSnackbar({
+          message: snackbarMessages.success.profileUpdated,
+          severity: "success",
+        })
+      );
+    } else {
+      dispatch(
+        showSnackbar({
+          message: snackbarMessages.error.profileUpdateError,
+          severity: "error",
+        })
+      );
+    }
   };
-
   const submitPasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       alert("New passwords do not match");
       return;
     }
-    console.log("Password change submitted");
     setPasswordData({
       currentPassword: "",
       newPassword: "",
@@ -71,9 +85,20 @@ const GeneralSettings = () => {
     setIsEditing((prev) => ({ ...prev, password: false }));
     const response = await dispatch(resetUserPassword(passwordData));
     if (response.meta.requestStatus === "fulfilled") {
-      console.log("Password changed successfully");
+      dispatch(
+        showSnackbar({
+          message: snackbarMessages.success.passwordChanged,
+          severity: "success",
+        })
+      );
     } else {
-      console.log("An error occurred");
+      const { errors }: any = error;
+      dispatch(
+        showSnackbar({
+          message: errors?.map((e: any) => e.message) || "An error occurred",
+          severity: "error",
+        })
+      );
     }
   };
 

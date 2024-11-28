@@ -8,7 +8,8 @@ import { AppDispatch } from "../store";
 import { showSnackbar } from "../redux/app/error/errorSlice";
 import { changeUserPassword } from "../redux/app/auth/authSlice";
 import { useLocation } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 // Validation Schema
 const ChangePasswordSchema = Yup.object().shape({
   currentPassword: Yup.string().required("Current password is required"),
@@ -34,6 +35,7 @@ const ChangePasswordPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const query = new URLSearchParams(useLocation().search);
   const token = query.get("token");
+  const error = useSelector((state: RootState) => state.auth.error);
   // Handle password change
   const handlePasswordChange = async (values: any) => {
     const valuesWithToken = {
@@ -50,9 +52,11 @@ const ChangePasswordPage: React.FC = () => {
       );
       navigate("/dashboard");
     } else {
+      const { errors }: any = error;
+
       dispatch(
         showSnackbar({
-          message: "An error occurred",
+          message: errors?.map((e: any) => e.message) || "An error occurred",
           severity: "error",
         })
       );
