@@ -28,42 +28,18 @@ function Dashboard() {
   useEffect(() => {
     dispatch(fetchCases());
   }, [dispatch]);
-
-  const mockCases: any = [
-    {
-      id: "1",
-      employeeName: "John Smith",
-      title: "Attendance Policy Violation",
-      description: "Multiple instances of tardiness in the past month",
-      status: "OPEN",
-      incidentDate: "2024-03-10",
-      assignedTo: "Sarah Johnson",
-      createdAt: "2024-03-11",
-      updatedAt: "2024-03-11",
-    },
-    {
-      id: "2",
-      employeeName: "Emma Davis",
-      title: "Code of Conduct Breach",
-      description: "Inappropriate behavior during team meeting",
-      status: "DRAFT",
-      incidentDate: "2024-03-09",
-      assignedTo: "Michael Brown",
-      createdAt: "2024-03-10",
-      updatedAt: "2024-03-10",
-    },
-    {
-      id: "3",
-      employeeName: "Robert Wilson",
-      title: "Performance Issue",
-      description: "Failure to meet project deadlines",
-      status: "CLOSED",
-      incidentDate: "2024-02-28",
-      assignedTo: "Sarah Johnson",
-      createdAt: "2024-03-01",
-      updatedAt: "2024-03-08",
-    },
-  ];
+  console.log(cases);
+  const mockCases = cases.map((caseItem) => ({
+    id: caseItem._id,
+    title: caseItem.title,
+    status: caseItem.status,
+    description: caseItem.description,
+    incidentDate: caseItem.incidentDate,
+    createdAt: caseItem.createdAt,
+    updatedAt: caseItem.updatedAt,
+    assignedTo: caseItem.employeeName,
+    employeeName: caseItem.employeeName,
+  }));
   return (
     <div className="p-8">
       <div className="mb-8">
