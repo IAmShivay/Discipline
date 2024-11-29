@@ -214,7 +214,7 @@ const RoleManagement: React.FC = () => {
                 ))}
               </div>
             </div>
-            <div className="flex space-x-2">
+            {/* <div className="flex space-x-2">
               <button
                 onClick={() => {
                   setEditingRole(role);
@@ -230,7 +230,7 @@ const RoleManagement: React.FC = () => {
               >
                 <Trash2 className="h-5 w-5" />
               </button>
-            </div>
+            </div> */}
           </div>
         ))}
       </div>

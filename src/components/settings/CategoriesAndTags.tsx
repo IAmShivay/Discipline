@@ -262,12 +262,12 @@ const CategoriesAndTags = () => {
                       {category.description}
                     </p>
                   </div>
-                  <button
+                  {/* <button
                     onClick={() => category._id && removeCategory(category._id)}
                     className="text-gray-400 hover:text-red-500 transition-colors"
                   >
                     <X className="w-5 h-5" />
-                  </button>
+                  </button> */}
                 </div>
               </div>
             ))}
