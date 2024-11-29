@@ -3,7 +3,7 @@ const EXPIRY_KEY = "token_expiry";
 
 export const saveToken = (token: string) => {
   const now = new Date();
-  const expiresAt = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days from now
+  const expiresAt = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000); // 3 days from now
   localStorage.setItem(TOKEN_KEY, token);
   localStorage.setItem(EXPIRY_KEY, expiresAt.toISOString());
 };
@@ -20,7 +20,6 @@ export const getToken = () => {
   if (!token || !expiry) {
     return "";
   }
-
   const expiryDate = new Date(expiry);
   if (expiryDate <= new Date()) {
     clearToken(); // Clear expired token

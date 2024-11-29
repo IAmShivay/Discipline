@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, X, CheckCircle, AlertCircle } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../../store";
+import {
+  addCategory as addCategoryAction,
+  fetchCategories,
+} from "../../redux/app/categories/categorieSlice";
+import { showSnackbar } from "../../redux/app/error/errorSlice";
+import { useSelector } from "react-redux";
 
 interface Category {
-  id: string;
+  _id?: string;
   name: string;
   description: string;
 }
@@ -16,18 +24,12 @@ interface Tag {
 const COLORS = ["red", "blue", "green", "yellow", "purple", "pink", "orange"];
 
 const CategoriesAndTags = () => {
-  const [categories, setCategories] = useState<Category[]>([
-    {
-      id: "1",
-      name: "Misconduct",
-      description: "Violations of company policies and professional conduct",
-    },
-    {
-      id: "2",
-      name: "Attendance",
-      description: "Issues related to attendance and punctuality",
-    },
-  ]);
+  const { status, error, items } = useSelector(
+    (state: RootState) => state.categories
+  );
+  console.log(items);
+  const dispatch = useDispatch<AppDispatch>();
+  const [categories, setCategories] = useState<Category[]>(items);
 
   const [tags, setTags] = useState<Tag[]>([
     { id: "1", name: "Urgent", color: "red" },
@@ -46,7 +48,7 @@ const CategoriesAndTags = () => {
   const [categoryError, setCategoryError] = useState("");
   const [tagError, setTagError] = useState("");
 
-  const addCategory = () => {
+  const addCategory = async () => {
     // Validate category input
     if (!newCategory.name.trim()) {
       setCategoryError("Category name is required");
@@ -64,7 +66,25 @@ const CategoriesAndTags = () => {
       description: newCategory.description.trim(),
     };
 
-    setCategories([...categories, newCategoryItem]);
+    const response = await dispatch(addCategoryAction(newCategoryItem));
+    if (addCategoryAction.fulfilled.match(response)) {
+      dispatch(
+        showSnackbar({
+          message: "Category added successfully",
+          severity: "success",
+        })
+      );
+      setCategories([...categories, newCategoryItem]);
+    } else {
+      const { errors }: any = error;
+      dispatch(
+        showSnackbar({
+          message: errors?.map((e: any) => e.message) || "An error occurred",
+          severity: "error",
+        })
+      );
+    }
+
     setNewCategory({ name: "", description: "" });
     setIsAddingCategory(false);
     setCategoryError("");
@@ -90,12 +110,15 @@ const CategoriesAndTags = () => {
   };
 
   const removeCategory = (id: string) => {
-    setCategories(categories.filter((cat) => cat.id !== id));
+    setCategories(categories.filter((cat) => cat._id !== id));
   };
 
   const removeTag = (id: string) => {
     setTags(tags.filter((tag) => tag.id !== id));
   };
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch, newCategory]);
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-4xl">
@@ -122,7 +145,7 @@ const CategoriesAndTags = () => {
             >
               Categories
             </button>
-            <button
+            {/* <button
               onClick={() => setActiveTab("tags")}
               className={`py-4 px-1 inline-flex items-center border-b-2 font-medium text-sm transition-all ${
                 activeTab === "tags"
@@ -131,7 +154,7 @@ const CategoriesAndTags = () => {
               }`}
             >
               Tags
-            </button>
+            </button> */}
           </nav>
         </div>
       </div>
@@ -227,7 +250,7 @@ const CategoriesAndTags = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {categories.map((category) => (
               <div
-                key={category.id}
+                key={category._id}
                 className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-sm transition-shadow"
               >
                 <div className="flex justify-between items-start">
@@ -240,7 +263,7 @@ const CategoriesAndTags = () => {
                     </p>
                   </div>
                   <button
-                    onClick={() => removeCategory(category.id)}
+                    onClick={() => category._id && removeCategory(category._id)}
                     className="text-gray-400 hover:text-red-500 transition-colors"
                   >
                     <X className="w-5 h-5" />
@@ -252,7 +275,7 @@ const CategoriesAndTags = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex justify-between items-center mb-4">
+          {/* <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-medium">Tags</h3>
             <button
               onClick={() => {
@@ -265,10 +288,10 @@ const CategoriesAndTags = () => {
               <Plus className="w-4 h-4" />
               Add Tag
             </button>
-          </div>
+          </div> */}
 
           {/* Add Tag Form */}
-          {isAddingTag && (
+          {/* {isAddingTag && (
             <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4">
               <div className="space-y-3">
                 <div>
@@ -331,10 +354,10 @@ const CategoriesAndTags = () => {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {/* Tags List */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {tags.map((tag) => (
               <div
                 key={tag.id}
@@ -356,7 +379,7 @@ const CategoriesAndTags = () => {
                 </button>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       )}
     </div>
