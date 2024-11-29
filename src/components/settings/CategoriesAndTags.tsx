@@ -8,7 +8,7 @@ import {
 } from "../../redux/app/categories/categorieSlice";
 import { showSnackbar } from "../../redux/app/error/errorSlice";
 import { useSelector } from "react-redux";
-
+import { Suspense } from "react";
 interface Category {
   _id?: string;
   name: string;
@@ -27,7 +27,6 @@ const CategoriesAndTags = () => {
   const { status, error, items } = useSelector(
     (state: RootState) => state.categories
   );
-  console.log(items);
   const dispatch = useDispatch<AppDispatch>();
   const [categories, setCategories] = useState<Category[]>(items);
 
@@ -74,6 +73,7 @@ const CategoriesAndTags = () => {
           severity: "success",
         })
       );
+      
       setCategories([...categories, newCategoryItem]);
     } else {
       const { errors }: any = error;
@@ -118,9 +118,10 @@ const CategoriesAndTags = () => {
   };
   useEffect(() => {
     dispatch(fetchCategories());
-  }, [dispatch, newCategory]);
+  }, [dispatch]);
 
   return (
+    
     <div className="container mx-auto px-4 py-6 max-w-4xl">
       <div className="mb-6">
         <h2 className="text-xl md:text-2xl font-bold text-gray-900">
@@ -387,3 +388,4 @@ const CategoriesAndTags = () => {
 };
 
 export default CategoriesAndTags;
+

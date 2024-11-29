@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { Employee } from "../employees/EmployeeForm";
 import snackbarMessages from "../messages/message";
 import showSnackbar from "../messages";
+import { fetchCategories } from "../../redux/app/categories/categorieSlice";
 
 interface CaseFormProps {
   onSubmit: (case_: DisciplinaryCase) => void;
@@ -22,11 +23,12 @@ const CaseForm: React.FC<CaseFormProps> = ({
   initialData,
 }) => {
   const isUpdating = !!initialData;
+  const dispatch = useDispatch<AppDispatch>();
+
   const categorie = useSelector((state: any) => state.categories.items);
-  console.log(categorie);
+  console.log(categorie.map((category: any) => category.name));
   const employee = useSelector((state: any) => state.employee.employees);
 
-  const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState<DisciplinaryCase>(
     initialData || {
       type: "",
@@ -39,11 +41,12 @@ const CaseForm: React.FC<CaseFormProps> = ({
       attachments: "",
     }
   );
-
   useEffect(() => {
     dispatch(fetchEmployees());
   }, [dispatch]);
-
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -142,15 +145,19 @@ const CaseForm: React.FC<CaseFormProps> = ({
               Category
             </label>
             <select
-              name="type"
+              name="type" // Update the name to 'category' for clarity
               value={formData.type}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
             >
-              {categorie.map((option: { name: string; label: string }) => (
-                <option key={option.name} value={option.name}>
-                  {option.name}
+              <option value="" disabled>
+                Select a category
+              </option>{" "}
+              {/* Default option */}
+              {categorie.map((category: { _id: string; name: string }) => (
+                <option key={category._id} value={category.name}>
+                  {category.name}
                 </option>
               ))}
             </select>

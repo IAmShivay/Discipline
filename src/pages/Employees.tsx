@@ -1,19 +1,13 @@
-// types.ts
-export interface Manager {
-  id: string;
-  name: string;
-  role: string;
-  department: string;
-}
-
-export interface AlertState {
-  message: string;
-  type: "success" | "error";
-}
-
-// Employees.tsx
 import React, { useEffect, useState } from "react";
-import { Plus, Search, Pencil, Trash2 } from "lucide-react";
+import {
+  Plus,
+  Search,
+  Pencil,
+  Trash2,
+  AlertCircle,
+  Loader2,
+  Loader,
+} from "lucide-react";
 import { Employee } from "../components/employees/EmployeeForm";
 import EmployeeForm from "../components/employees/EmployeeForm";
 import { useDispatch } from "react-redux";
@@ -28,6 +22,13 @@ import {
 import snackbarMessages from "../components/messages/message";
 import { fetchRolesByCompanyId } from "../redux/app/role/roleSlice";
 import { showSnackbar } from "../redux/app/error/errorSlice";
+import MinimalistHRLoader from "./Loading";
+
+type AlertState = {
+  message: string;
+  type: "success" | "error";
+};
+
 const Employees: React.FC = () => {
   const employee = useSelector((state: any) => state.employee.employees);
   const availableManagers = useSelector((state: any) => state.roles.role);
@@ -36,7 +37,6 @@ const Employees: React.FC = () => {
   );
 
   const { error, loading } = useSelector((state: RootState) => state.employee);
-  console.log("Employee", error);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>(employee);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -44,6 +44,12 @@ const Employees: React.FC = () => {
   const [alert, setAlert] = useState<AlertState | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const roles = useSelector((state: RootState) => state.roles.roles);
+
+  // Separate loading state for employees
+  const [isLoadingEmployees, setIsLoadingEmployees] = useState(true);
+  const [employeesLoadError, setEmployeesLoadError] = useState<string | null>(
+    null
+  );
 
   const handleAddEmployee = async (employee: Employee): Promise<void> => {
     const roleObject = roles.find((role: any) => role._id === employee.roleId);
@@ -77,6 +83,7 @@ const Employees: React.FC = () => {
     }
     setShowForm(false);
   };
+
   const handleEditEmployee = async (employee: Employee): Promise<void> => {
     setEditingEmployee(employee);
     setShowForm(true);
@@ -154,15 +161,68 @@ const Employees: React.FC = () => {
       employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.department.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   useEffect(() => {
-    dispatch(fetchEmployees());
-  }, [updateEmployee, deleteEmployee, editingEmployee]);
+    const fetchEmployeeData = async () => {
+      setIsLoadingEmployees(true);
+      setEmployeesLoadError(null);
+      try {
+        const response = await dispatch(fetchEmployees());
+
+        if (fetchEmployees.rejected.match(response)) {
+          setEmployeesLoadError(
+            (response.payload as string) || "Failed to load employees"
+          );
+        }
+      } catch (err) {
+        console.error("Error fetching employees:", err);
+        setEmployeesLoadError(
+          "An unexpected error occurred while fetching employees"
+        );
+        dispatch(
+          showSnackbar({
+            message: "Failed to load employees",
+            severity: "error",
+          })
+        );
+      } finally {
+        setIsLoadingEmployees(false);
+      }
+    };
+
+    fetchEmployeeData();
+  }, [dispatch, updateEmployee, deleteEmployee, editingEmployee]);
+
   useEffect(() => {
     dispatch(fetchRolesByCompanyId(companyId as any));
   }, [companyId, updateEmployee, deleteEmployee]);
 
-  return (
-    <div className="p-6">
+  // Loading state renderer
+  const renderLoadingState = () => (
+    <div className="flex justify-center items-center h-64">
+      <div className="flex items-center gap-3 text-gray-600">
+        <Loader2 className="w-6 h-6 animate-spin" />
+        <span>Loading employees...</span>
+      </div>
+    </div>
+  );
+
+  // Error state renderer
+  const renderErrorState = () => (
+    <div className="flex justify-center items-center h-64">
+      <div className="flex items-center gap-3 text-red-600">
+        <AlertCircle className="w-6 h-6" />
+        <div>
+          <p className="font-semibold">Error Loading Employees</p>
+          <p className="text-sm">{employeesLoadError}</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Main content renderer
+  const renderEmployeeContent = () => (
+    <>
       {alert && (
         <div
           className={`mb-4 p-4 rounded-lg ${
@@ -280,7 +340,7 @@ const Employees: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {availableManagers.find(
-                        (m: Manager) => m.id === employee.managerId
+                        (m: any) => m.id === employee.managerId
                       )?.name || "No Manager"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -323,6 +383,16 @@ const Employees: React.FC = () => {
           </div>
         </div>
       )}
+    </>
+  );
+
+  return (
+    <div className="p-6">
+      {isLoadingEmployees
+        ?<MinimalistHRLoader/>
+        : employeesLoadError
+        ? renderErrorState()
+        : renderEmployeeContent()}
     </div>
   );
 };

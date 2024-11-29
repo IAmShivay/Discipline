@@ -26,11 +26,6 @@ const initialState: CategoriesState = {
   error: null,
 };
 
-// Axios instance (you can configure base URL, headers, etc.)
-const api = axios.create({
-  baseURL: "/api",
-});
-
 // Async thunks
 export const fetchCategories = createAsyncThunk<
   Category[],
@@ -59,34 +54,34 @@ export const addCategory = createAsyncThunk<
   }
 });
 
-export const updateCategory = createAsyncThunk<
-  Category,
-  Category,
-  { rejectValue: string }
->("categories/updateCategory", async (category, { rejectWithValue }) => {
-  try {
-    const response = await api.put<Category>(
-      `/categories/${category._id}`,
-      category
-    );
-    return response.data;
-  } catch (err) {
-    return rejectWithValue("Failed to update category");
-  }
-});
+// export const updateCategory = createAsyncThunk<
+//   Category,
+//   Category,
+//   { rejectValue: string }
+// >("categories/updateCategory", async (category, { rejectWithValue }) => {
+//   try {
+//     const response = await api.put<Category>(
+//       `/categories/${category._id}`,
+//       category
+//     );
+//     return response.data;
+//   } catch (err) {
+//     return rejectWithValue("Failed to update category");
+//   }
+// });
 
-export const deleteCategory = createAsyncThunk<
-  number,
-  number,
-  { rejectValue: string }
->("categories/deleteCategory", async (id, { rejectWithValue }) => {
-  try {
-    await api.delete(`/categories/${id}`);
-    return id;
-  } catch (err) {
-    return rejectWithValue("Failed to delete category");
-  }
-});
+// export const deleteCategory = createAsyncThunk<
+//   number,
+//   number,
+//   { rejectValue: string }
+// >("categories/deleteCategory", async (id, { rejectWithValue }) => {
+//   try {
+//     await api.delete(`/categories/${id}`);
+//     return id;
+//   } catch (err) {
+//     return rejectWithValue("Failed to delete category");
+//   }
+// });
 
 const categoriesSlice = createSlice({
   name: "categories",
@@ -114,25 +109,25 @@ const categoriesSlice = createSlice({
           state.items.push(action.payload);
         }
       )
-      .addCase(
-        updateCategory.fulfilled,
-        (state, action: PayloadAction<Category>) => {
-          const index = state.items.findIndex(
-            (cat) => cat._id === action.payload._id
-          );
-          if (index !== -1) {
-            state.items[index] = action.payload;
-          }
-        }
-      )
-      .addCase(
-        deleteCategory.fulfilled,
-        (state, action: PayloadAction<number>) => {
-          state.items = state.items.filter(
-            (cat) => (cat._id as any) !== action.payload
-          );
-        }
-      );
+      // .addCase(
+      //   updateCategory.fulfilled,
+      //   (state, action: PayloadAction<Category>) => {
+      //     const index = state.items.findIndex(
+      //       (cat) => cat._id === action.payload._id
+      //     );
+      //     if (index !== -1) {
+      //       state.items[index] = action.payload;
+      //     }
+      //   }
+      // )
+      // .addCase(
+      //   deleteCategory.fulfilled,
+      //   (state, action: PayloadAction<number>) => {
+      //     state.items = state.items.filter(
+      //       (cat) => (cat._id as any) !== action.payload
+      //     );
+      //   }
+      // );
   },
 });
 
