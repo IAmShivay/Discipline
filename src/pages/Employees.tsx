@@ -388,11 +388,13 @@ const Employees: React.FC = () => {
 
   return (
     <div className="p-6">
-      {isLoadingEmployees
-        ?<MinimalistHRLoader/>
-        : employeesLoadError
-        ? renderErrorState()
-        : renderEmployeeContent()}
+      {isLoadingEmployees ? (
+        <MinimalistHRLoader />
+      ) : employeesLoadError ? (
+        renderErrorState()
+      ) : (
+        renderEmployeeContent()
+      )}
     </div>
   );
 };
