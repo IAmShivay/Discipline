@@ -22,9 +22,10 @@ const CaseForm: React.FC<CaseFormProps> = ({
   initialData,
 }) => {
   const isUpdating = !!initialData;
-
+  const categorie = useSelector((state: any) => state.categories.items);
+  console.log(categorie);
   const employee = useSelector((state: any) => state.employee.employees);
-  
+
   const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState<DisciplinaryCase>(
     initialData || {
@@ -147,11 +148,11 @@ const CaseForm: React.FC<CaseFormProps> = ({
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
             >
-              <option value="">Select Category</option>
-              <option value="ATTENDANCE">Attendance</option>
-              <option value="MISCONDUCT">Misconduct</option>
-              <option value="POLICY_VIOLATION">Policy Violation</option>
-              <option value="performance">Performance</option>
+              {categorie.map((option: { name: string; label: string }) => (
+                <option key={option.name} value={option.name}>
+                  {option.name}
+                </option>
+              ))}
             </select>
           </div>
 
