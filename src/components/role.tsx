@@ -116,10 +116,10 @@ const RoleManagement: React.FC = () => {
         />
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          {/* <label className="block text-sm font-medium text-gray-700 mb-2">
             Permissions
-          </label>
-          <div className="grid grid-cols-2 gap-2">
+          </label> */}
+          {/* <div className="grid grid-cols-2 gap-2">
             {permissionOptions.map((perm) => (
               <label key={perm} className="inline-flex items-center">
                 <input
@@ -152,7 +152,7 @@ const RoleManagement: React.FC = () => {
                 {perm}
               </label>
             ))}
-          </div>
+          </div> */}
         </div>
 
         <div className="flex space-x-2">
@@ -201,9 +201,11 @@ const RoleManagement: React.FC = () => {
             className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border rounded-md hover:bg-gray-50 transition"
           >
             <div className="mb-2 sm:mb-0">
-              <div className="font-semibold text-gray-800">{role.name}</div>
+              <div className="font-semibold text-gray-800">
+                {role.name.toUpperCase()}
+              </div>
               <div className="text-sm text-gray-500">{role.description}</div>
-              <div className="mt-2 flex flex-wrap gap-2">
+              {/* <div className="mt-2 flex flex-wrap gap-2">
                 {role.permissions.map((perm) => (
                   <span
                     key={perm}
@@ -212,7 +214,7 @@ const RoleManagement: React.FC = () => {
                     {perm}
                   </span>
                 ))}
-              </div>
+              </div> */}
             </div>
             {/* <div className="flex space-x-2">
               <button
