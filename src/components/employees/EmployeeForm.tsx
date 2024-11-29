@@ -99,7 +99,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
           setFormData((prev) => ({ ...prev, managerId: "" }));
         }
       }
-
       // Filter out the "employee" role
       const managerRoles = roles.filter(
         (role) => role.name.toLowerCase() !== "employee"
@@ -210,7 +209,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               <option value="">Select Role</option>
               {roles.map((role) => (
                 <option key={role._id} value={role._id}>
-                  {role.name}
+                  {role.name.toLocaleUpperCase()}
                 </option>
               ))}
             </select>
