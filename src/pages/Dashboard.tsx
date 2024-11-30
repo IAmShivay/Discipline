@@ -13,9 +13,9 @@ import { AppDispatch } from "../store";
 function Dashboard() {
   const dispatch: AppDispatch = useDispatch();
   const cases = useSelector((state: RootState) => state.cases.cases);
-  const openCases = cases.filter((c) => c.status === "OPEN").length;
-  const closedCases = cases.filter((c) => c.status === "CLOSED").length;
-  const pendingResponses = cases.filter(
+  const openCases = cases?.filter((c) => c.status === "OPEN").length;
+  const closedCases = cases?.filter((c) => c.status === "CLOSED").length;
+  const pendingResponses = cases?.filter(
     (c) => c.status === "PENDING_RESPONSE"
   ).length;
 

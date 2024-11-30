@@ -503,11 +503,11 @@ const CategoriesAndTags = () => {
   };
 
   const removeCategory = (id: string) => {
-    setCategories(categories.filter((cat) => cat._id !== id));
+    setCategories(categories?.filter((cat) => cat._id !== id));
   };
 
   const removeTag = (id: string) => {
-    setTags(tags.filter((tag) => tag.id !== id));
+    setTags(tags?.filter((tag) => tag.id !== id));
   };
 
   useEffect(() => {

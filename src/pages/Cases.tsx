@@ -85,7 +85,7 @@ const Cases: React.FC = () => {
 
   const handleDeleteCase = async(caseId: string) => {
     if (window.confirm("Are you sure you want to delete this case?")) {
-      setCases((prev) => prev.filter((c) => c.id !== caseId));
+      setCases((prev) => prev?.filter((c) => c.id !== caseId));
     }
     console.log(caseId);
     const response = await dispatch(deleteCase(caseId));

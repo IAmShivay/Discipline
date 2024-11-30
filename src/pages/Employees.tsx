@@ -127,7 +127,7 @@ const Employees: React.FC = () => {
 
   const handleDeleteEmployee = async (_id: string): Promise<void> => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
-      setEmployees((prev) => prev.filter((emp) => emp._id !== _id));
+      setEmployees((prev) => prev?.filter((emp) => emp._id !== _id));
       const response = await dispatch(deleteEmployee(_id));
       if (response.meta.requestStatus === "fulfilled") {
         dispatch(
@@ -154,7 +154,7 @@ const Employees: React.FC = () => {
     setTimeout(() => setAlert(null), 3000);
   };
 
-  const filteredEmployees = employee.filter(
+  const filteredEmployees = employee?.filter(
     (employee: Employee) =>
       employee.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||

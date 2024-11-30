@@ -35,7 +35,7 @@ const RoleManagement: React.FC = () => {
 
   const permissionOptions = ["create", "read", "update", "delete"];
 
-  const filteredRoles = roles.filter((role) =>
+  const filteredRoles = roles?.filter((role) =>
     role.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -71,7 +71,7 @@ const RoleManagement: React.FC = () => {
   );
 
   const handleDeleteRole = useCallback((roleId: string | number) => {
-    setRoles((prev) => prev.filter((role) => role._id !== roleId));
+    setRoles((prev) => prev?.filter((role) => role._id !== roleId));
   }, []);
   useEffect(() => {
     if (roles.length === 0) {

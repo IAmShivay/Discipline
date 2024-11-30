@@ -40,7 +40,7 @@ const CustomFieldForm: React.FC<CustomFieldFormProps> = ({ onAddField }) => {
   };
 
   const removeOption = (index: number) => {
-    setOptions(options.filter((_, i) => i !== index));
+    setOptions(options?.filter((_, i) => i !== index));
   };
 
   if (!showForm) {

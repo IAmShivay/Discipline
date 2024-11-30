@@ -24,7 +24,7 @@ const Sidebar = () => {
   ];
   const getFilteredMenuItems = (role: string) => {
     if (role === 'employee') {
-      return menuItems.filter(item => ['Cases', 'Settings'].includes(item.label));
+      return menuItems?.filter(item => ['Cases', 'Settings'].includes(item.label));
     }
     return menuItems; // Default to all menu items for other roles
   };

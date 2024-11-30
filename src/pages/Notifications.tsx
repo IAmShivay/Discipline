@@ -46,7 +46,7 @@ const Notifications: React.FC = () => {
     dispatch(updateNotificationStatus(notificationId));
   };
 
-  const filteredNotifications = notifications.filter((notification) => {
+  const filteredNotifications = notifications?.filter((notification) => {
     const matchesSearch =
       notification.title.toLowerCase().includes(filters.search.toLowerCase()) ||
       notification.message.toLowerCase().includes(filters.search.toLowerCase());
@@ -62,7 +62,7 @@ const Notifications: React.FC = () => {
     return matchesSearch && matchesType && matchesReadStatus;
   });
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = notifications?.filter((n) => !n.isRead).length;
 
   useEffect(() => {
     const fetchData = async () => {

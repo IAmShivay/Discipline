@@ -100,12 +100,12 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         }
       }
       // Filter out the "employee" role
-      const managerRoles = roles.filter(
+      const managerRoles = roles?.filter(
         (role) => role.name.toLowerCase() !== "employee"
       );
 
       // Filter available managers based on the non-employee roles
-      const filtered = availableManagers.filter((manager) =>
+      const filtered = availableManagers?.filter((manager) =>
         managerRoles.some((role) => role.name === manager.role)
       );
       setFilteredManagers(filtered);

@@ -311,7 +311,7 @@ const caseSlice = createSlice({
       })
       .addCase(deleteCase.fulfilled, (state, action) => {
         state.loading = "succeeded";
-        state.cases = state.cases.filter(
+        state.cases = state.cases?.filter(
           (case_) => case_.id !== action.payload
         );
       })

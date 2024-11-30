@@ -114,7 +114,7 @@ const employeeSlice = createSlice({
     })
     .addCase(deleteEmployee.fulfilled, (state, action) => {
       state.loading = 'succeeded';
-      state.employees = state.employees.filter(employee => employee._id !== action.payload);
+      state.employees = state.employees?.filter(employee => employee._id !== action.payload);
     })
     .addCase(deleteEmployee.rejected, (state, action) => {
       state.loading = 'failed';

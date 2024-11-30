@@ -39,7 +39,7 @@ const Settings = () => {
 
   const getFilteredMenuItems = (role: string) => {
     if (role === "employee") {
-      return tabs.filter((item) => item.label === "General");
+      return tabs?.filter((item) => item.label === "General");
     }
     return tabs;
   };

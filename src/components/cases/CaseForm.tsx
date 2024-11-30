@@ -224,7 +224,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
                     onClick={() =>
                       setFormData((prev) => ({
                         ...prev,
-                        attachments: prev.attachments.filter(
+                        attachments: prev?.attachments?.filter(
                           (_: any, i: number) => i !== index
                         ),
                       }))
