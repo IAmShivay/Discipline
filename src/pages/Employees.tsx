@@ -197,16 +197,6 @@ const Employees: React.FC = () => {
     dispatch(fetchRolesByCompanyId(companyId as any));
   }, [companyId, updateEmployee, deleteEmployee]);
 
-  // Loading state renderer
-  const renderLoadingState = () => (
-    <div className="flex justify-center items-center h-64">
-      <div className="flex items-center gap-3 text-gray-600">
-        <Loader2 className="w-6 h-6 animate-spin" />
-        <span>Loading employees...</span>
-      </div>
-    </div>
-  );
-
   // Error state renderer
   const renderErrorState = () => (
     <div className="flex justify-center items-center h-64">
@@ -304,7 +294,7 @@ const Employees: React.FC = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredEmployees?.map((employee: Employee) => (
                   <tr
-                    key={employee._id}
+                    key={employee?._id}
                     className="hover:bg-gray-50 transition-colors duration-150"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -312,39 +302,39 @@ const Employees: React.FC = () => {
                         <div className="flex-shrink-0 h-10 w-10">
                           <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
                             <span className="text-gray-600 font-medium">
-                              {employee.firstName[0]}
-                              {employee.lastName[0]}
+                              {employee?.firstName[0]}
+                              {employee?.lastName[0]}
                             </span>
                           </div>
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {employee.firstName} {employee.lastName}
+                            {employee?.firstName} {employee?.lastName}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        {employee.email}
+                        {employee?.email}
                       </div>
                       <div className="text-sm text-gray-500">
-                        {employee.phone}
+                        {employee?.phone}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {employee.department}
+                      {employee?.department}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {employee.position}
+                      {employee?.position}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {availableManagers.find(
-                        (m: any) => m.id === employee.managerId
+                      {availableManagers?.find(
+                        (m: any) => m?.id === employee?.managerId
                       )?.name || "No Manager"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {new Date(employee.joinDate).toLocaleDateString()}
+                      {new Date(employee?.joinDate).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <div className="flex gap-2">
@@ -357,7 +347,7 @@ const Employees: React.FC = () => {
                         </button>
                         <button
                           onClick={() =>
-                            employee._id && handleDeleteEmployee(employee._id)
+                            employee?._id && handleDeleteEmployee(employee?._id)
                           }
                           className="text-red-600 hover:text-red-800 transition duration-150"
                           title="Delete"
