@@ -93,13 +93,13 @@ const Notifications: React.FC = () => {
             </span>
           )}
         </div>
-        <button
+        {/* <button
           onClick={handleMarkAllAsRead}
           className="btn btn-secondary flex items-center gap-2"
         >
           <CheckCircle2 className="w-4 h-4" />
           Mark all as read
-        </button>
+        </button> */}
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
