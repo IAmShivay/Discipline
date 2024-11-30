@@ -481,7 +481,7 @@ const CaseDetails: React.FC = () => {
                 </p>
               </div>
 
-              {case_ && case_.attachments && case_.attachments.length > 0 && (
+              {case_ && case_.attachments && case_.attachments?.length > 0 && (
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-2">
                     Attachments

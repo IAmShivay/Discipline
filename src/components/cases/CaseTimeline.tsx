@@ -207,7 +207,7 @@ const CaseTimeline: React.FC<any> = ({ case_ }) => {
           <TimelineEvent
             key={event._id || idx}
             event={event}
-            isLast={idx === timeline.length - 1}
+            isLast={idx === timeline?.length - 1}
           />
         ))}
       </ul>

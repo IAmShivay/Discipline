@@ -228,7 +228,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               value={formData.managerId}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              disabled={!filteredManagers || filteredManagers.length === 0}
+              disabled={!filteredManagers || filteredManagers?.length === 0}
             >
               <option value="">Select Manager</option>
               {filteredManagers.map((manager) => (

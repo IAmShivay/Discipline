@@ -74,7 +74,7 @@ const RoleManagement: React.FC = () => {
     setRoles((prev) => prev?.filter((role) => role._id !== roleId));
   }, []);
   useEffect(() => {
-    if (roles.length === 0) {
+    if (roles?.length === 0) {
       dispatch(fetchRoles());
     }
   }, [dispatch, roles]);

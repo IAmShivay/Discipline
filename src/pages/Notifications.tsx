@@ -62,7 +62,7 @@ const Notifications: React.FC = () => {
     return matchesSearch && matchesType && matchesReadStatus;
   });
 
-  const unreadCount = notifications?.filter((n) => !n.isRead).length;
+  const unreadCount = notifications?.filter((n) => !n.isRead)?.length;
 
   useEffect(() => {
     const fetchData = async () => {

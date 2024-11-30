@@ -453,7 +453,7 @@ const CategoriesAndTags = () => {
     }
 
     const newCategoryItem = {
-      id: (categories.length + 1).toString(),
+      id: (categories?.length + 1).toString(),
       name: newCategory.name.trim(),
       description: newCategory.description.trim(),
     };
@@ -491,7 +491,7 @@ const CategoriesAndTags = () => {
     }
 
     const newTagItem = {
-      id: (tags.length + 1).toString(),
+      id: (tags?.length + 1).toString(),
       name: newTag.name.trim(),
       color: newTag.color,
     };

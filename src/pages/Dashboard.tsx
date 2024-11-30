@@ -13,14 +13,14 @@ import { AppDispatch } from "../store";
 function Dashboard() {
   const dispatch: AppDispatch = useDispatch();
   const cases = useSelector((state: RootState) => state.cases.cases);
-  const openCases = cases?.filter((c) => c.status === "OPEN").length;
-  const closedCases = cases?.filter((c) => c.status === "CLOSED").length;
+  const openCases = cases?.filter((c) => c.status === "OPEN")?.length;
+  const closedCases = cases?.filter((c) => c.status === "CLOSED")?.length;
   const pendingResponses = cases?.filter(
     (c) => c.status === "PENDING_RESPONSE"
-  ).length;
+  )?.length;
 
   const mockStats: DashboardStatsType = {
-    totalCases: cases.length || 0,
+    totalCases: cases?.length || 0,
     openCases: openCases || 0,
     closedCases: closedCases || 0,
     pendingActions: pendingResponses,

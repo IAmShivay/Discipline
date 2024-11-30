@@ -368,7 +368,7 @@ const Employees: React.FC = () => {
                     </td>
                   </tr>
                 ))}
-                {filteredEmployees.length === 0 && (
+                {filteredEmployees?.length === 0 && (
                   <tr>
                     <td
                       colSpan={7}

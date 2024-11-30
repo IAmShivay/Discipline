@@ -208,7 +208,7 @@ export const addAdminResponse = createAsyncThunk(
       const formData = new FormData();
       formData.append("message", responseData.message);
 
-      if (responseData.attachments && responseData.attachments.length > 0) {
+      if (responseData.attachments && responseData.attachments?.length > 0) {
         responseData.attachments.forEach((file, index) => {
           formData.append(`attachments`, file, file.name);
         });

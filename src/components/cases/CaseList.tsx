@@ -37,7 +37,7 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
   );
   console.log("", isAuthenticated, user);
 
-  if (cases.length === 0) {
+  if (cases?.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
         <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />

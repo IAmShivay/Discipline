@@ -180,7 +180,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
             <p className="text-gray-800 whitespace-pre-wrap">
               {response.message}
             </p>
-            {response.attachments && response.attachments.length > 0 && (
+            {response.attachments && response.attachments?.length > 0 && (
               <div className="mt-2 text-sm text-gray-600">
                 <p className="font-medium">Attachments:</p>
                 <ul className="list-none pl-5">

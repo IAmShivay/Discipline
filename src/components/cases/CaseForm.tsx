@@ -208,10 +208,10 @@ const CaseForm: React.FC<CaseFormProps> = ({
               />
             </label>
             <span className="text-sm text-gray-500">
-              {formData.attachments.length} files selected
+              {formData.attachments?.length} files selected
             </span>
           </div>
-          {formData.attachments.length > 0 && (
+          {formData.attachments?.length > 0 && (
             <ul className="mt-2 space-y-1">
               {formData.attachments.map((file: any, index: number) => (
                 <li
