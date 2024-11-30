@@ -133,7 +133,7 @@ const Cases: React.FC = () => {
         />
       ) : (
         <>
-          <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+          {/* <div className="bg-white rounded-lg shadow-md p-4 mb-6">
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex-1 min-w-[200px]">
                 <input
@@ -182,7 +182,7 @@ const Cases: React.FC = () => {
                 Apply Filters
               </button>
             </div>
-          </div>
+          </div> */}
 
           <CaseList
             cases={casesState}
