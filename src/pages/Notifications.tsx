@@ -48,15 +48,15 @@ const Notifications: React.FC = () => {
 
   const filteredNotifications = notifications?.filter((notification) => {
     const matchesSearch =
-      notification.title.toLowerCase().includes(filters.search.toLowerCase()) ||
-      notification.message.toLowerCase().includes(filters.search.toLowerCase());
+      notification.title.toLowerCase().includes(filters?.search.toLowerCase()) ||
+      notification.message.toLowerCase().includes(filters?.search.toLowerCase());
 
-    const matchesType = filters.type
-      ? notification.type === filters.type
+    const matchesType = filters?.type
+      ? notification.type === filters?.type
       : true;
 
-    const matchesReadStatus = filters.readStatus
-      ? (filters.readStatus === "read") === notification.isRead
+    const matchesReadStatus = filters?.readStatus
+      ? (filters?.readStatus === "read") === notification?.isRead
       : true;
 
     return matchesSearch && matchesType && matchesReadStatus;
