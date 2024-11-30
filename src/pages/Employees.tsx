@@ -156,10 +156,10 @@ const Employees: React.FC = () => {
 
   const filteredEmployees = employee?.filter(
     (employee: Employee) =>
-      employee.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.department.toLowerCase().includes(searchTerm.toLowerCase())
+      employee?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee?.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee?.department.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
