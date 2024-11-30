@@ -18,7 +18,7 @@ interface Role {
 
 const RoleManagement: React.FC = () => {
   const { roles, loading, error } = useSelector(
-    (state: RootState) => state.roles
+    (state: RootState) => state?.roles
   );
   const [roless, setRoles] = useState<Role[]>(roles);
   const dispatch = useDispatch<AppDispatch>();

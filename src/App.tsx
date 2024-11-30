@@ -24,6 +24,7 @@ import RoleManagement from "./components/role";
 import ResetPasswordPage from "./pages/ForgotPassword";
 import TwoStepForgotPasswordPage from "./pages/ForgotPassword";
 import ChangePasswordPage from "./components/ChangePassword";
+import MinimalistHRLoader from "./pages/Loading";
 
 // Define proper type for RootState
 interface RootState {
@@ -36,7 +37,7 @@ interface RootState {
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector(
-    (state: RootState) => state.verify
+    (state: RootState) => state?.verify
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +47,7 @@ const App: React.FC = () => {
       try {
         await dispatch<any>(loadUser());
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load user");
+        setError(err instanceof Error ? err?.message : "Failed to load user");
       } finally {
         setLoading(false);
       }
@@ -55,7 +56,7 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <LoadingComponent />;
+    return <MinimalistHRLoader />;
   }
 
   if (error) {
