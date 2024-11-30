@@ -300,7 +300,6 @@ const CaseDetails: React.FC = () => {
           setLoadError("No case ID provided");
         }
       } catch (error) {
-        // console.error("Error fetching case:", error);
         setLoadError("An unexpected error occurred while fetching case details");
         dispatch(
           showSnackbar({
@@ -446,10 +445,7 @@ const CaseDetails: React.FC = () => {
                                 );
                               }
                             } catch (error) {
-                              // console.error(
-                              //   "Error updating case status:",
-                              //   error
-                              // );
+                            
                               dispatch(
                                 showSnackbar({
                                   message: "An unexpected error occurred. Please try again.",

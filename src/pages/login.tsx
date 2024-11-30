@@ -61,7 +61,6 @@ const LoginPage: React.FC = () => {
       }
       window.location.href = "/dashboard";
     } catch (error) {
-      // console.error("Login error:", error);
     } finally {
       setLoading(false);
     }

@@ -175,7 +175,6 @@ const Employees: React.FC = () => {
           );
         }
       } catch (err) {
-        // console.error("Error fetching employees:", err);
         setEmployeesLoadError(
           "An unexpected error occurred while fetching employees"
         );

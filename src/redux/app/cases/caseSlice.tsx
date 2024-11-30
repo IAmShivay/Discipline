@@ -227,12 +227,10 @@ export const addAdminResponse = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // console.error("Error details:", error.response?.data);
         return rejectWithValue(
           error.response?.data || "Failed to add admin response"
         );
       }
-      // console.error("Unexpected error:", error);
       return rejectWithValue("An unexpected error occurred");
     }
   }
