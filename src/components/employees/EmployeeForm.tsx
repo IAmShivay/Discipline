@@ -88,8 +88,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   const roles = useSelector((state: RootState) => state.roles.roles);
   const [filteredManagers, setFilteredManagers] = useState<Manager[]>([]);
   useEffect(() => {
-    if (formData.roleId) {
-      const selectedRole = roles.find((role) => role._id === formData.roleId);
+    if (formData?.roleId) {
+      const selectedRole = roles?.find((role) => role._id === formData.roleId);
 
       if (selectedRole) {
         const isEmployeeRole = selectedRole.name.toLowerCase() === "employee";
@@ -101,12 +101,12 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       }
       // Filter out the "employee" role
       const managerRoles = roles?.filter(
-        (role) => role.name.toLowerCase() !== "employee"
+        (role) => role.name?.toLowerCase() !== "employee"
       );
 
       // Filter available managers based on the non-employee roles
       const filtered = availableManagers?.filter((manager) =>
-        managerRoles.some((role) => role.name === manager.role)
+        managerRoles?.some((role) => role.name === manager.role)
       );
       setFilteredManagers(filtered);
     }
@@ -125,7 +125,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     { value: "hold", label: "On Hold" },
     { value: "terminated", label: "Terminated" },
   ];
-  console.log(filteredManagers);
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
