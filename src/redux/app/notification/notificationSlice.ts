@@ -50,7 +50,7 @@ export const updateNotificationStatus = createAsyncThunk(
   async (notificationId: string, { rejectWithValue }) => {
     try {
       const response = await axiosBackend.patch(
-        `/notifications/${notificationId}`,
+        `/cases/update-notifications/${notificationId}`,
         {
           isRead: true,
         }

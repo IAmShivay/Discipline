@@ -61,11 +61,11 @@ const NotificationList: React.FC<NotificationListProps> = ({
       onMarkAsRead(notification._id);
     }
     
-    if (notification.caseId) {
-      navigate(`/cases/${notification.caseId}`);
-    } else if (notification.employeeId) {
-      navigate(`/employees/${notification.employeeId}`);
-    }
+    // if (notification.caseId) {
+    //   navigate(`/cases/${notification.caseId}`);
+    // } else if (notification.employeeId) {
+    //   navigate(`/employees/${notification.employeeId}`);
+    // }
   };
 
   return (

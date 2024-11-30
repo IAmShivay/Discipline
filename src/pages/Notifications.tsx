@@ -8,7 +8,7 @@ import { AppDispatch } from "../store";
 import type { Notification } from "../types";
 import { fetchNotifications } from "../redux/app/notification/notificationSlice";
 import { showSnackbar } from "../redux/app/error/errorSlice";
-
+import { updateNotificationStatus } from "../redux/app/notification/notificationSlice";
 const Notifications: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const caseNotifications = useSelector(
@@ -43,6 +43,7 @@ const Notifications: React.FC = () => {
           : notification
       )
     );
+    dispatch(updateNotificationStatus(notificationId));
   };
 
   const filteredNotifications = notifications.filter((notification) => {
