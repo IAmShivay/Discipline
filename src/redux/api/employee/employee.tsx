@@ -23,7 +23,7 @@ function handleAxiosError(error: any) {
     const errorMessage = error.response.data.message;
     throw errorMessage;
   } else {
-    console.error("Axios error:", error.message);
+    // console.error("Axios error:", error.message);
     throw error.message;
   }
 }

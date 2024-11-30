@@ -232,7 +232,7 @@ export const addAdminResponse = createAsyncThunk(
           error.response?.data || "Failed to add admin response"
         );
       }
-      console.error("Unexpected error:", error);
+      // console.error("Unexpected error:", error);
       return rejectWithValue("An unexpected error occurred");
     }
   }

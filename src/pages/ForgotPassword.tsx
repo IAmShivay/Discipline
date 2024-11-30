@@ -54,7 +54,7 @@ const ResetPasswordInitiatePage: React.FC = () => {
         );
       }
     } catch (error) {
-      console.error("Password reset initiation error:", error);
+      // console.error("Password reset initiation error:", error);
       dispatch(
         showSnackbar({
           message: "An error occurred. Please try again.",

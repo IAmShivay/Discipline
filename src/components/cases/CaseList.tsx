@@ -157,7 +157,7 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
                             if (caseId) {
                               onDelete(caseId);
                             } else {
-                              console.error("Case id is undefined", case_);
+                              // console.error("Case id is undefined", case_);
                             }
                           }}
                           className="text-red-600 hover:text-red-900"

@@ -446,10 +446,10 @@ const CaseDetails: React.FC = () => {
                                 );
                               }
                             } catch (error) {
-                              console.error(
-                                "Error updating case status:",
-                                error
-                              );
+                              // console.error(
+                              //   "Error updating case status:",
+                              //   error
+                              // );
                               dispatch(
                                 showSnackbar({
                                   message: "An unexpected error occurred. Please try again.",

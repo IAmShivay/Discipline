@@ -77,7 +77,7 @@ const Cases: React.FC = () => {
         );
       }
     } else {
-      console.error("Updated case id is undefined");
+      // console.error("Updated case id is undefined");
     }
   };
 
