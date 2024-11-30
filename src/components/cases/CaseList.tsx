@@ -154,10 +154,6 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
                           onClick={(e) => {
                             e.stopPropagation();
                             const caseId = case_._id;
-                            console.log(
-                              "Attempting to delete case with id:",
-                              caseId
-                            );
                             if (caseId) {
                               onDelete(caseId);
                             } else {

@@ -32,7 +32,6 @@ const Cases: React.FC = () => {
     dateRange: "",
   });
 
-  // console.log(errors.map((e: any) => e.message));
   const handleAddCase = async (newCase: DisciplinaryCase) => {
     setCases((prev) => [...prev, newCase]);
     setShowForm(false);
