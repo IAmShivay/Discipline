@@ -8,11 +8,12 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchCases } from "../redux/app/cases/caseSlice";
 import { AppDispatch } from "../store";
+import { DisciplinaryCase } from "../types";
 // Temporary mock data
 
 function Dashboard() {
   const dispatch: AppDispatch = useDispatch();
-  const cases = useSelector((state: RootState) => state.cases.cases);
+  const cases: DisciplinaryCase[] = useSelector((state: RootState) => state.cases.cases);
   const openCases = cases?.filter((c) => c.status === "OPEN")?.length;
   const closedCases = cases?.filter((c) => c.status === "CLOSED")?.length;
   const pendingResponses = cases?.filter(

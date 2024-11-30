@@ -154,7 +154,7 @@ const Employees: React.FC = () => {
     setTimeout(() => setAlert(null), 3000);
   };
 
-  const filteredEmployees = employee?.filter(
+  const filteredEmployees : Employee[] = employee?.filter(
     (employee: Employee) =>
       employee?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
