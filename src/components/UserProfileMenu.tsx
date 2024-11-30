@@ -80,7 +80,7 @@ const UserProfileMenu: React.FC = () => {
       >
         <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
           <span className="text-sm font-medium text-white">
-            {profile.name.charAt(0)}
+            {profile?.name?.charAt(0)}
           </span>
         </div>
         <div className="flex-1 text-left">
@@ -140,7 +140,7 @@ const UserProfileMenu: React.FC = () => {
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
                     <span className="text-lg font-medium text-white">
-                      {profile.name.charAt(0)}
+                      {profile?.name?.charAt(0)}
                     </span>
                   </div>
                   <div>
