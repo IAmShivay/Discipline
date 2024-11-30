@@ -9,7 +9,6 @@ export const createCategories = async (Data: Category) => {
     const response = await axiosBackend.post("/catagories/create", Data);
     return response.data;
   } catch (error) {
-    console.log(error);
     handleAxiosError(error);
   }
 };
@@ -19,7 +18,6 @@ export const getCategories = async () => {
     const response = await axiosBackend.get("/catagories/get"); // Typo in the endpoint
     return response.data;
   } catch (error) {
-    console.log(error);
     handleAxiosError(error);
   }
 };
@@ -28,7 +26,6 @@ function handleAxiosError(error: any) {
   const dispatch = useDispatch();
   if (error.response) {
     const errorMessage = error.response.data.message;
-    console.log(errorMessage);
     dispatch(showSnackbar({ message: errorMessage, severity: "error" }));
   } else {
     throw error.message;

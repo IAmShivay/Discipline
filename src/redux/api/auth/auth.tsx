@@ -14,7 +14,6 @@ export const Register = async (credentials: Credentials) => {
     const response = await axiosInstance.post("/signup", credentials);
     return response.data;
   } catch (error) {
-    console.log(error);
     handleAxiosError(error);
   }
 };
@@ -54,7 +53,6 @@ export const Logout = async () => {
 export const Verify = async () => {
   try {
     const response = await axiosInstance.get("/verify"); // Use the instance directly
-    console.log(response.data);
     return response.data;
   } catch (error) {
     handleAxiosError(error); // Ensure you have a proper error handling function
@@ -64,7 +62,6 @@ export const Verify = async () => {
 function handleAxiosError(error: any) {
   if (error.response) {
     const errorMessage = error.response.data.message;
-    console.log(errorMessage);
     throw errorMessage;
   } else {
     console.error("Axios error:", error.message);

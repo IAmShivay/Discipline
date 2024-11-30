@@ -33,7 +33,6 @@ const CaseStatusUpdate: React.FC<CaseStatusUpdateProps> = ({ case_, onStatusChan
   const handleSave = () => {
     setIsEditing(false);
     onStatusChange(status);
-    console.log("Saving status:", status);
   };
 
   if (isEditing) {

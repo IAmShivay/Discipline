@@ -66,7 +66,6 @@ const Cases: React.FC = () => {
     );
     setEditingCase(null);
     setShowForm(false);
-    console.log(updatedCase, "");
     if (updatedCase._id) {
       const response = await dispatch(updateCase({ id: updatedCase._id, caseData: updatedCase }));
       window.location.reload();
@@ -87,7 +86,6 @@ const Cases: React.FC = () => {
     if (window.confirm("Are you sure you want to delete this case?")) {
       setCases((prev) => prev?.filter((c) => c.id !== caseId));
     }
-    console.log(caseId);
     const response = await dispatch(deleteCase(caseId));
     if (response.meta.requestStatus === "fulfilled") {
       dispatch(

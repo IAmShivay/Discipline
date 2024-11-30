@@ -35,7 +35,6 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.verify
   );
-  console.log("", isAuthenticated, user);
 
   if (cases?.length === 0) {
     return (

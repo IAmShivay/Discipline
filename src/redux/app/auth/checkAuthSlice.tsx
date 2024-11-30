@@ -54,7 +54,6 @@ const verify = createSlice({
         state.loading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
-        console.log(action.payload)
       })
       .addCase(loadUser.rejected, (state, action) => {
         state.loading = false;

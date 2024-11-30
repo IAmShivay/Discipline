@@ -17,7 +17,6 @@ const NotificationSettings = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Save notification settings
-    console.log('Saving settings:', settings);
   };
 
   return (

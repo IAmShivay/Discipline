@@ -80,7 +80,6 @@ export const fetchRolesByCompanyId = createAsyncThunk(
   async (companyId: string, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(`/getuser/${companyId}`);
-      console.log(response.data)
 
       return response.data;
     } catch (error: any) {

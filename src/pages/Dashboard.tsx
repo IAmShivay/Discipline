@@ -28,7 +28,6 @@ function Dashboard() {
   useEffect(() => {
     dispatch(fetchCases());
   }, [dispatch]);
-  console.log(cases);
   const mockCases = cases?.map((caseItem) => ({
     id: caseItem._id,
     title: caseItem.title,

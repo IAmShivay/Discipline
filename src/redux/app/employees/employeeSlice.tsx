@@ -72,7 +72,6 @@ export const fetchEmployees = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await getEmployee();
-      console.log(response);
       return response;
     } catch (error) {
       if (axios.isAxiosError(error)) {

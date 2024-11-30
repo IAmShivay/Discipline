@@ -73,7 +73,6 @@ const SignupPage: React.FC = () => {
     ): Promise<void> => {
         setLoading(true);
         try {
-            console.log(values);
             await dispatch(registerUser(values));
             navigate('/auth/login');
         } catch (error) {

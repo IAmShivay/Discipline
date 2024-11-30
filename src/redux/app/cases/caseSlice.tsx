@@ -82,7 +82,6 @@ export const updateCase = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      console.log(caseData, "jijiji");
       const formData = new FormData();
 
       // Add all case data to the FormData object
@@ -96,9 +95,7 @@ export const updateCase = createAsyncThunk(
           formData.append(key, (caseData as any)[key]);
         }
       });
-      console.log("FormData contents:");
       for (let [key, value] of formData.entries()) {
-        console.log(key, value);
       }
       const response = await axiosBackend.put(`/cases/update/${id}`, formData, {
         headers: {
@@ -214,9 +211,7 @@ export const addAdminResponse = createAsyncThunk(
         });
       }
 
-      console.log("FormData contents:");
       for (let [key, value] of formData.entries()) {
-        console.log(key, value);
       }
 
       const response = await axiosBackend.post(
@@ -246,7 +241,6 @@ export const addAdminResponse = createAsyncThunk(
 export const fetchEmployeeResponses = createAsyncThunk(
   "cases/fetchEmployeeResponses",
   async (caseId: string, { rejectWithValue }) => {
-    console.log("Fetching employee responses for case:", caseId);
     try {
       const response = await axiosBackend.get(
         `/cases/employee-responses/${caseId}`
