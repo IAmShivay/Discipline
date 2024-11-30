@@ -31,13 +31,13 @@ const Notifications: React.FC = () => {
 
   const handleMarkAllAsRead = () => {
     setNotifications((prev) =>
-      prev.map((notification) => ({ ...notification, isRead: true }))
+      prev?.map((notification) => ({ ...notification, isRead: true }))
     );
   };
 
   const handleMarkAsRead = (notificationId: string) => {
     setNotifications((prev) =>
-      prev.map((notification) =>
+      prev?.map((notification) =>
         notification._id === notificationId
           ? { ...notification, isRead: true }
           : notification

@@ -325,7 +325,7 @@ const caseSlice = createSlice({
       })
       .addCase(updateCase.fulfilled, (state, action) => {
         state.loading = "succeeded";
-        state.cases = state.cases.map((case_) =>
+        state.cases = state.cases?.map((case_) =>
           case_.id === action.payload.id ? action.payload : case_
         );
         state.currentCase = action.payload;

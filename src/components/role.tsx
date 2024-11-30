@@ -62,7 +62,7 @@ const RoleManagement: React.FC = () => {
       if (!editingRole?.name) return;
 
       setRoles((prev) =>
-        prev.map((role) => (role._id === editingRole._id ? editingRole : role))
+        prev?.map((role) => (role._id === editingRole._id ? editingRole : role))
       );
       setEditingRole(null);
       setMobileView("list");
@@ -195,7 +195,7 @@ const RoleManagement: React.FC = () => {
       </div>
 
       <div className="space-y-4">
-        {filteredRoles.map((role) => (
+        {filteredRoles?.map((role) => (
           <div
             key={role._id}
             className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border rounded-md hover:bg-gray-50 transition"

@@ -88,7 +88,7 @@ const Employees: React.FC = () => {
     setEditingEmployee(employee);
     setShowForm(true);
     setEmployees((prev) =>
-      prev.map((emp) => (emp._id === employee._id ? employee : emp))
+      prev?.map((emp) => (emp._id === employee._id ? employee : emp))
     );
     const roleObject = roles.find((role: any) => role._id === employee.roleId);
 
@@ -302,7 +302,7 @@ const Employees: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredEmployees.map((employee: Employee) => (
+                {filteredEmployees?.map((employee: Employee) => (
                   <tr
                     key={employee._id}
                     className="hover:bg-gray-50 transition-colors duration-150"

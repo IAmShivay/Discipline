@@ -29,7 +29,7 @@ function Dashboard() {
     dispatch(fetchCases());
   }, [dispatch]);
   console.log(cases);
-  const mockCases = cases.map((caseItem) => ({
+  const mockCases = cases?.map((caseItem) => ({
     id: caseItem._id,
     title: caseItem.title,
     status: caseItem.status,

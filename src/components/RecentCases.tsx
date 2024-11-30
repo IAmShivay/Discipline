@@ -23,7 +23,7 @@ const RecentCases = ({ cases }: any) => {
         <h2 className="text-lg font-semibold text-gray-900">Recent Cases</h2>
       </div>
       <div className="divide-y divide-gray-200">
-        {cases.map((case_: DisciplinaryCase) => {
+        {cases?.map((case_: DisciplinaryCase) => {
           const StatusIcon = case_.status ? statusIcons[case_.status] : Clock;
           return (
             <div key={case_.id} className="p-6 hover:bg-gray-50">

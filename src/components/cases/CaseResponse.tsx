@@ -32,12 +32,12 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
   // Initialize responses from Redux state
   useEffect(() => {
     if (caseNow) {
-      const adminResponses = (caseNow.adminResponses || []).map((resp) => ({
+      const adminResponses = (caseNow.adminResponses || [])?.map((resp) => ({
         ...resp,
         type: "admin" as const,
       }));
 
-      const employeeResponses = (caseNow.employeeResponse || []).map(
+      const employeeResponses = (caseNow.employeeResponse || [])?.map(
         (resp) => ({
           ...resp,
           type: "employee" as const,
@@ -155,7 +155,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
         </div>
 
         {/* Display all responses */}
-        {allResponses.map((response, index) => (
+        {allResponses?.map((response, index) => (
           <div
             key={index}
             className={`border rounded-md p-4 ${
@@ -184,7 +184,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
               <div className="mt-2 text-sm text-gray-600">
                 <p className="font-medium">Attachments:</p>
                 <ul className="list-none pl-5">
-                  {response.attachments.map(
+                  {response?.attachments?.map(
                     (
                       file: { name: string; url: string; createdAt: Date },
                       idx: number

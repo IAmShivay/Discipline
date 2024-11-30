@@ -79,7 +79,7 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {cases.map((case_) => {
+            {cases?.map((case_) => {
               const StatusIcon =
                 statusIcons[case_.status as keyof typeof statusIcons] ||
                 AlertCircle;

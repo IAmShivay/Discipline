@@ -207,7 +207,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               required
             >
               <option value="">Select Role</option>
-              {roles.map((role) => (
+              {roles?.map((role) => (
                 <option key={role._id} value={role._id}>
                   {role.name.toLocaleUpperCase()}
                 </option>
@@ -231,7 +231,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               disabled={!filteredManagers || filteredManagers?.length === 0}
             >
               <option value="">Select Manager</option>
-              {filteredManagers.map((manager) => (
+              {filteredManagers?.map((manager) => (
                 <option key={manager._id} value={manager._id}>
                   {manager.fullName} ({manager.role})
                 </option>
@@ -254,7 +254,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
             >
-              {statusOptions.map((option) => (
+              {statusOptions?.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>

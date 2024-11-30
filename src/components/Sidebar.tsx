@@ -72,7 +72,7 @@ const Sidebar = () => {
         </div>
         
         <nav className="flex-1">
-          {getFilteredMenuItems(role).map((item) => {
+          {getFilteredMenuItems(role)?.map((item) => {
             const isActive = location.pathname === item.path;
             return (
               <button

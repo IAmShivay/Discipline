@@ -62,7 +62,7 @@ const Cases: React.FC = () => {
 
   const handleUpdateCase = async(updatedCase: DisciplinaryCase) => {
     setCases((prev) =>
-      prev.map((c) => (c._id === updatedCase._id ? updatedCase : c))
+      prev?.map((c) => (c._id === updatedCase._id ? updatedCase : c))
     );
     setEditingCase(null);
     setShowForm(false);

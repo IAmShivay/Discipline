@@ -26,7 +26,6 @@ const CaseForm: React.FC<CaseFormProps> = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const categorie = useSelector((state: any) => state.categories.items);
-  console.log(categorie.map((category: any) => category.name));
   const employee = useSelector((state: any) => state.employee.employees);
 
   const [formData, setFormData] = useState<DisciplinaryCase>(
@@ -132,7 +131,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
               required
             >
               <option value="">Select Employee</option>
-              {employee.map((employee: Employee) => (
+              {employee?.map((employee: Employee) => (
                 <option key={employee._id} value={employee._id}>
                   {`${employee.firstName} ${employee.lastName}`}
                 </option>
@@ -155,7 +154,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
                 Select a category
               </option>{" "}
               {/* Default option */}
-              {categorie.map((category: { _id: string; name: string }) => (
+              {categorie?.map((category: { _id: string; name: string }) => (
                 <option key={category._id} value={category.name}>
                   {category.name}
                 </option>
@@ -213,7 +212,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
           </div>
           {formData.attachments?.length > 0 && (
             <ul className="mt-2 space-y-1">
-              {formData.attachments.map((file: any, index: number) => (
+              {formData?.attachments?.map((file: any, index: number) => (
                 <li
                   key={index}
                   className="text-sm text-gray-600 flex items-center space-x-2"

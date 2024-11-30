@@ -114,7 +114,7 @@ const CustomFieldForm: React.FC<CustomFieldFormProps> = ({ onAddField }) => {
                 </button>
               </div>
               <div className="space-y-2">
-                {options.map((option, index) => (
+                {options?.map((option, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between bg-gray-50 p-2 rounded"

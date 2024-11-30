@@ -369,7 +369,7 @@ const CaseDetails: React.FC = () => {
       <div className="bg-white rounded-lg shadow-md">
         <div className="border-b border-gray-200">
           <nav className="flex space-x-8 px-6" aria-label="Tabs">
-            {tabs.map(({ id, label, icon: Icon }) => (
+            {tabs?.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
@@ -487,7 +487,7 @@ const CaseDetails: React.FC = () => {
                     Attachments
                   </h3>
                   <ul className="space-y-2">
-                    {case_.attachments.map(
+                    {case_?.attachments?.map(
                       (file: { url: string; name: string }, index: number) => (
                         <li
                           key={index}

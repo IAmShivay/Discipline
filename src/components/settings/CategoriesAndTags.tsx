@@ -645,7 +645,7 @@ const CategoriesAndTags = () => {
                 Loading categories...
               </div>
             ) : (
-              categories.map((category) => (
+              categories?.map((category) => (
                 <div
                   key={category._id}
                   className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-sm transition-shadow"

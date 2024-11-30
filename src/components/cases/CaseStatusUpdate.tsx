@@ -45,7 +45,7 @@ const CaseStatusUpdate: React.FC<CaseStatusUpdateProps> = ({ case_, onStatusChan
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           autoFocus
         >
-          {statusOptions.map((option) => (
+          {statusOptions?.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>

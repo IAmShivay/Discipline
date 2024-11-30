@@ -203,7 +203,7 @@ const CaseTimeline: React.FC<any> = ({ case_ }) => {
         Case Timeline
       </h3>
       <ul className="-mb-8">
-        {timeline.map((event, idx) => (
+        {timeline?.map((event, idx) => (
           <TimelineEvent
             key={event._id || idx}
             event={event}

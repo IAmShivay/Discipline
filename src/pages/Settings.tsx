@@ -82,7 +82,7 @@ const Settings = () => {
       <div className="hidden lg:flex gap-6">
         <div className="w-64 flex-shrink-0">
           <nav className="space-y-1">
-            {getFilteredMenuItems(user?.role || "").map((tab) => {
+            {getFilteredMenuItems(user?.role || "")?.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
@@ -112,7 +112,7 @@ const Settings = () => {
         {/* Scrollable Tabs */}
         <div className="mb-4 -mx-4 px-4 overflow-x-auto scrollbar-hide">
           <div className="flex space-x-2 min-w-max pb-3">
-            {getFilteredMenuItems(user?.role || "").map((tab) => {
+            {getFilteredMenuItems(user?.role || "")?.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
