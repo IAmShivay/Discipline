@@ -35,7 +35,7 @@ const RoleManagement: React.FC = () => {
 
   const permissionOptions = ["create", "read", "update", "delete"];
 
-  const filteredRoles = roles?.filter((role) =>
+  const filteredRoles : Role[] = roles?.filter((role) =>
     role.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
