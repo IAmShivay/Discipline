@@ -89,10 +89,10 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   const [filteredManagers, setFilteredManagers] = useState<Manager[]>([]);
   useEffect(() => {
     if (formData?.roleId) {
-      const selectedRole = roles?.find((role) => role._id === formData.roleId);
+      const selectedRole = roles?.find((role) => role?._id === formData?.roleId);
 
       if (selectedRole) {
-        const isEmployeeRole = selectedRole.name.toLowerCase() === "employee";
+        const isEmployeeRole = selectedRole?.name.toLowerCase() === "employee";
         setCanAssignManager(isEmployeeRole);
 
         if (!isEmployeeRole) {
@@ -106,11 +106,11 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 
       // Filter available managers based on the non-employee roles
       const filtered = availableManagers?.filter((manager) =>
-        managerRoles?.some((role) => role.name === manager.role)
+        managerRoles?.some((role) => role?.name === manager?.role)
       );
       setFilteredManagers(filtered);
     }
-  }, [formData.roleId, roles, availableManagers]);
+  }, [formData?.roleId, roles, availableManagers]);
   useEffect(() => {
     if (initialData) {
       setFormData((prevData) => ({
@@ -165,7 +165,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               id="firstName"
               type="text"
               name="firstName"
-              value={formData.firstName}
+              value={formData?.firstName}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
@@ -183,7 +183,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               id="lastName"
               type="text"
               name="lastName"
-              value={formData.lastName}
+              value={formData?.lastName}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
@@ -200,15 +200,15 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             <select
               id="roleId"
               name="roleId"
-              value={formData.roleId}
+              value={formData?.roleId}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
             >
               <option value="">Select Role</option>
               {roles?.map((role) => (
-                <option key={role._id} value={role._id}>
-                  {role.name.toLocaleUpperCase()}
+                <option key={role?._id} value={role?._id}>
+                  {role?.name?.toLocaleUpperCase()}
                 </option>
               ))}
             </select>
@@ -224,15 +224,15 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             <select
               id="managerId"
               name="managerId"
-              value={formData.managerId}
+              value={formData?.managerId}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               disabled={!filteredManagers || filteredManagers?.length === 0}
             >
               <option value="">Select Manager</option>
               {filteredManagers?.map((manager) => (
-                <option key={manager._id} value={manager._id}>
-                  {manager.fullName} ({manager.role})
+                <option key={manager?._id} value={manager?._id}>
+                  {manager?.fullName} ({manager?.role})
                 </option>
               ))}
             </select>
@@ -248,14 +248,14 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             <select
               id="status"
               name="status"
-              value={formData.status}
+              value={formData?.status}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
             >
               {statusOptions?.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+                <option key={option?.value} value={option?.value}>
+                  {option?.label}
                 </option>
               ))}
             </select>
@@ -272,7 +272,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               id="email"
               type="email"
               name="email"
-              value={formData.email}
+              value={formData?.email}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
@@ -290,7 +290,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               id="phone"
               type="tel"
               name="phone"
-              value={formData.phone}
+              value={formData?.phone}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
@@ -308,7 +308,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               id="department"
               type="text"
               name="department"
-              value={formData.department}
+              value={formData?.department}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
@@ -326,7 +326,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               id="position"
               type="text"
               name="position"
-              value={formData.position}
+              value={formData?.position}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
@@ -344,7 +344,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               id="joinDate"
               type="date"
               name="joinDate"
-              value={formData.joinDate}
+              value={formData?.joinDate}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required

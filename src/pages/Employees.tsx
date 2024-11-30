@@ -52,9 +52,9 @@ const Employees: React.FC = () => {
   );
 
   const handleAddEmployee = async (employee: Employee): Promise<void> => {
-    const roleObject = roles.find((role: any) => role._id === employee.roleId);
+    const roleObject = roles?.find((role: any) => role?._id === employee?.roleId);
 
-    const roleName = roleObject ? roleObject.name : employee.roleId;
+    const roleName = roleObject ? roleObject?.name : employee?.roleId;
 
     // Create a new employee object with the role name
     const employeeWithRoleName = {
@@ -65,10 +65,10 @@ const Employees: React.FC = () => {
     const response = await dispatch(
       createEmployee(employeeWithRoleName as Employee)
     );
-    if (response.meta.requestStatus === "fulfilled") {
+    if (response?.meta?.requestStatus === "fulfilled") {
       dispatch(
         showSnackbar({
-          message: snackbarMessages.success.employeeOnboarded,
+          message: snackbarMessages?.success?.employeeOnboarded,
           severity: "info",
         })
       );
@@ -88,11 +88,11 @@ const Employees: React.FC = () => {
     setEditingEmployee(employee);
     setShowForm(true);
     setEmployees((prev) =>
-      prev?.map((emp) => (emp._id === employee._id ? employee : emp))
+      prev?.map((emp) => (emp?._id === employee._id ? employee : emp))
     );
-    const roleObject = roles.find((role: any) => role._id === employee.roleId);
+    const roleObject = roles?.find((role: any) => role?._id === employee?.roleId);
 
-    const roleName = roleObject ? roleObject.name : employee.roleId;
+    const roleName = roleObject ? roleObject?.name : employee?.roleId;
 
     // Create a new employee object with the role name
     const employeeWithRoleName = {
@@ -101,14 +101,14 @@ const Employees: React.FC = () => {
     };
     const response = await dispatch(
       updateEmployee({
-        id: employee._id,
+        id: employee?._id,
         employeeData: employeeWithRoleName as Employee,
       })
     );
     if (response.meta.requestStatus === "fulfilled") {
       dispatch(
         showSnackbar({
-          message: snackbarMessages.info.employeeEditing,
+          message: snackbarMessages?.info?.employeeEditing,
           severity: "info",
         })
       );
@@ -116,7 +116,7 @@ const Employees: React.FC = () => {
       const { errors }: any = error;
       dispatch(
         showSnackbar({
-          message: errors?.map((e: any) => e.message) || "An error occurred",
+          message: errors?.map((e: any) => e?.message) || "An error occurred",
           severity: "error",
         })
       );
@@ -127,12 +127,12 @@ const Employees: React.FC = () => {
 
   const handleDeleteEmployee = async (_id: string): Promise<void> => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
-      setEmployees((prev) => prev?.filter((emp) => emp._id !== _id));
+      setEmployees((prev) => prev?.filter((emp) => emp?._id !== _id));
       const response = await dispatch(deleteEmployee(_id));
-      if (response.meta.requestStatus === "fulfilled") {
+      if (response?.meta?.requestStatus === "fulfilled") {
         dispatch(
           showSnackbar({
-            message: snackbarMessages.success.employeeDeleted,
+            message: snackbarMessages?.success?.employeeDeleted,
             severity: "info",
           })
         );
@@ -140,7 +140,7 @@ const Employees: React.FC = () => {
         const { errors }: any = error;
         dispatch(
           showSnackbar({
-            message: errors?.map((e: any) => e.message) || "An error occurred",
+            message: errors?.map((e: any) => e?.message) || "An error occurred",
             severity: "error",
           })
         );
@@ -169,9 +169,9 @@ const Employees: React.FC = () => {
       try {
         const response = await dispatch(fetchEmployees());
 
-        if (fetchEmployees.rejected.match(response)) {
+        if (fetchEmployees?.rejected?.match(response)) {
           setEmployeesLoadError(
-            (response.payload as string) || "Failed to load employees"
+            (response?.payload as string) || "Failed to load employees"
           );
         }
       } catch (err) {
@@ -215,12 +215,12 @@ const Employees: React.FC = () => {
       {alert && (
         <div
           className={`mb-4 p-4 rounded-lg ${
-            alert.type === "success"
+            alert?.type === "success"
               ? "bg-green-100 text-green-800 border border-green-200"
               : "bg-red-100 text-red-800 border border-red-200"
           }`}
         >
-          {alert.message}
+          {alert?.message}
         </div>
       )}
 
