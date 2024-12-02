@@ -178,76 +178,76 @@ const RoleManagement: React.FC = () => {
     </div>
   );
 
-  const RoleList = () => (
-    <div className="bg-white shadow-lg rounded-xl p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold flex items-center">
-          <Users className="mr-2" /> Existing Roles
-        </h3>
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search roles"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8 pr-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-          />
-          <Search className="absolute left-2 top-3 text-gray-400" />
-        </div>
-      </div>
+  // const RoleList = () => (
+  //   <div className="bg-white shadow-lg rounded-xl p-6">
+  //     <div className="flex justify-between items-center mb-4">
+  //       <h3 className="text-lg font-semibold flex items-center">
+  //         <Users className="mr-2" /> Existing Roles
+  //       </h3>
+  //       <div className="relative">
+  //         <input
+  //           type="text"
+  //           placeholder="Search roles"
+  //           value={searchTerm}
+  //           onChange={(e) => setSearchTerm(e.target.value)}
+  //           className="pl-8 pr-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+  //         />
+  //         <Search className="absolute left-2 top-3 text-gray-400" />
+  //       </div>
+  //     </div>
 
-      <div className="space-y-4">
-        {filteredRoles?.map((role) => (
-          <div
-            key={role._id}
-            className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border rounded-md hover:bg-gray-50 transition"
-          >
-            <div className="mb-2 sm:mb-0">
-              <div className="font-semibold text-gray-800">
-                {role.name.toUpperCase()}
-              </div>
-              <div className="text-sm text-gray-500">{role.description}</div>
-              {/* <div className="mt-2 flex flex-wrap gap-2">
-                {role.permissions.map((perm) => (
-                  <span
-                    key={perm}
-                    className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
-                  >
-                    {perm}
-                  </span>
-                ))}
-              </div> */}
-            </div>
-            {/* <div className="flex space-x-2">
-              <button
-                onClick={() => {
-                  setEditingRole(role);
-                  setMobileView("create");
-                }}
-                className="text-blue-600 hover:bg-blue-50 p-2 rounded"
-              >
-                <Edit3 className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => handleDeleteRole(role?._id)}
-                className="text-red-600 hover:bg-red-50 p-2 rounded"
-              >
-                <Trash2 className="h-5 w-5" />
-              </button>
-            </div> */}
-          </div>
-        ))}
-      </div>
+  //     <div className="space-y-4">
+  //       {filteredRoles?.map((role) => (
+  //         <div
+  //           key={role._id}
+  //           className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border rounded-md hover:bg-gray-50 transition"
+  //         >
+  //           <div className="mb-2 sm:mb-0">
+  //             <div className="font-semibold text-gray-800">
+  //               {role.name.toUpperCase()}
+  //             </div>
+  //             <div className="text-sm text-gray-500">{role.description}</div>
+  //             {/* <div className="mt-2 flex flex-wrap gap-2">
+  //               {role.permissions.map((perm) => (
+  //                 <span
+  //                   key={perm}
+  //                   className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
+  //                 >
+  //                   {perm}
+  //                 </span>
+  //               ))}
+  //             </div> */}
+  //           </div>
+  //           {/* <div className="flex space-x-2">
+  //             <button
+  //               onClick={() => {
+  //                 setEditingRole(role);
+  //                 setMobileView("create");
+  //               }}
+  //               className="text-blue-600 hover:bg-blue-50 p-2 rounded"
+  //             >
+  //               <Edit3 className="h-5 w-5" />
+  //             </button>
+  //             <button
+  //               onClick={() => handleDeleteRole(role?._id)}
+  //               className="text-red-600 hover:bg-red-50 p-2 rounded"
+  //             >
+  //               <Trash2 className="h-5 w-5" />
+  //             </button>
+  //           </div> */}
+  //         </div>
+  //       ))}
+  //     </div>
 
-      {/* Mobile Add Role Button */}
-      <button
-        onClick={() => setMobileView("create")}
-        className="sm:hidden w-full mt-4 bg-blue-600 text-white py-2 rounded-md flex items-center justify-center"
-      >
-        <UserPlus className="mr-2" /> Add New Role
-      </button>
-    </div>
-  );
+  //     {/* Mobile Add Role Button */}
+  //     <button
+  //       onClick={() => setMobileView("create")}
+  //       className="sm:hidden w-full mt-4 bg-blue-600 text-white py-2 rounded-md flex items-center justify-center"
+  //     >
+  //       <UserPlus className="mr-2" /> Add New Role
+  //     </button>
+  //   </div>
+  // );
 
   return (
     <div className="bg-gray-50 min-h-screen p-4 sm:p-8">
@@ -278,17 +278,19 @@ const RoleManagement: React.FC = () => {
           </button>
         </div>
 
-        {/* Responsive Layout */}
-        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-          {/* Desktop View */}
-          <div className="hidden sm:block md:col-span-1">{RoleForm()}</div>
-          <div className="hidden sm:block md:col-span-2">{RoleList()}</div>
+        
 
-          {/* Mobile View */}
-          <div className="sm:hidden w-full">
+        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <div className="hidden sm:block md:col-span-1">{RoleForm()}</div>
+          {/* <div className="hidden sm:block md:col-span-2">{RoleList()}</div> */}
+
+          {/* <div className="sm:hidden w-full">
             {mobileView === "create" ? RoleForm() : RoleList()}
-          </div>
+          </div> */}
+
         </div>
+
+
       </div>
     </div>
   );
