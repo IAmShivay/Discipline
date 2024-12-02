@@ -120,9 +120,9 @@ const roleSlice = createSlice({
           state.roles[index] = action.payload;
         }
       })
-      // .addCase(deleteRole.fulfilled, (state, action) => {
-      //   state.roles = state.roles?.filter(role => role._id !== action.payload);
-      // })
+      .addCase(deleteRole.fulfilled, (state, action) => {
+        state.roles = state.roles?.filter(role => role._id !== action.payload);
+      })
       .addCase(fetchRolesByCompanyId.pending, (state) => {
         state.loading = 'pending';
       })

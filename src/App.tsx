@@ -51,16 +51,6 @@ const App: React.FC = () => {
         setLoading(false);
       }
     };
-    const fetchroles = async () => {
-      try {
-        await dispatch<any>(fetchRoles());
-      } catch (err) {
-        setError(err instanceof Error ? err?.message : "Failed to load user");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchroles();
     loadData();
   }, [dispatch]);
 
