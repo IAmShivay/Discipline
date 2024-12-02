@@ -48,7 +48,7 @@ const RoleManagement: React.FC = () => {
         ...newRole,
         _id: Date.now(),
       };
-      dispatch(createRole(newRole));  // Make sure action is typed correctly
+      // dispatch(createRole(newRole));  // Make sure action is typed correctly
       setRoles((prev) => [...prev, roleToAdd]);
       setNewRole({ name: "", description: "", permissions: [] });
       setMobileView("list");
@@ -74,109 +74,109 @@ const RoleManagement: React.FC = () => {
     setRoles((prev) => prev.filter((role) => role._id !== roleId));
   }, []);
 
-  useEffect(() => {
-    if (roles.length === 0) {
-      dispatch(fetchRoles());  // Ensure this only triggers when roles are empty
-    }
-  }, [dispatch, roles]);
+  // useEffect(() => {
+  //   if (roles.length === 0) {
+  //     dispatch(fetchRoles());  // Ensure this only triggers when roles are empty
+  //   }
+  // }, [dispatch, roles]);
 
-  // const RoleForm = () => (
-  //   <div className="bg-white shadow-lg rounded-xl p-6">
-  //     <h3 className="text-lg font-semibold mb-4 flex items-center">
-  //       {editingRole ? (
-  //         <Edit3 className="mr-2" />
-  //       ) : (
-  //         <UserPlus className="mr-2" />
-  //       )}
-  //       {editingRole ? "Edit Role" : "Create New Role"}
-  //     </h3>
-  //     <form
-  //       onSubmit={editingRole ? handleUpdateRole : handleAddRole}
-  //       className="space-y-4"
-  //     >
-  //       <input
-  //         type="text"
-  //         placeholder="Role Name"
-  //         value={editingRole ? editingRole.name : newRole.name}
-  //         onChange={(e) =>
-  //           editingRole
-  //             ? setEditingRole({ ...editingRole, name: e.target.value })
-  //             : setNewRole({ ...newRole, name: e.target.value })
-  //         }
-  //         className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-  //       />
-  //       <textarea
-  //         placeholder="Description"
-  //         value={editingRole ? editingRole.description : newRole.description}
-  //         onChange={(e) =>
-  //           editingRole
-  //             ? setEditingRole({ ...editingRole, description: e.target.value })
-  //             : setNewRole({ ...newRole, description: e.target.value })
-  //         }
-  //         className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-  //         rows={3}
-  //       />
+  const RoleForm = () => (
+    <div className="bg-white shadow-lg rounded-xl p-6">
+      <h3 className="text-lg font-semibold mb-4 flex items-center">
+        {editingRole ? (
+          <Edit3 className="mr-2" />
+        ) : (
+          <UserPlus className="mr-2" />
+        )}
+        {editingRole ? "Edit Role" : "Create New Role"}
+      </h3>
+      <form
+        onSubmit={editingRole ? handleUpdateRole : handleAddRole}
+        className="space-y-4"
+      >
+        <input
+          type="text"
+          placeholder="Role Name"
+          value={editingRole ? editingRole.name : newRole.name}
+          onChange={(e) =>
+            editingRole
+              ? setEditingRole({ ...editingRole, name: e.target.value })
+              : setNewRole({ ...newRole, name: e.target.value })
+          }
+          className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+        />
+        <textarea
+          placeholder="Description"
+          value={editingRole ? editingRole.description : newRole.description}
+          onChange={(e) =>
+            editingRole
+              ? setEditingRole({ ...editingRole, description: e.target.value })
+              : setNewRole({ ...newRole, description: e.target.value })
+          }
+          className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+          rows={3}
+        />
 
-  //       <div>
-  //         {/* <label className="block text-sm font-medium text-gray-700 mb-2">
-  //           Permissions
-  //         </label> */}
-  //         {/* <div className="grid grid-cols-2 gap-2">
-  //           {permissionOptions.map((perm) => (
-  //             <label key={perm} className="inline-flex items-center">
-  //               <input
-  //                 type="checkbox"
-  //                 checked={
-  //                   editingRole
-  //                     ? editingRole.permissions.includes(perm)
-  //                     : newRole.permissions.includes(perm)
-  //                 }
-  //                 onChange={() => {
-  //                   const updatePermissions = (current: string[]) =>
-  //                     current.includes(perm)
-  //                       ? current.filter((p) => p !== perm)
-  //                       : [...current, perm];
+        <div>
+          {/* <label className="block text-sm font-medium text-gray-700 mb-2">
+            Permissions
+          </label> */}
+          {/* <div className="grid grid-cols-2 gap-2">
+            {permissionOptions.map((perm) => (
+              <label key={perm} className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  checked={
+                    editingRole
+                      ? editingRole.permissions.includes(perm)
+                      : newRole.permissions.includes(perm)
+                  }
+                  onChange={() => {
+                    const updatePermissions = (current: string[]) =>
+                      current.includes(perm)
+                        ? current.filter((p) => p !== perm)
+                        : [...current, perm];
 
-  //                   editingRole
-  //                     ? setEditingRole({
-  //                         ...editingRole,
-  //                         permissions: updatePermissions(
-  //                           editingRole.permissions
-  //                         ),
-  //                       })
-  //                     : setNewRole({
-  //                         ...newRole,
-  //                         permissions: updatePermissions(newRole.permissions),
-  //                       });
-  //                 }}
-  //                 className="mr-2"
-  //               />
-  //               {perm}
-  //             </label>
-  //           ))}
-  //         </div> */}
-  //       </div>
+                    editingRole
+                      ? setEditingRole({
+                          ...editingRole,
+                          permissions: updatePermissions(
+                            editingRole.permissions
+                          ),
+                        })
+                      : setNewRole({
+                          ...newRole,
+                          permissions: updatePermissions(newRole.permissions),
+                        });
+                  }}
+                  className="mr-2"
+                />
+                {perm}
+              </label>
+            ))}
+          </div> */}
+        </div>
 
-  //       <div className="flex space-x-2">
-  //         <button
-  //           type="submit"
-  //           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition flex items-center justify-center"
-  //         >
-  //           <Save className="mr-2" />
-  //           {editingRole ? "Update Role" : "Create Role"}
-  //         </button>
-  //         {/* Mobile view toggle back to list */}
-  //         <button
-  //           type="button"
-  //           onClick={() => setMobileView("list")}
-  //           className="sm:hidden bg-gray-200 text-gray-800 py-2 px-4 rounded-md"
-  //         >
-  //           Cancel
-  //         </button>
-  //       </div>
-  //     </form>
-  //   </div>
-  // );
+        <div className="flex space-x-2">
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition flex items-center justify-center"
+          >
+            <Save className="mr-2" />
+            {editingRole ? "Update Role" : "Create Role"}
+          </button>
+          {/* Mobile view toggle back to list */}
+          <button
+            type="button"
+            onClick={() => setMobileView("list")}
+            className="sm:hidden bg-gray-200 text-gray-800 py-2 px-4 rounded-md"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 
   const RoleList = () => (
     <div className="bg-white shadow-lg rounded-xl p-6">
@@ -281,12 +281,12 @@ const RoleManagement: React.FC = () => {
         {/* Responsive Layout */}
         <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {/* Desktop View */}
-          {/* <div className="hidden sm:block md:col-span-1">{RoleForm()}</div> */}
+          <div className="hidden sm:block md:col-span-1">{RoleForm()}</div>
           <div className="hidden sm:block md:col-span-2">{RoleList()}</div>
 
           {/* Mobile View */}
           <div className="sm:hidden w-full">
-            {/* {mobileView === "create" ? RoleForm() : RoleList()} */}
+            {mobileView === "create" ? RoleForm() : RoleList()}
           </div>
         </div>
       </div>
