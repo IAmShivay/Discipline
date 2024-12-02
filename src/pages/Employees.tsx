@@ -38,7 +38,7 @@ const Employees: React.FC = () => {
 
   const { error, loading } = useSelector((state: RootState) => state.employee);
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [employees, setEmployees] = useState<Employee[]>([employee]);
+  const [employees, setEmployees] = useState<Employee[]>(employee || []);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [alert, setAlert] = useState<AlertState | null>(null);
