@@ -23,6 +23,7 @@ import RoleManagement from "./components/role";
 import TwoStepForgotPasswordPage from "./pages/ForgotPassword";
 import ChangePasswordPage from "./components/ChangePassword";
 import MinimalistHRLoader from "./pages/Loading";
+import { fetchRoles } from "./redux/app/role/roleSlice";
 
 // Define proper type for RootState
 interface RootState {
@@ -50,6 +51,16 @@ const App: React.FC = () => {
         setLoading(false);
       }
     };
+    const fetchRole = async () => {
+      try {
+        await dispatch<any>(fetchRoles());
+      } catch (err) {
+        setError(err instanceof Error ? err?.message : "Failed to load user");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRole();
     loadData();
   }, [dispatch]);
 
