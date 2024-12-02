@@ -123,17 +123,17 @@ const roleSlice = createSlice({
       // .addCase(deleteRole.fulfilled, (state, action) => {
       //   state.roles = state.roles?.filter(role => role._id !== action.payload);
       // })
-      .addCase(fetchRolesByCompanyId.pending, (state) => {
-        state.loading = 'pending';
-      })
-      .addCase(fetchRolesByCompanyId.fulfilled, (state, action) => {
-        state.loading = 'succeeded';
-        state.role = Array.isArray(action.payload) ? action.payload : []; // Ensure it's always an array
-      })
-      .addCase(fetchRolesByCompanyId.rejected, (state, action) => {
-        state.loading = 'failed';
-        state.error = action.payload as string;
-      });
+      // .addCase(fetchRolesByCompanyId.pending, (state) => {
+      //   state.loading = 'pending';
+      // })
+      // .addCase(fetchRolesByCompanyId.fulfilled, (state, action) => {
+      //   state.loading = 'succeeded';
+      //   state.role = Array.isArray(action.payload) ? action.payload : []; // Ensure it's always an array
+      // })
+      // .addCase(fetchRolesByCompanyId.rejected, (state, action) => {
+      //   state.loading = 'failed';
+      //   state.error = action.payload as string;
+      // });
   },
 });
 
