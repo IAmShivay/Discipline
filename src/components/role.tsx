@@ -70,14 +70,14 @@ const RoleManagement: React.FC = () => {
     [editingRole]
   );
 
-  const handleDeleteRole = useCallback((roleId: string | number) => {
-    setRoles((prev) => prev?.filter((role) => role._id !== roleId));
-  }, []);
+  // const handleDeleteRole = useCallback((roleId: string | number) => {
+  //   setRoles((prev) => prev?.filter((role) => role._id !== roleId));
+  // }, []);
   useEffect(() => {
     if (roles?.length === 0) {
       dispatch(fetchRoles());
     }
-  }, [dispatch, roles]);
+  }, [dispatch]);
   const RoleForm = () => (
     <div className="bg-white shadow-lg rounded-xl p-6">
       <h3 className="text-lg font-semibold mb-4 flex items-center">
