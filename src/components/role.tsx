@@ -50,7 +50,7 @@ const RoleManagement: React.FC = () => {
         ...newRole,
         _id: Date.now(),
       };
-      // dispatch(createRole(newRole));  // Make sure action is typed correctly
+      dispatch(createRole(newRole));  // Make sure action is typed correctly
       setRoles((prev) => [...prev, roleToAdd]);
       setNewRole({ name: "", description: "", permissions: [] });
       setMobileView("list");
