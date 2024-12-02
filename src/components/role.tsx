@@ -17,7 +17,7 @@ interface Role {
 }
 
 const RoleManagement: React.FC = () => {
-  const { roles, loading, error } = useSelector(
+  const { roles = [], loading, error } = useSelector(
     (state: RootState) => state?.roles
   );
   const [roless, setRoles] = useState<Role[]>(roles);
@@ -35,7 +35,7 @@ const RoleManagement: React.FC = () => {
 
   const permissionOptions = ["create", "read", "update", "delete"];
 
-  const filteredRoles : Role[] = roles?.filter((role) =>
+  const filteredRoles: Role[] = roles.filter((role) =>
     role.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -48,12 +48,12 @@ const RoleManagement: React.FC = () => {
         ...newRole,
         _id: Date.now(),
       };
-      dispatch(createRole(newRole));
+      dispatch(createRole(newRole));  // Make sure action is typed correctly
       setRoles((prev) => [...prev, roleToAdd]);
       setNewRole({ name: "", description: "", permissions: [] });
       setMobileView("list");
     },
-    [newRole]
+    [newRole, dispatch]  // Added dispatch as a dependency
   );
 
   const handleUpdateRole = useCallback(
@@ -62,7 +62,7 @@ const RoleManagement: React.FC = () => {
       if (!editingRole?.name) return;
 
       setRoles((prev) =>
-        prev?.map((role) => (role._id === editingRole._id ? editingRole : role))
+        prev.map((role) => (role._id === editingRole._id ? editingRole : role))
       );
       setEditingRole(null);
       setMobileView("list");
@@ -71,13 +71,15 @@ const RoleManagement: React.FC = () => {
   );
 
   const handleDeleteRole = useCallback((roleId: string | number) => {
-    setRoles((prev) => prev?.filter((role) => role._id !== roleId));
+    setRoles((prev) => prev.filter((role) => role._id !== roleId));
   }, []);
+
   useEffect(() => {
-    if (roles?.length === 0) {
-      dispatch(fetchRoles());
+    if (roles.length === 0) {
+      dispatch(fetchRoles());  // Ensure this only triggers when roles are empty
     }
   }, [dispatch, roles]);
+
   const RoleForm = () => (
     <div className="bg-white shadow-lg rounded-xl p-6">
       <h3 className="text-lg font-semibold mb-4 flex items-center">
