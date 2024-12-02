@@ -60,7 +60,7 @@ const App: React.FC = () => {
         setLoading(false);
       }
     };
-    fetch
+    fetchroles();
     loadData();
   }, [dispatch]);
 
