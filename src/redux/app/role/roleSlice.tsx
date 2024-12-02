@@ -52,29 +52,29 @@ export const createRole = createAsyncThunk(
   }
 );
 
-export const updateRole = createAsyncThunk(
-  'roles/updateRole',
-  async (roleData: Role, { rejectWithValue }) => {
-    try {
-      const response = await axiosBackend.put(`/roles/${roleData._id}`, roleData);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || 'Failed to update role');
-    }
-  }
-);
+// export const updateRole = createAsyncThunk(
+//   'roles/updateRole',
+//   async (roleData: Role, { rejectWithValue }) => {
+//     try {
+//       const response = await axiosBackend.put(`/roles/${roleData._id}`, roleData);
+//       return response.data;
+//     } catch (error: any) {
+//       return rejectWithValue(error.response?.data || 'Failed to update role');
+//     }
+//   }
+// );
 
-export const deleteRole = createAsyncThunk(
-  'roles/deleteRole',
-  async (id: number, { rejectWithValue }) => {
-    try {
-      await axiosBackend.delete(`/roles/${id}`);
-      return id;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || 'Failed to delete role');
-    }
-  }
-);
+// export const deleteRole = createAsyncThunk(
+//   'roles/deleteRole',
+//   async (id: number, { rejectWithValue }) => {
+//     try {
+//       await axiosBackend.delete(`/roles/${id}`);
+//       return id;
+//     } catch (error: any) {
+//       return rejectWithValue(error.response?.data || 'Failed to delete role');
+//     }
+//   }
+// );
 export const fetchRolesByCompanyId = createAsyncThunk(
   'roles/fetchRolesByCompanyId',
   async (companyId: string, { rejectWithValue }) => {
@@ -114,15 +114,15 @@ const roleSlice = createSlice({
       .addCase(createRole.fulfilled, (state, action) => {
         state.roles.push(action.payload);
       })
-      .addCase(updateRole.fulfilled, (state, action) => {
-        const index = state.roles.findIndex(role => role._id === action.payload.id);
-        if (index !== -1) {
-          state.roles[index] = action.payload;
-        }
-      })
-      .addCase(deleteRole.fulfilled, (state, action) => {
-        state.roles = state.roles?.filter(role => role._id !== action.payload);
-      })
+      // .addCase(updateRole.fulfilled, (state, action) => {
+      //   const index = state.roles.findIndex(role => role._id === action.payload.id);
+      //   if (index !== -1) {
+      //     state.roles[index] = action.payload;
+      //   }
+      // })
+      // .addCase(deleteRole.fulfilled, (state, action) => {
+      //   state.roles = state.roles?.filter(role => role._id !== action.payload);
+      // })
       .addCase(fetchRolesByCompanyId.pending, (state) => {
         state.loading = 'pending';
       })
