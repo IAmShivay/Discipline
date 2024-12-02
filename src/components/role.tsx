@@ -74,9 +74,7 @@ const RoleManagement: React.FC = () => {
   //   setRoles((prev) => prev?.filter((role) => role._id !== roleId));
   // }, []);
   useEffect(() => {
-    if (roles?.length === 0) {
       dispatch(fetchRoles());
-    }
   }, [dispatch]);
   const RoleForm = () => (
     <div className="bg-white shadow-lg rounded-xl p-6">
