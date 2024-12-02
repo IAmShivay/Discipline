@@ -258,13 +258,13 @@ const roleSlice = createSlice({
         state.roles.push(action.payload);
       })
       .addCase(updateRole.fulfilled, (state, action) => {
-        const index = state.roles.findIndex(role => role._id === action.payload._id);
+        const index = state?.roles?.findIndex(role => role._id === action.payload._id);
         if (index !== -1) {
           state.roles[index] = action.payload;
         }
       })
       .addCase(deleteRole.fulfilled, (state, action) => {
-        state.roles = state.roles.filter(role => role._id !== action.payload);
+        state.roles = state?.roles?.filter(role => role._id !== action.payload);
       })
       .addCase(fetchRolesByCompanyId.pending, (state) => {
         state.loading = 'pending';
