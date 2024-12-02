@@ -77,10 +77,10 @@ const RoleManagement: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (roles.length === 0) {
+    if (roles?.length === 0) {
       dispatch(fetchRoles());  // Ensure this only triggers when roles are empty
     }
-  }, [dispatch, roles]);
+  }, [roles]);
 
   const RoleForm = () => (
     <div className="bg-white shadow-lg rounded-xl p-6">
