@@ -85,11 +85,17 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     customFields: {},
   });
   const dispatch = useDispatch<AppDispatch>();
-  const roles = useSelector((state: RootState) => state.roles.roles || []);
+  const {
+    roles = [],
+    loading,
+    error,
+  } = useSelector((state: RootState) => state?.roles);
   const [filteredManagers, setFilteredManagers] = useState<Manager[]>([]);
   useEffect(() => {
     if (formData?.roleId) {
-      const selectedRole = roles?.find((role) => role?._id === formData?.roleId);
+      const selectedRole = roles?.find(
+        (role) => role?._id === formData?.roleId
+      );
 
       if (selectedRole) {
         const isEmployeeRole = selectedRole?.name.toLowerCase() === "employee";
@@ -100,7 +106,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         }
       }
       // Filter out the "employee" role
-      const managerRoles  = roles?.filter(
+      const managerRoles = roles?.filter(
         (role) => role.name?.toLowerCase() !== "employee"
       );
 
