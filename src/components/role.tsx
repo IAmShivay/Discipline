@@ -17,9 +17,11 @@ interface Role {
 }
 
 const RoleManagement: React.FC = () => {
-  const { roles = [], loading, error } = useSelector(
-    (state: RootState) => state?.roles
-  );
+  const {
+    roles = [],
+    loading,
+    error,
+  } = useSelector((state: RootState) => state?.roles);
   const [roless, setRoles] = useState<Role[]>(roles);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -35,7 +37,7 @@ const RoleManagement: React.FC = () => {
 
   const permissionOptions = ["create", "read", "update", "delete"];
 
-  const filteredRoles: Role[] = roles.filter((role) =>
+  const filteredRoles: Role[] = roles?.filter((role) =>
     role.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -53,7 +55,7 @@ const RoleManagement: React.FC = () => {
       setNewRole({ name: "", description: "", permissions: [] });
       setMobileView("list");
     },
-    [newRole, dispatch]  // Added dispatch as a dependency
+    [newRole, dispatch] // Added dispatch as a dependency
   );
 
   const handleUpdateRole = useCallback(
