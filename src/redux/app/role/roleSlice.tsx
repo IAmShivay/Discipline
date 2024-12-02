@@ -33,9 +33,9 @@ export const fetchRoles = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosBackend.get('/roles/roles');
-      return response.data;
+      return response?.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data || 'Failed to fetch roles');
+      return rejectWithValue(error?.response?.data || 'Failed to fetch roles');
     }
   }
 );
@@ -81,7 +81,7 @@ export const fetchRolesByCompanyId = createAsyncThunk(
     try {
       const response = await axiosInstance.get(`/getuser/${companyId}`);
 
-      return response.data;
+      return response?.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || 'Failed to fetch roles for company');
     }
@@ -128,7 +128,7 @@ const roleSlice = createSlice({
       })
       .addCase(fetchRolesByCompanyId.fulfilled, (state, action) => {
         state.loading = 'succeeded';
-        state.role = action.payload;
+        state.role = Array.isArray(action.payload) ? action.payload : []; // Ensure it's always an array
       })
       .addCase(fetchRolesByCompanyId.rejected, (state, action) => {
         state.loading = 'failed';
