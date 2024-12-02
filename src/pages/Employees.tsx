@@ -162,35 +162,35 @@ const Employees: React.FC = () => {
       employee?.department.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  useEffect(() => {
-    const fetchEmployeeData = async () => {
-      setIsLoadingEmployees(true);
-      setEmployeesLoadError(null);
-      try {
-        const response = await dispatch(fetchEmployees());
+  // useEffect(() => {
+  //   const fetchEmployeeData = async () => {
+  //     setIsLoadingEmployees(true);
+  //     setEmployeesLoadError(null);
+  //     try {
+  //       const response = await dispatch(fetchEmployees());
 
-        if (fetchEmployees?.rejected?.match(response)) {
-          setEmployeesLoadError(
-            (response?.payload as string) || "Failed to load employees"
-          );
-        }
-      } catch (err) {
-        setEmployeesLoadError(
-          "An unexpected error occurred while fetching employees"
-        );
-        dispatch(
-          showSnackbar({
-            message: "Failed to load employees",
-            severity: "error",
-          })
-        );
-      } finally {
-        setIsLoadingEmployees(false);
-      }
-    };
+  //       if (fetchEmployees?.rejected?.match(response)) {
+  //         setEmployeesLoadError(
+  //           (response?.payload as string) || "Failed to load employees"
+  //         );
+  //       }
+  //     } catch (err) {
+  //       setEmployeesLoadError(
+  //         "An unexpected error occurred while fetching employees"
+  //       );
+  //       dispatch(
+  //         showSnackbar({
+  //           message: "Failed to load employees",
+  //           severity: "error",
+  //         })
+  //       );
+  //     } finally {
+  //       setIsLoadingEmployees(false);
+  //     }
+  //   };
 
-    fetchEmployeeData();
-  }, [dispatch, updateEmployee, deleteEmployee, editingEmployee]);
+  //   fetchEmployeeData();
+  // }, [dispatch, updateEmployee, deleteEmployee, editingEmployee]);
 
   useEffect(() => {
     dispatch(fetchRolesByCompanyId(companyId as any));
