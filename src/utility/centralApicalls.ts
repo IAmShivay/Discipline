@@ -48,3 +48,68 @@ export const fetchNotification = async (
     setLoading(false);
   }
 };
+
+// export const fetchNotification = async (
+//   dispatch: Dispatch<any>,
+//   setError: (message: string | null) => void,
+//   setLoading: (state: boolean) => void
+// ) => {
+//   try {
+//     setLoading(true);
+//     await dispatch(fetchNotifications());
+//   } catch (err) {
+//     setError(
+//       err instanceof Error ? err.message : "Failed to load notifications"
+//     );
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+// export const fetchNotification = async (
+//   dispatch: Dispatch<any>,
+//   setError: (message: string | null) => void,
+//   setLoading: (state: boolean) => void
+// ) => {
+//   try {
+//     setLoading(true);
+//     await dispatch(fetchNotifications());
+//   } catch (err) {
+//     setError(
+//       err instanceof Error ? err.message : "Failed to load notifications"
+//     );
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+// export const fetchNotification = async (
+//   dispatch: Dispatch<any>,
+//   setError: (message: string | null) => void,
+//   setLoading: (state: boolean) => void
+// ) => {
+//   try {
+//     setLoading(true);
+//     await dispatch(fetchNotifications());
+//   } catch (err) {
+//     setError(
+//       err instanceof Error ? err.message : "Failed to load notifications"
+//     );
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+// export const fetchNotification = async (
+//   dispatch: Dispatch<any>,
+//   setError: (message: string | null) => void,
+//   setLoading: (state: boolean) => void
+// ) => {
+//   try {
+//     setLoading(true);
+//     await dispatch(fetchNotifications());
+//   } catch (err) {
+//     setError(
+//       err instanceof Error ? err.message : "Failed to load notifications"
+//     );
+//   } finally {
+//     setLoading(false);
+//   }
+// };

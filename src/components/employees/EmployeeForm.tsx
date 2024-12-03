@@ -168,6 +168,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               First Name
             </label>
             <input
+              placeholder="First Name"
               id="firstName"
               type="text"
               name="firstName"
@@ -186,6 +187,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               Last Name
             </label>
             <input
+              placeholder="Last Name"
               id="lastName"
               type="text"
               name="lastName"
@@ -275,6 +277,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               Email
             </label>
             <input
+              placeholder="Email"
               id="email"
               type="email"
               name="email"
@@ -293,6 +296,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               Phone
             </label>
             <input
+              placeholder="Phone"
               id="phone"
               type="tel"
               name="phone"
@@ -311,6 +315,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               Department
             </label>
             <input
+              placeholder="Department"
               id="department"
               type="text"
               name="department"
@@ -329,6 +334,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               Position
             </label>
             <input
+              placeholder="Position"
               id="position"
               type="text"
               name="position"
@@ -347,6 +353,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               Join Date
             </label>
             <input
+            placeholder="Join Date"
               id="joinDate"
               type="date"
               name="joinDate"

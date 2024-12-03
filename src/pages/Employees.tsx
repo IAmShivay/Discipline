@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Plus,
-  Search,
-  Pencil,
-  Trash2,
-  AlertCircle,
-} from "lucide-react";
+import { Plus, Search, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { Employee } from "../components/employees/EmployeeForm";
 import EmployeeForm from "../components/employees/EmployeeForm";
 import { useDispatch } from "react-redux";
@@ -49,7 +43,9 @@ const Employees: React.FC = () => {
   );
 
   const handleAddEmployee = async (employee: Employee): Promise<void> => {
-    const roleObject = roles?.find((role: any) => role?._id === employee?.roleId);
+    const roleObject = roles?.find(
+      (role: any) => role?._id === employee?.roleId
+    );
 
     const roleName = roleObject ? roleObject?.name : employee?.roleId;
 
@@ -87,7 +83,9 @@ const Employees: React.FC = () => {
     setEmployees((prev) =>
       prev?.map((emp) => (emp?._id === employee._id ? employee : emp))
     );
-    const roleObject = roles?.find((role: any) => role?._id === employee?.roleId);
+    const roleObject = roles?.find(
+      (role: any) => role?._id === employee?.roleId
+    );
 
     const roleName = roleObject ? roleObject?.name : employee?.roleId;
 
@@ -151,7 +149,7 @@ const Employees: React.FC = () => {
     setTimeout(() => setAlert(null), 3000);
   };
 
-  const filteredEmployees : Employee[] = employee?.filter(
+  const filteredEmployees: Employee[] = employee?.filter(
     (employee: Employee) =>
       employee?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -191,7 +189,7 @@ const Employees: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchRolesByCompanyId(companyId as any));
-  }, [companyId, updateEmployee, deleteEmployee,dispatch]);
+  }, [companyId, updateEmployee, deleteEmployee, dispatch]);
 
   // Main content renderer
   const renderEmployeeContent = () => (
@@ -313,7 +311,7 @@ const Employees: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {availableManagers?.find(
-                        (m: any) => m?.id === employee?.managerId
+                        (m: any) => m?._id === employee?.managerId
                       )?.name || "No Manager"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -359,11 +357,7 @@ const Employees: React.FC = () => {
     </>
   );
 
-  return (
-    <div className="p-6">
-      {renderEmployeeContent()}
-    </div>
-  );
+  return <div className="p-6">{renderEmployeeContent()}</div>;
 };
 
 export default Employees;
