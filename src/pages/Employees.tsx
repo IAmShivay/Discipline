@@ -3,7 +3,6 @@ import { Plus, Search, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { Employee } from "../components/employees/EmployeeForm";
 import EmployeeForm from "../components/employees/EmployeeForm";
 import { useDispatch } from "react-redux";
-import { fetchEmployees } from "../redux/app/employees/employeeSlice";
 import { AppDispatch, RootState } from "../store";
 import { createEmployee } from "../redux/app/employees/employeeSlice";
 import { useSelector } from "react-redux";
@@ -160,7 +159,6 @@ const Employees: React.FC = () => {
   useEffect(() => {
     dispatch(fetchRolesByCompanyId(companyId as any));
   }, [companyId, updateEmployee, deleteEmployee, dispatch]);
-
   // Main content renderer
   const renderEmployeeContent = () => (
     <>
@@ -327,7 +325,9 @@ const Employees: React.FC = () => {
     </>
   );
 
-  return <div className="p-6">{renderEmployeeContent()}</div>;
+  return <div className="p-6">
+    {error && <div>{error}</div>}
+    {renderEmployeeContent()}</div>;
 };
 
 export default Employees;

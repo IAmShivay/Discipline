@@ -22,6 +22,7 @@ import RoleManagement from "./components/role";
 import TwoStepForgotPasswordPage from "./pages/ForgotPassword";
 import ChangePasswordPage from "./components/ChangePassword";
 import MinimalistHRLoader from "./pages/Loading";
+import { showSnackbar } from "./redux/app/error/errorSlice";
 import {
   fetchCase,
   fetchEmployee,
@@ -29,7 +30,6 @@ import {
   fetchCategorie,
   fetchNotification,
 } from "./utility/centralApicalls";
-import { a } from "framer-motion/client";
 // Define proper type for RootState
 interface RootState {
   verify: {
@@ -53,13 +53,15 @@ const App: React.FC = () => {
       await fetchCase(dispatch, setError, setLoading); // Fetch cases
       await fetchEmployee(dispatch, setError, setLoading); // Fetch employees
     };
-
+    if (error) {
+      dispatch(showSnackbar({ message: error, severity: "error" }));
+    }
     fetchData();
   }, [dispatch]);
   if (loading) {
     return <MinimalistHRLoader />;
   }
-
+  console.log(error);
   if (error) {
     // You might want to add proper error handling UI here
     return <div>Error: {error}</div>;
