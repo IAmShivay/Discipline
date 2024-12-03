@@ -4,7 +4,10 @@ import { Employee } from "../components/employees/EmployeeForm";
 import EmployeeForm from "../components/employees/EmployeeForm";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-import { createEmployee } from "../redux/app/employees/employeeSlice";
+import {
+  createEmployee,
+  fetchEmployees,
+} from "../redux/app/employees/employeeSlice";
 import { useSelector } from "react-redux";
 import {
   updateEmployee,
@@ -34,12 +37,6 @@ const Employees: React.FC = () => {
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [alert, setAlert] = useState<AlertState | null>(null);
   const roles = useSelector((state: RootState) => state.roles.roles);
-
-  // Separate loading state for employees
-  const [isLoadingEmployees, setIsLoadingEmployees] = useState(true);
-  const [employeesLoadError, setEmployeesLoadError] = useState<string | null>(
-    null
-  );
 
   const handleAddEmployee = async (employee: Employee): Promise<void> => {
     const roleObject = roles?.find(
@@ -155,7 +152,17 @@ const Employees: React.FC = () => {
       employee?.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee?.department.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  useEffect(() => {
+    dispatch(fetchEmployees());
+    if (error) {
+      dispatch(
+        showSnackbar({
+          message: error,
+          severity: "error",
+        })
+      );
+    }
+  }, [employee, updateEmployee, deleteEmployee, dispatch]);
   useEffect(() => {
     dispatch(fetchRolesByCompanyId(companyId as any));
   }, [companyId, updateEmployee, deleteEmployee, dispatch]);
@@ -325,9 +332,11 @@ const Employees: React.FC = () => {
     </>
   );
 
-  return <div className="p-6">
-    {error && <div>{error}</div>}
-    {renderEmployeeContent()}</div>;
+  return (
+    <div className="p-6">
+      {renderEmployeeContent()}
+    </div>
+  );
 };
 
 export default Employees;
