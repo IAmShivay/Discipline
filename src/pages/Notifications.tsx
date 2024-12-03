@@ -15,7 +15,7 @@ const Notifications: React.FC = () => {
     (state: RootState) => state.notificationReducer.notifications
   ) as Notification[];
 
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>(caseNotifications);
   const [filters, setFilters] = useState({
     search: "",
     type: "",
@@ -63,25 +63,6 @@ const Notifications: React.FC = () => {
   });
 
   const unreadCount = notifications?.filter((n) => !n.isRead)?.length;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(fetchNotifications());
-        setNotifications(caseNotifications);
-      } catch (error) {
-        dispatch(
-          showSnackbar({
-            message: "Error fetching notifications",
-            severity: "error",
-          })
-        );
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-14">

@@ -17,11 +17,11 @@ interface Role {
 }
 
 const RoleManagement: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const { roles, loading, error } = useSelector(
     (state: RootState) => state?.roles
   );
   const [roless, setRoles] = useState<Role[]>(roles);
-  const dispatch = useDispatch<AppDispatch>();
 
   const [newRole, setNewRole] = useState<Omit<Role, "_id">>({
     name: "",
@@ -35,7 +35,7 @@ const RoleManagement: React.FC = () => {
 
   const permissionOptions = ["create", "read", "update", "delete"];
 
-  const filteredRoles : Role[] = roles?.filter((role) =>
+  const filteredRoles: Role[] = roles?.filter((role) =>
     role.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -74,7 +74,7 @@ const RoleManagement: React.FC = () => {
   //   setRoles((prev) => prev?.filter((role) => role._id !== roleId));
   // }, []);
   useEffect(() => {
-      dispatch(fetchRoles());
+    dispatch(fetchRoles());
   }, [dispatch]);
   const RoleForm = () => (
     <div className="bg-white shadow-lg rounded-xl p-6">

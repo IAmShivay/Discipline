@@ -5,8 +5,6 @@ import {
   Pencil,
   Trash2,
   AlertCircle,
-  Loader2,
-  Loader,
 } from "lucide-react";
 import { Employee } from "../components/employees/EmployeeForm";
 import EmployeeForm from "../components/employees/EmployeeForm";
@@ -22,7 +20,6 @@ import {
 import snackbarMessages from "../components/messages/message";
 import { fetchRolesByCompanyId } from "../redux/app/role/roleSlice";
 import { showSnackbar } from "../redux/app/error/errorSlice";
-import MinimalistHRLoader from "./Loading";
 
 type AlertState = {
   message: string;
@@ -30,6 +27,7 @@ type AlertState = {
 };
 
 const Employees: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const employee = useSelector((state: any) => state.employee.employees);
   const availableManagers = useSelector((state: any) => state.roles.role);
   const companyId = useSelector(
@@ -42,7 +40,6 @@ const Employees: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [alert, setAlert] = useState<AlertState | null>(null);
-  const dispatch = useDispatch<AppDispatch>();
   const roles = useSelector((state: RootState) => state.roles.roles);
 
   // Separate loading state for employees
@@ -194,20 +191,7 @@ const Employees: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchRolesByCompanyId(companyId as any));
-  }, [companyId, updateEmployee, deleteEmployee]);
-
-  // Error state renderer
-  const renderErrorState = () => (
-    <div className="flex justify-center items-center h-64">
-      <div className="flex items-center gap-3 text-red-600">
-        <AlertCircle className="w-6 h-6" />
-        <div>
-          <p className="font-semibold">Error Loading Employees</p>
-          <p className="text-sm">{employeesLoadError}</p>
-        </div>
-      </div>
-    </div>
-  );
+  }, [companyId, updateEmployee, deleteEmployee,dispatch]);
 
   // Main content renderer
   const renderEmployeeContent = () => (

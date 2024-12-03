@@ -73,7 +73,7 @@
 //           severity: "success",
 //         })
 //       );
-      
+
 //       setCategories([...categories, newCategoryItem]);
 //     } else {
 //       const { errors }: any = error;
@@ -121,7 +121,7 @@
 //   }, [dispatch]);
 
 //   return (
-    
+
 //     <div className="container mx-auto px-4 py-6 max-w-4xl">
 //       <div className="mb-6">
 //         <h2 className="text-xl md:text-2xl font-bold text-gray-900">
@@ -389,7 +389,6 @@
 
 // export default CategoriesAndTags;
 
-
 import React, { useState, useEffect } from "react";
 import { Plus, X, CheckCircle, AlertCircle } from "lucide-react";
 import { useDispatch } from "react-redux";
@@ -417,10 +416,10 @@ interface Tag {
 const COLORS = ["red", "blue", "green", "yellow", "purple", "pink", "orange"];
 
 const CategoriesAndTags = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const { status, error, items } = useSelector(
     (state: RootState) => state.categories
   );
-  const dispatch = useDispatch<AppDispatch>();
   const [categories, setCategories] = useState<Category[]>(items);
 
   const [tags, setTags] = useState<Tag[]>([
@@ -466,7 +465,7 @@ const CategoriesAndTags = () => {
           severity: "success",
         })
       );
-      
+
       setCategories([...categories, newCategoryItem]);
     } else {
       const { errors }: any = error;
@@ -510,12 +509,7 @@ const CategoriesAndTags = () => {
     setTags(tags?.filter((tag) => tag.id !== id));
   };
 
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
-
-  // Derived loading state
-  const isLoading = status === 'loading';
+  const isLoading = status === "loading";
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-4xl">

@@ -20,6 +20,10 @@ const store = configureStore({
     notificationReducer: notificationReducer,
     categories: categorieReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // If you're dealing with non-serializable values
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
