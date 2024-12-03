@@ -59,14 +59,16 @@ const Cases: React.FC = () => {
     setShowForm(true);
   };
 
-  const handleUpdateCase = async(updatedCase: DisciplinaryCase) => {
+  const handleUpdateCase = async (updatedCase: DisciplinaryCase) => {
     setCases((prev) =>
       prev?.map((c) => (c._id === updatedCase._id ? updatedCase : c))
     );
     setEditingCase(null);
     setShowForm(false);
     if (updatedCase._id) {
-      const response = await dispatch(updateCase({ id: updatedCase._id, caseData: updatedCase }));
+      const response = await dispatch(
+        updateCase({ id: updatedCase._id, caseData: updatedCase })
+      );
       window.location.reload();
       if (response.meta.requestStatus === "fulfilled") {
         dispatch(
@@ -80,7 +82,7 @@ const Cases: React.FC = () => {
     }
   };
 
-  const handleDeleteCase = async(caseId: string) => {
+  const handleDeleteCase = async (caseId: string) => {
     if (window.confirm("Are you sure you want to delete this case?")) {
       setCases((prev) => prev?.filter((c) => c.id !== caseId));
     }
@@ -103,7 +105,7 @@ const Cases: React.FC = () => {
   };
   useEffect(() => {
     dispatch(fetchCases());
-  }, [dispatch,updateCase,deleteCase]);
+  }, [dispatch, updateCase, deleteCase]);
 
   return (
     <div className="p-6">

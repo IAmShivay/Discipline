@@ -18,19 +18,18 @@ import SignupPage from "./pages/signup";
 import LoginPage from "./pages/login";
 import React from "react";
 import { useDispatch } from "react-redux";
-// import { loadUser } from "./redux/app/auth/checkAuthSlice";
 import RoleManagement from "./components/role";
 import TwoStepForgotPasswordPage from "./pages/ForgotPassword";
 import ChangePasswordPage from "./components/ChangePassword";
 import MinimalistHRLoader from "./pages/Loading";
-// import { fetchRoles } from "./redux/app/role/roleSlice";
-// import { fetchCategories } from "./redux/app/categories/categorieSlice";
-// import { fetchNotifications } from "./redux/app/notification/notificationSlice";
 import {
+  fetchCase,
+  fetchEmployee,
   loadData,
   fetchCategorie,
   fetchNotification,
 } from "./utility/centralApicalls";
+import { a } from "framer-motion/client";
 // Define proper type for RootState
 interface RootState {
   verify: {
@@ -46,44 +45,13 @@ const App: React.FC = () => {
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //     try {
-  //       await dispatch<any>(loadUser());
-  //     } catch (err) {
-  //       setError(err instanceof Error ? err?.message : "Failed to load user");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   const fetchCategorie = async () => {
-  //     try {
-  //       await dispatch<any>(fetchCategories());
-  //     } catch (err) {
-  //       setError(err instanceof Error ? err?.message : "Failed to load user");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   const fetchNotification = async () => {
-  //     try {
-  //       await dispatch<any>(fetchNotifications());
-  //     } catch (err) {
-  //       setError(err instanceof Error ? err?.message : "Failed to load user");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchNotification();
-  //   fetchCategorie();
-  //   loadData();
-  // }, [dispatch]);
   useEffect(() => {
     const fetchData = async () => {
       await loadData(dispatch, setError, setLoading); // Fetch user data
       await fetchCategorie(dispatch, setError, setLoading); // Fetch categories
       await fetchNotification(dispatch, setError, setLoading); // Fetch notifications
+      await fetchCase(dispatch, setError, setLoading); // Fetch cases
+      await fetchEmployee(dispatch, setError, setLoading); // Fetch employees
     };
 
     fetchData();
