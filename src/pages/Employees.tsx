@@ -162,7 +162,7 @@ const Employees: React.FC = () => {
         })
       );
     }
-  }, [employee, updateEmployee, deleteEmployee, dispatch]);
+  }, [updateEmployee, deleteEmployee, dispatch]);
   useEffect(() => {
     dispatch(fetchRolesByCompanyId(companyId as any));
   }, [companyId, updateEmployee, deleteEmployee, dispatch]);
@@ -332,11 +332,7 @@ const Employees: React.FC = () => {
     </>
   );
 
-  return (
-    <div className="p-6">
-      {renderEmployeeContent()}
-    </div>
-  );
+  return <div className="p-6">{renderEmployeeContent()}</div>;
 };
 
 export default Employees;
