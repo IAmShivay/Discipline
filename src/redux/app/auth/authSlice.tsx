@@ -33,11 +33,11 @@ const initialState: AuthState = {
   role: "",
 };
 
-interface Credentials {
+interface Credentials {  
   fullName: string;
   companyName: string;
   email: string;
-  password: string;
+  password?: string;
   mobileNumber: string;
   terms: boolean | undefined;
 }

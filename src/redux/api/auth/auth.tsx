@@ -6,7 +6,10 @@ interface Credentials {
   firstName?: string;
   lastName?: string;
   email: string;
-  password: string;
+  password?: string;
+  permission?: [string];
+  role?: string;
+  status?: string;
 }
 
 export const Register = async (credentials: Credentials) => {

@@ -10,6 +10,7 @@ import notificationReducer from "./redux/app/notification/notificationSlice";
 import categorieReducer from "./redux/app/categories/categorieSlice";
 import errorReducer from "./redux/app/error/globalErrorSlice";
 import {errorMiddleware} from "./components/errorMiddleware";
+import userReducer from "./redux/app/auth/userManagementSlice";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -22,6 +23,8 @@ const store = configureStore({
     notificationReducer: notificationReducer,
     categories: categorieReducer,
     error: errorReducer,
+    users: userReducer,
+
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(errorMiddleware),
 
