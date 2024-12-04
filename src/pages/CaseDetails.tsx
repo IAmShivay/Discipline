@@ -1,7 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { FileText, Clock, MessageSquare, Download, AlertCircle, Loader2 } from "lucide-react";
+import {
+  FileText,
+  Clock,
+  MessageSquare,
+  Download,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 import CaseTimeline from "../components/cases/CaseTimeline";
 import CaseResponse from "../components/cases/CaseResponse";
 import CaseStatusUpdate from "../components/cases/CaseStatusUpdate";
@@ -12,11 +18,12 @@ import { AppDispatch, RootState } from "../store";
 import { fetchCaseById } from "../redux/app/cases/caseSlice";
 import { updateCaseStatus } from "../redux/app/cases/caseSlice";
 import { showSnackbar } from "../redux/app/error/errorSlice";
+import ImageViewer from "./imageViewer";
 
 const CaseDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
-  
+
   // Add loading and error states
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -37,20 +44,24 @@ const CaseDetails: React.FC = () => {
     const fetchData = async () => {
       setIsLoading(true);
       setLoadError(null);
-      
+
       try {
         if (id) {
           const response = await dispatch(fetchCaseById(id));
-          
+
           // Check if the fetch was unsuccessful
           if (fetchCaseById.rejected.match(response)) {
-            setLoadError(response.payload as string || "Failed to load case details");
+            setLoadError(
+              (response.payload as string) || "Failed to load case details"
+            );
           }
         } else {
           setLoadError("No case ID provided");
         }
       } catch (error) {
-        setLoadError("An unexpected error occurred while fetching case details");
+        setLoadError(
+          "An unexpected error occurred while fetching case details"
+        );
         dispatch(
           showSnackbar({
             message: "Failed to load case details",
@@ -195,10 +206,10 @@ const CaseDetails: React.FC = () => {
                                 );
                               }
                             } catch (error) {
-                            
                               dispatch(
                                 showSnackbar({
-                                  message: "An unexpected error occurred. Please try again.",
+                                  message:
+                                    "An unexpected error occurred. Please try again.",
                                   severity: "error",
                                 })
                               );
@@ -206,7 +217,8 @@ const CaseDetails: React.FC = () => {
                           } else {
                             dispatch(
                               showSnackbar({
-                                message: "Invalid case data. Unable to update status.",
+                                message:
+                                  "Invalid case data. Unable to update status.",
                                 severity: "error",
                               })
                             );
@@ -273,19 +285,10 @@ const CaseDetails: React.FC = () => {
                             </>
                           ) : (
                             <>
-                              <img
-                                src={file.url}
+                              <ImageViewer
+                                imageUrl={file.url}
                                 alt={file.name}
-                                className="w-10 h-10 object-cover rounded"
                               />
-                              <a
-                                href={file.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="hover:underline"
-                              >
-                                {file.name}
-                              </a>
                             </>
                           )}
                         </li>
@@ -306,12 +309,11 @@ const CaseDetails: React.FC = () => {
 
   return (
     <div className="p-6">
-      {isLoading 
+      {isLoading
         ? renderLoadingState()
         : loadError
         ? renderErrorState()
-        : renderCaseContent()
-      }
+        : renderCaseContent()}
     </div>
   );
 };
