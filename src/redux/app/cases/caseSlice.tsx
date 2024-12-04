@@ -108,7 +108,7 @@ export const fetchCases = createAsyncThunk(
   "cases/fetchCases",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosBackend.get("/cases/employ");
+      const response = await axiosBackend.get("/cases/employee");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error?.message || "Failed to fetch cases");
