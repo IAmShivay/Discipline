@@ -49,6 +49,7 @@ const RoleManagement: React.FC = () => {
         _id: Date.now(),
       };
       dispatch(createRole(newRole));
+      window.location.reload();
       setRoles((prev) => [...prev, roleToAdd]);
       setNewRole({ name: "", description: "", permissions: [] });
       setMobileView("list");

@@ -80,13 +80,13 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
           <tbody className="bg-white divide-y divide-gray-200">
             {cases?.map((case_) => {
               const StatusIcon =
-                statusIcons[case_.status as keyof typeof statusIcons] ||
+                statusIcons[case_?.status as keyof typeof statusIcons] ||
                 AlertCircle;
               return (
-                <tr key={case_.id} className="hover:bg-gray-50 cursor-pointer">
+                <tr key={case_?.id} className="hover:bg-gray-50 cursor-pointer">
                   <td
                     className="px-6 py-4 whitespace-nowrap"
-                    onClick={() => navigate(`/cases/${case_._id}`)}
+                    onClick={() => navigate(`/cases/${case_?._id}`)}
                   >
                     <div className="flex items-center">
                       <div className="ml-4">
