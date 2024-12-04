@@ -80,7 +80,9 @@ const UserManagement = () => {
       setEditingUser(null);
     } else {
       try {
-        const resultAction = await dispatch(registerUser(values)).unwrap(); // Wait for the backend response
+        const { _id, ...userData } = values;
+
+        const resultAction = await dispatch(registerUser(userData)).unwrap(); // Wait for the backend response
         console.log("User registered successfully:", resultAction);
 
         // // Update the users list with the user from the backend response
