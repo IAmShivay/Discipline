@@ -34,13 +34,8 @@ export const fetchCaseTimeline = createAsyncThunk(
     try {
       const response = await axiosBackend.get(`/cases/timeline/${id}`);
       return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(
-          error.response?.data || "Failed to fetch timeline"
-        );
-      }
-      return rejectWithValue("An unexpected error occurred");
+    } catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );

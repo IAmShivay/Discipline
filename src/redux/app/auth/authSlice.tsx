@@ -14,7 +14,6 @@ import {
   saveToken,
 } from "../../../utility/tokenHandeling";
 import { RootState } from "../../../store";
-import axiosBackend from "../../api/axiosBackend";
 import axiosInstance from "../../api/axiosInstance";
 interface AuthState {
   user: string | "";

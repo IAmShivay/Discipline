@@ -37,11 +37,8 @@ export const fetchNotifications = createAsyncThunk(
     try {
       const response = await axiosBackend.get("/cases/notifications");
       return response.data;
-    } catch (error) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
-      }
-      return rejectWithValue("An unexpected error occurred");
+    } catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -56,11 +53,8 @@ export const updateNotificationStatus = createAsyncThunk(
         }
       );
       return response.data;
-    } catch (error) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
-      }
-      return rejectWithValue("An unexpected error occurred");
+    } catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );

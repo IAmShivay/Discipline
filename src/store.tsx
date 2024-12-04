@@ -8,6 +8,8 @@ import timelineReducer from "./redux/app/timline/timeline";
 import roleReducer from "./redux/app/role/roleSlice";
 import notificationReducer from "./redux/app/notification/notificationSlice";
 import categorieReducer from "./redux/app/categories/categorieSlice";
+import errorReducer from "./redux/app/error/globalErrorSlice";
+import {errorMiddleware} from "./components/errorMiddleware";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -19,11 +21,10 @@ const store = configureStore({
     roles: roleReducer,
     notificationReducer: notificationReducer,
     categories: categorieReducer,
+    error: errorReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false, // If you're dealing with non-serializable values
-    }),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(errorMiddleware),
+
 });
 
 export type RootState = ReturnType<typeof store.getState>;

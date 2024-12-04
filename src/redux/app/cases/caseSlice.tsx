@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { DisciplinaryCase } from "../../../types"; // Adjust the import path as needed
 import axiosBackend from "../../api/axiosBackend";
 
@@ -49,11 +48,8 @@ export const createCase = createAsyncThunk(
       });
 
       return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data || "Failed to create case");
-      }
-      return rejectWithValue("An unexpected error occurred");
+    } catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -65,11 +61,8 @@ export const deleteCase = createAsyncThunk(
     try {
       await axiosBackend.delete(`/cases/delete/${id}`);
       return id; // Return the id of the deleted case
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data || "Failed to delete case");
-      }
-      return rejectWithValue("An unexpected error occurred");
+    } catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -104,11 +97,8 @@ export const updateCase = createAsyncThunk(
       });
 
       return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data || "Failed to update case");
-      }
-      return rejectWithValue("An unexpected error occurred");
+    } catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -118,13 +108,10 @@ export const fetchCases = createAsyncThunk(
   "cases/fetchCases",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosBackend.get("/cases/employee");
+      const response = await axiosBackend.get("/cases/employ");
       return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data || "Failed to fetch cases");
-      }
-      return rejectWithValue("An unexpected error occurred");
+    } catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -134,11 +121,8 @@ export const fetchCaseById = createAsyncThunk(
     try {
       const response = await axiosBackend.get(`/cases/caseId/${id}`);
       return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data || "Failed to fetch case");
-      }
-      return rejectWithValue("An unexpected error occurred");
+    } catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -177,13 +161,8 @@ export const addEmployeeResponse = createAsyncThunk(
       );
 
       return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(
-          error.response?.data || "Failed to add employee response"
-        );
-      }
-      return rejectWithValue("An unexpected error occurred");
+    } catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -225,13 +204,8 @@ export const addAdminResponse = createAsyncThunk(
       );
 
       return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(
-          error.response?.data || "Failed to add admin response"
-        );
-      }
-      return rejectWithValue("An unexpected error occurred");
+    }  catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -244,13 +218,8 @@ export const fetchEmployeeResponses = createAsyncThunk(
         `/cases/employee-responses/${caseId}`
       );
       return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(
-          error.response?.data || "Failed to fetch employee responses"
-        );
-      }
-      return rejectWithValue("An unexpected error occurred");
+    }  catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -261,15 +230,12 @@ export const updateCaseStatus = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axiosBackend.post(`/cases/status/${caseId}`, { status });
+      const response = await axiosBackend.post(`/cases/status/${caseId}`, {
+        status,
+      });
       return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(
-          error.response?.data || "Failed to update case status"
-        );
-      }
-      return rejectWithValue("An unexpected error occurred");
+    }  catch (error: any) {
+      return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
