@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import {
   Users,
   Tags,
-  Bell,
-  GitBranch,
-  Mail,
-  Shield,
-  Link,
+  // Bell,
+  // GitBranch,
+  // Mail,
+  // Shield,
+  // Link,
   Settings as SettingsIcon,
 } from "lucide-react";
-// import UserManagement from "../components/settings/UserManagement";
+import UserManagement from "../components/settings/UserManagement";
 import CategoriesAndTags from "../components/settings/CategoriesAndTags";
 import NotificationSettings from "../components/settings/NotificationSettings";
 import WorkflowAutomation from "../components/settings/WorkflowAutomation";
@@ -27,7 +27,7 @@ const Settings = () => {
   );
 
   const tabs = [
-    // { id: "user-management", label: "User Management", icon: Users },
+    { id: "user-management", label: "User Management", icon: Users },
     { id: "categories-tags", label: "Categories & Tags", icon: Tags },
     // { id: "notifications", label: "Notifications", icon: Bell },
     // { id: "workflow", label: "Workflow", icon: GitBranch },
@@ -46,8 +46,8 @@ const Settings = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      // case "user-management":
-      //   return <UserManagement />;
+      case "user-management":
+        return <UserManagement />;
       case "categories-tags":
         return <CategoriesAndTags />;
       case "notifications":

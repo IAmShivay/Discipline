@@ -1,14 +1,29 @@
 import React, { useState } from 'react';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { Plus, Edit2, Trash2, X } from 'lucide-react';
 
+// User interface
 interface User {
   id: string;
   name: string;
   email: string;
   role: string;
   status: 'active' | 'inactive';
+  permissions: string[];
 }
 
+// Available permission options
+const PERMISSION_OPTIONS = [
+  'read', 
+  'write', 
+  'delete', 
+  'create', 
+  'update', 
+  'admin'
+];
+
+// Initial mock users
 const mockUsers: User[] = [
   {
     id: '1',
@@ -16,6 +31,7 @@ const mockUsers: User[] = [
     email: 'john@example.com',
     role: 'Super Admin',
     status: 'active',
+    permissions: ['admin', 'read', 'write', 'create', 'update', 'delete']
   },
   {
     id: '2',
@@ -23,65 +39,319 @@ const mockUsers: User[] = [
     email: 'jane@example.com',
     role: 'HR Manager',
     status: 'active',
+    permissions: ['read', 'write']
   },
 ];
 
+// Validation schema
+const UserSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Name is too short!')
+    .max(50, 'Name is too long!')
+    .required('Name is required'),
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  role: Yup.string()
+    .required('Role is required')
+    .oneOf(['Super Admin', 'HR Manager', 'Editor', 'Viewer'], 'Invalid role'),
+  status: Yup.string()
+    .oneOf(['active', 'inactive'], 'Invalid status')
+    .required('Status is required'),
+  permissions: Yup.array()
+    .of(Yup.string().oneOf(PERMISSION_OPTIONS, 'Invalid permission'))
+    .min(1, 'At least one permission is required')
+});
+
 const UserManagement = () => {
-  const [users] = useState<User[]>(mockUsers);
+  const [users, setUsers] = useState<User[]>(mockUsers);
   const [showAddUser, setShowAddUser] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+
+  // Add or Edit User Handler
+  const handleSubmit = (values: User, { resetForm }: any) => {
+    console.log('Form Values:', values);
+
+    if (editingUser) {
+      // Edit existing user
+      setUsers(users.map(user => 
+        user.id === editingUser.id ? { ...values, id: user.id } : user
+      ));
+      setEditingUser(null);
+    } else {
+      // Add new user
+      const newUser = {
+        ...values,
+        id: (users.length + 1).toString()
+      };
+      setUsers([...users, newUser]);
+    }
+
+    setShowAddUser(false);
+    resetForm();
+  };
+
+  // Delete User Handler
+  const handleDeleteUser = (userId: string) => {
+    console.log('Deleting user:', userId);
+    setUsers(users.filter(user => user.id !== userId));
+  };
+
+  // Edit User Handler
+  const handleEditUser = (user: User) => {
+    console.log('Editing user:', user);
+    setEditingUser(user);
+    setShowAddUser(true);
+  };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">User Management</h2>
-          <p className="text-sm text-gray-500">Manage admin users and their roles</p>
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">User Management</h2>
+          <p className="text-xs sm:text-sm text-gray-500">Manage admin users, roles, and permissions</p>
         </div>
         <button
-          onClick={() => setShowAddUser(true)}
-          className="btn btn-primary flex items-center gap-2"
+          onClick={() => {
+            setShowAddUser(true);
+            setEditingUser(null);
+          }}
+          className="btn btn-primary flex items-center gap-2 text-sm px-3 py-2"
         >
           <Plus className="w-4 h-4" />
           Add User
         </button>
       </div>
 
-      <div className="bg-white rounded-lg">
+      {/* User Form Modal */}
+      {showAddUser && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+            <button 
+              onClick={() => {
+                setShowAddUser(false);
+                setEditingUser(null);
+              }} 
+              className="absolute top-4 right-4"
+            >
+              <X className="w-5 h-5 text-gray-500 hover:text-gray-700" />
+            </button>
+            <h3 className="text-lg font-semibold mb-4">
+              {editingUser ? 'Edit User' : 'Add New User'}
+            </h3>
+            <Formik
+              initialValues={editingUser || {
+                id: '',
+                name: '',
+                email: '',
+                role: '',
+                status: 'active',
+                permissions: ['read']
+              }}
+              validationSchema={UserSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ errors, touched, values, setFieldValue }) => (
+                <Form className="space-y-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+                    <Field 
+                      name="name" 
+                      className={`mt-1 block w-full rounded-md border ${
+                        errors.name && touched.name 
+                          ? 'border-red-500 focus:ring-red-500' 
+                          : 'border-gray-300 focus:ring-blue-500'
+                      } shadow-sm focus:border-blue-500 focus:ring-1`}
+                    />
+                    <ErrorMessage 
+                      name="name" 
+                      component="p" 
+                      className="mt-1 text-xs text-red-500" 
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                    <Field 
+                      name="email" 
+                      type="email"
+                      className={`mt-1 block w-full rounded-md border ${
+                        errors.email && touched.email 
+                          ? 'border-red-500 focus:ring-red-500' 
+                          : 'border-gray-300 focus:ring-blue-500'
+                      } shadow-sm focus:border-blue-500 focus:ring-1`}
+                    />
+                    <ErrorMessage 
+                      name="email" 
+                      component="p" 
+                      className="mt-1 text-xs text-red-500" 
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
+                    <Field 
+                      as="select"
+                      name="role" 
+                      className={`mt-1 block w-full rounded-md border ${
+                        errors.role && touched.role 
+                          ? 'border-red-500 focus:ring-red-500' 
+                          : 'border-gray-300 focus:ring-blue-500'
+                      } shadow-sm focus:border-blue-500 focus:ring-1`}
+                    >
+                      <option value="">Select Role</option>
+                      <option value="Super Admin">Super Admin</option>
+                      <option value="HR Manager">HR Manager</option>
+                      <option value="Editor">Editor</option>
+                      <option value="Viewer">Viewer</option>
+                    </Field>
+                    <ErrorMessage 
+                      name="role" 
+                      component="p" 
+                      className="mt-1 text-xs text-red-500" 
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Permissions</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {PERMISSION_OPTIONS.map((permission) => (
+                        <label key={permission} className="inline-flex items-center">
+                          <input
+                            type="checkbox"
+                            name="permissions"
+                            value={permission}
+                            checked={values.permissions.includes(permission)}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              setFieldValue(
+                                'permissions', 
+                                checked 
+                                  ? [...values.permissions, permission]
+                                  : values.permissions.filter(p => p !== permission)
+                              );
+                            }}
+                            className="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded"
+                          />
+                          <span className="ml-2 text-sm text-gray-700 capitalize">
+                            {permission}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    {errors.permissions && touched.permissions && (
+                      <p className="mt-1 text-xs text-red-500">
+                        {errors.permissions as string}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
+                    <Field 
+                      as="select"
+                      name="status" 
+                      className={`mt-1 block w-full rounded-md border ${
+                        errors.status && touched.status 
+                          ? 'border-red-500 focus:ring-red-500' 
+                          : 'border-gray-300 focus:ring-blue-500'
+                      } shadow-sm focus:border-blue-500 focus:ring-1`}
+                    >
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                    </Field>
+                    <ErrorMessage 
+                      name="status" 
+                      component="p" 
+                      className="mt-1 text-xs text-red-500" 
+                    />
+                  </div>
+
+                  <div className="flex justify-end space-x-2">
+                    <button 
+                      type="button" 
+                      onClick={() => {
+                        setShowAddUser(false);
+                        setEditingUser(null);
+                      }} 
+                      className="btn btn-secondary text-sm"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary text-sm"
+                    >
+                      {editingUser ? 'Update User' : 'Add User'}
+                    </button>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </div>
+      )}
+
+      {/* User Table */}
+      <div className="bg-white rounded-lg shadow overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead>
+          <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Email
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Role
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Permissions
+              </th>
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {users?.map((user) => (
-              <tr key={user.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
+              <tr key={user.id} className="hover:bg-gray-50">
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">
                     {user.name}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-500">{user.email}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{user.role}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                  <div className="flex flex-wrap gap-1">
+                    {user.permissions.map((permission) => (
+                      <span
+                        key={permission}
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                          ${permission === 'admin' 
+                            ? 'bg-purple-100 text-purple-800' 
+                            : permission === 'write' 
+                            ? 'bg-blue-100 text-blue-800'
+                            : permission === 'read'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-gray-100 text-gray-800'
+                          }`}
+                      >
+                        {permission}
+                      </span>
+                    ))}
+                  </div>
+                </td>
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       user.status === 'active'
@@ -92,12 +362,18 @@ const UserManagement = () => {
                     {user.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex items-center gap-2">
-                    <button className="text-blue-600 hover:text-blue-800">
+                    <button 
+                      onClick={() => handleEditUser(user)}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button className="text-red-600 hover:text-red-800">
+                    <button 
+                      onClick={() => handleDeleteUser(user.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>

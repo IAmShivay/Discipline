@@ -1,7 +1,5 @@
 // snackbarMessages.ts
 
-import { logout } from "../../redux/app/auth/authSlice";
-
 interface SnackbarMessages {
     success: {
         [key: string]: string;
