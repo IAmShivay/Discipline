@@ -27,7 +27,9 @@ const Settings = () => {
   );
 
   const tabs = [
-    { id: "user-management", label: "User Management", icon: Users },
+    ...(user?.role === "Company" || user?.role === "Super Admin"
+      ? [{ id: "user-management", label: "User Management", icon: Users }]
+      : []),
     { id: "categories-tags", label: "Categories & Tags", icon: Tags },
     // { id: "notifications", label: "Notifications", icon: Bell },
     // { id: "workflow", label: "Workflow", icon: GitBranch },

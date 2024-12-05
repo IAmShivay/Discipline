@@ -137,9 +137,9 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
                   </td>
                   {isAuthenticated &&
                     (user?.role === "Company" ||
-                      user?.role === "superadmin" ||
-                      user?.role === "manager" ||
-                      user?.role === "hr") && (
+                      user?.role === "Super Admin" ||
+                      user?.role === "Hr Manager" ||
+                      user?.role === "Editor") && (
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
                           onClick={(e) => {
