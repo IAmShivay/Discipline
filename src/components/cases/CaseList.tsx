@@ -136,7 +136,7 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
                       new Date(case_.incidentDate).toLocaleDateString()}
                   </td>
                   {isAuthenticated &&
-                    (user?.role === "admin" ||
+                    (user?.role === "Company" ||
                       user?.role === "superadmin" ||
                       user?.role === "manager" ||
                       user?.role === "hr") && (

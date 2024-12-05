@@ -204,7 +204,7 @@ export const addAdminResponse = createAsyncThunk(
       );
 
       return response.data;
-    }  catch (error: any) {
+    } catch (error: any) {
       return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
@@ -218,7 +218,7 @@ export const fetchEmployeeResponses = createAsyncThunk(
         `/cases/employee-responses/${caseId}`
       );
       return response.data;
-    }  catch (error: any) {
+    } catch (error: any) {
       return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
@@ -234,7 +234,7 @@ export const updateCaseStatus = createAsyncThunk(
         status,
       });
       return response.data;
-    }  catch (error: any) {
+    } catch (error: any) {
       return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
