@@ -67,9 +67,7 @@ const App: React.FC = () => {
     }
     fetchData();
   }, [dispatch]);
-  if (loading) {
-    return <MinimalistHRLoader />;
-  }
+ 
   return (
     <Router>
       <Routes>
