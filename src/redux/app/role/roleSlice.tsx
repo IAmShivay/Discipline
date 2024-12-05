@@ -43,7 +43,11 @@ export const fetchRoles = createAsyncThunk(
       const response = await axiosBackend.get("/roles/roles");
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -55,7 +59,11 @@ export const createRole = createAsyncThunk(
       const response = await axiosBackend.post("/roles", roleData);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -70,7 +78,11 @@ export const updateRole = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -82,11 +94,14 @@ export const deleteRole = createAsyncThunk(
       await axiosBackend.delete(`/roles/${id}`);
       return id;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
-
 export const fetchRolesByCompanyId = createAsyncThunk(
   "roles/fetchRolesByCompanyId",
   async (companyId: string, { rejectWithValue }) => {

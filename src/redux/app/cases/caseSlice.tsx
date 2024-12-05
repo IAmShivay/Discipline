@@ -52,7 +52,11 @@ export const createCase = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -65,7 +69,11 @@ export const deleteCase = createAsyncThunk(
       await axiosBackend.delete(`/cases/delete/${id}`);
       return id; // Return the id of the deleted case
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -101,7 +109,11 @@ export const updateCase = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -114,7 +126,11 @@ export const fetchCases = createAsyncThunk(
       const response = await axiosBackend.get("/cases/employee");
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -126,7 +142,11 @@ export const fetchCaseById = createAsyncThunk(
       const response = await axiosBackend.get(`/cases/caseId/${id}`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -166,7 +186,11 @@ export const addEmployeeResponse = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -209,7 +233,11 @@ export const addAdminResponse = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -223,7 +251,11 @@ export const fetchEmployeeResponses = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -239,7 +271,11 @@ export const updateCaseStatus = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );

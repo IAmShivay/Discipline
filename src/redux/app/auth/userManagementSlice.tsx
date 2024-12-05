@@ -28,8 +28,12 @@ export const fetchUsers = createAsyncThunk(
     try {
       const response = await axios.get("/api/users");
       return response.data;
-    } catch (error) {
-      //   return rejectWithValue(error.response.data);
+    } catch (error: any) {
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -40,8 +44,12 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await axiosInstance.post("/add-user", userData);
       return response.data;
-    } catch (error) {
-      //   return rejectWithValue(error.response.data);
+    } catch (error: any) {
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -52,8 +60,12 @@ export const updateUser = createAsyncThunk(
     try {
       const response = await axios.put(`/api/users/${userData._id}`, userData);
       return response.data;
-    } catch (error) {
-      //   return rejectWithValue(error.response.data);
+    }catch (error: any) {
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -64,8 +76,12 @@ export const deleteUser = createAsyncThunk(
     try {
       await axios.delete(`/api/users/${userId}`);
       return userId;
-    } catch (error) {
-      //   return rejectWithValue(error.response.data);
+    } catch (error: any) {
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -81,8 +97,12 @@ export const changeUserStatus = createAsyncThunk(
         status,
       });
       return response.data;
-    } catch (error) {
-      //   return rejectWithValue(error.response.data);
+    } catch (error: any) {
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );

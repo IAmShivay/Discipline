@@ -173,10 +173,15 @@ export const fetchCategories = createAsyncThunk<
   try {
     const response = await getCategories();
     return response;
-  } catch (err) {
-    return rejectWithValue("Failed to fetch categories");
+  } catch (error: any) {
+    if (error.response) {
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to fetch cases"
+      );
+    } else return rejectWithValue(error?.message || "Failed to fetch cases");
   }
-});
+}
+);
 
 export const addCategory = createAsyncThunk<
   Category,
@@ -186,10 +191,15 @@ export const addCategory = createAsyncThunk<
   try {
     const response = await createCategories(category as Category);
     return response.data;
-  } catch (error) {
-    return rejectWithValue((error as any)?.message || "Failed to add category");
+  } catch (error: any) {
+    if (error.response) {
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to fetch cases"
+      );
+    } else return rejectWithValue(error?.message || "Failed to fetch cases");
   }
-});
+}
+);
 
 const categoriesSlice = createSlice({
   name: "categories",

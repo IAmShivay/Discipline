@@ -35,7 +35,11 @@ export const fetchCaseTimeline = createAsyncThunk(
       const response = await axiosBackend.get(`/cases/timeline/${id}`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );

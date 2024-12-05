@@ -33,9 +33,11 @@ export const loadUser = createAsyncThunk<any>(
       const data = await Verify();
       return data;
     } catch (error: any) {
-      // Ensure error.message exists and return it properly
-      const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
-      return rejectWithValue(errorMessage);
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
