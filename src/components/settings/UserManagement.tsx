@@ -2,13 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Plus, Edit2, Trash2, X } from "lucide-react";
-import {
-  registerUser,
-} from "../../redux/app/auth/userManagementSlice";
+import { registerUser } from "../../redux/app/auth/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../src/store";
-import { fetchRolesByCompanyId } from "../../redux/app/role/roleSlice";
 
 // User interface
 
@@ -20,7 +17,6 @@ interface User {
   status: "active" | "inactive";
   permissions: string[];
 }
-
 
 // Available permission options
 
@@ -48,7 +44,6 @@ const UserSchema = Yup.object().shape({
 
 const UserManagement = () => {
   const roles = useSelector((state: RootState) => state.roles.role);
-  // const { user, loading } = useSelector((state: RootState) => state.verify);
   const dispatch = useDispatch<AppDispatch>();
   const [users, setUsers] = useState<User[]>(roles);
   const [showAddUser, setShowAddUser] = useState(false);
@@ -66,11 +61,11 @@ const UserManagement = () => {
       try {
         const { _id, ...userData } = values;
 
-        const resultAction = await dispatch(registerUser(userData)).unwrap(); 
+        const resultAction = await dispatch(registerUser(userData)).unwrap();
         console.log("User registered successfully:", resultAction);
-
       } catch (error) {
-        console.error("Error registering user:", error);      }
+        console.error("Error registering user:", error);
+      }
     }
 
     setShowAddUser(false);
@@ -79,7 +74,6 @@ const UserManagement = () => {
 
   // Delete User Handler
   const handleDeleteUser = (userId: string) => {
-    console.log("Deleting user:", userId);
     setUsers(users.filter((user) => user._id !== userId));
   };
 
@@ -88,14 +82,6 @@ const UserManagement = () => {
     setEditingUser(user);
     setShowAddUser(true);
   };
-
-  // useEffect(() => {
-  //   if (user?.companyId) {
-  //     dispatch(fetchRolesByCompanyId(user.companyId));
-  //   }
-  // }, [dispatch, user?.companyId]);
-
-
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
@@ -225,7 +211,7 @@ const UserManagement = () => {
                     />
                   </div>
 
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Permissions
                     </label>
@@ -264,7 +250,7 @@ const UserManagement = () => {
                         {errors.permissions as string}
                       </p>
                     )}
-                  </div>
+                  </div> */}
 
                   <div>
                     <label
@@ -328,9 +314,9 @@ const UserManagement = () => {
               <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Role
               </th>
-              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {/* <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Permissions
-              </th>
+              </th> */}
               <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
               </th>
@@ -353,7 +339,7 @@ const UserManagement = () => {
                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{user.role}</div>
                 </td>
-                <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                {/* <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <div className="flex flex-wrap gap-1">
                     {user.permissions.map((permission) => (
                       <span
@@ -373,7 +359,7 @@ const UserManagement = () => {
                       </span>
                     ))}
                   </div>
-                </td>
+                </td> */}
                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
