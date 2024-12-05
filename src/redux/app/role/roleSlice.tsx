@@ -4,10 +4,14 @@ import axiosInstance from "../../api/axiosInstance";
 
 // Role Interface
 interface Role {
-  _id: number | string;
-  name: string;
+  _id: string;
+  name?: string;
+  fullName: string;
+  email: string;
+  status: "active" | "inactive";
+  role: string;
   companyId?: string;
-  description: string;
+  description?: string;
   permissions: string[];
   createdAt?: Date;
   updatedAt?: Date;

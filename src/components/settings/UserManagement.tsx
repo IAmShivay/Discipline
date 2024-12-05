@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Plus, Edit2, Trash2, X } from "lucide-react";
@@ -6,6 +6,7 @@ import { registerUser } from "../../redux/app/auth/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../src/store";
+import { fetchRolesByCompanyId } from "../../redux/app/role/roleSlice";
 
 // User interface
 interface User {
@@ -61,8 +62,11 @@ const UserSchema = Yup.object().shape({
 });
 
 const UserManagement = () => {
+  const roles = useSelector((state: RootState) => state.roles.role);
+  const user = useSelector((state: RootState) => state.verify.user);
+  console.log("Roles:", roles);
   const dispatch = useDispatch<AppDispatch>();
-  const [users, setUsers] = useState<User[]>(mockUsers);
+  const [users, setUsers] = useState<User[]>(roles);
   const [showAddUser, setShowAddUser] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
@@ -109,7 +113,11 @@ const UserManagement = () => {
     setEditingUser(user);
     setShowAddUser(true);
   };
-
+  useEffect(() => {
+    if (user?.companyId) {
+      dispatch(fetchRolesByCompanyId(user.companyId));
+    }
+  }, [dispatch, user?.companyId]);
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">

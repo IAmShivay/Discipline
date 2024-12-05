@@ -285,9 +285,7 @@ const Employees: React.FC = () => {
                       {employee?.position}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {availableManagers?.find(
-                        (m: any) => m?._id === employee?.managerId
-                      )?.name || "No Manager"}
+                      {employee?.managerId || "No Manager"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {new Date(employee?.joinDate).toLocaleDateString()}

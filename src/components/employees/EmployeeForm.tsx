@@ -90,33 +90,9 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     loading,
     error,
   } = useSelector((state: RootState) => state?.roles);
+  const role = useSelector((state: RootState) => state?.roles?.role);
+  console.log(role);
   const [filteredManagers, setFilteredManagers] = useState<Manager[]>([]);
-  useEffect(() => {
-    if (formData?.roleId) {
-      const selectedRole = roles?.find(
-        (role) => role?._id === formData?.roleId
-      );
-
-      if (selectedRole) {
-        const isEmployeeRole = selectedRole?.name.toLowerCase() === "employee";
-        setCanAssignManager(isEmployeeRole);
-
-        if (!isEmployeeRole) {
-          setFormData((prev) => ({ ...prev, managerId: "" }));
-        }
-      }
-      // Filter out the "employee" role
-      const managerRoles = roles?.filter(
-        (role) => role.name?.toLowerCase() !== "employee"
-      );
-
-      // Filter available managers based on the non-employee roles
-      const filtered = availableManagers?.filter((manager) =>
-        managerRoles?.some((role) => role?.name === manager?.role)
-      );
-      setFilteredManagers(filtered);
-    }
-  }, [formData?.roleId, roles, availableManagers]);
   useEffect(() => {
     if (initialData) {
       setFormData((prevData) => ({
@@ -215,7 +191,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             >
               <option value="">Select Role</option>
               {roles?.map((role) => (
-                <option key={role?._id} value={role?._id}>
+                <option key={role?._id} value={role?.name}>
                   {role?.name?.toLocaleUpperCase()}
                 </option>
               ))}
@@ -235,11 +211,11 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               value={formData?.managerId}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              disabled={!filteredManagers || filteredManagers?.length === 0}
+              // disabled={!filteredManagers || filteredManagers?.length === 0}
             >
               <option value="">Select Manager</option>
-              {filteredManagers?.map((manager) => (
-                <option key={manager?._id} value={manager?._id}>
+              {role?.map((manager) => (
+                <option key={manager?._id} value={manager?.fullName}>
                   {manager?.fullName} ({manager?.role})
                 </option>
               ))}
@@ -353,7 +329,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               Join Date
             </label>
             <input
-            placeholder="Join Date"
+              placeholder="Join Date"
               id="joinDate"
               type="date"
               name="joinDate"

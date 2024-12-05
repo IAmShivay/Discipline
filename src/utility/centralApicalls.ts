@@ -4,6 +4,7 @@ import { fetchCategories } from "../redux/app/categories/categorieSlice";
 import { fetchNotifications } from "../redux/app/notification/notificationSlice";
 import { fetchEmployees } from "../redux/app/employees/employeeSlice";
 import { fetchCases } from "../redux/app/cases/caseSlice";
+import { fetchRolesByCompanyId } from "../redux/app/role/roleSlice";
 export const loadData = async (
   dispatch: Dispatch<any>,
   setError: (message: string | null) => void,
@@ -83,22 +84,23 @@ export const fetchEmployee = async (
     setLoading(false);
   }
 };
-// export const fetchNotification = async (
-//   dispatch: Dispatch<any>,
-//   setError: (message: string | null) => void,
-//   setLoading: (state: boolean) => void
-// ) => {
-//   try {
-//     setLoading(true);
-//     await dispatch(fetchNotifications());
-//   } catch (err) {
-//     setError(
-//       err instanceof Error ? err.message : "Failed to load notifications"
-//     );
-//   } finally {
-//     setLoading(false);
-//   }
-// };
+export const fetchUserByCompanyId = async (
+  companyId: string,
+  dispatch: Dispatch<any>,
+  setError: (message: string | null) => void,
+  setLoading: (state: boolean) => void
+) => {
+  try {
+    setLoading(true);
+    await dispatch(fetchRolesByCompanyId(companyId));
+  } catch (err) {
+    setError(
+      err instanceof Error ? err.message : "Failed to load notifications"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 // export const fetchNotification = async (
 //   dispatch: Dispatch<any>,
 //   setError: (message: string | null) => void,
