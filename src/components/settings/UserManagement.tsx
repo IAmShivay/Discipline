@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Plus, Edit2, Trash2, X } from "lucide-react";
-import { registerUser } from "../../redux/app/auth/userManagementSlice";
+import {
+  registerUser,
+} from "../../redux/app/auth/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../src/store";
 import { fetchRolesByCompanyId } from "../../redux/app/role/roleSlice";
 
 // User interface
+
 interface User {
   _id: string;
   fullName: string;
@@ -18,28 +21,10 @@ interface User {
   permissions: string[];
 }
 
-// Available permission options
-const PERMISSION_OPTIONS = ["read", "write", "delete", "create", "update"];
 
-// Initial mock users
-const mockUsers: User[] = [
-  {
-    _id: "1",
-    fullName: "John Doe",
-    email: "john@example.com",
-    role: "Super Admin",
-    status: "active",
-    permissions: ["admin", "read", "write", "create", "update", "delete"],
-  },
-  {
-    _id: "2",
-    fullName: "Jane Smith",
-    email: "jane@example.com",
-    role: "HR Manager",
-    status: "active",
-    permissions: ["read", "write"],
-  },
-];
+// Available permission options
+
+const PERMISSION_OPTIONS = ["read", "write", "delete", "create", "update"];
 
 // Validation schema
 const UserSchema = Yup.object().shape({
@@ -63,19 +48,14 @@ const UserSchema = Yup.object().shape({
 
 const UserManagement = () => {
   const roles = useSelector((state: RootState) => state.roles.role);
-  const user = useSelector((state: RootState) => state.verify.user);
-  console.log("Roles:", roles);
+  // const { user, loading } = useSelector((state: RootState) => state.verify);
   const dispatch = useDispatch<AppDispatch>();
   const [users, setUsers] = useState<User[]>(roles);
   const [showAddUser, setShowAddUser] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
-  // Add or Edit User Handler
   const handleSubmit = async (values: User, { resetForm }: any) => {
-    console.log("Form Values:", values);
-
     if (editingUser) {
-      // Edit existing user
       setUsers(
         users.map((user) =>
           user._id === editingUser._id ? { ...values, id: user._id } : user
@@ -86,15 +66,11 @@ const UserManagement = () => {
       try {
         const { _id, ...userData } = values;
 
-        const resultAction = await dispatch(registerUser(userData)).unwrap(); // Wait for the backend response
+        const resultAction = await dispatch(registerUser(userData)).unwrap(); 
         console.log("User registered successfully:", resultAction);
 
-        // // Update the users list with the user from the backend response
-        // setUsers([...users, resultAction]);
       } catch (error) {
-        console.error("Error registering user:", error);
-        // Optionally, show a user-friendly error message
-      }
+        console.error("Error registering user:", error);      }
     }
 
     setShowAddUser(false);
@@ -109,15 +85,17 @@ const UserManagement = () => {
 
   // Edit User Handler
   const handleEditUser = (user: User) => {
-    console.log("Editing user:", user);
     setEditingUser(user);
     setShowAddUser(true);
   };
-  useEffect(() => {
-    if (user?.companyId) {
-      dispatch(fetchRolesByCompanyId(user.companyId));
-    }
-  }, [dispatch, user?.companyId]);
+
+  // useEffect(() => {
+  //   if (user?.companyId) {
+  //     dispatch(fetchRolesByCompanyId(user.companyId));
+  //   }
+  // }, [dispatch, user?.companyId]);
+
+
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">

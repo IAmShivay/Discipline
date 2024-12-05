@@ -22,7 +22,7 @@ interface RoleState {
   role: Role[];
   roles: Role[];
   currentRole: Role | null;
-  loading: "idle" | "pending" | "succeeded" | "failed";
+  loading: boolean;
   error: string | null;
 }
 
@@ -31,7 +31,7 @@ const initialState: RoleState = {
   role: [],
   roles: [],
   currentRole: null,
-  loading: "idle",
+  loading: false,
   error: null,
 };
 
@@ -94,7 +94,11 @@ export const fetchRolesByCompanyId = createAsyncThunk(
       const response = await axiosInstance.get(`/getuser/${companyId}`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error?.message || "Failed to fetch cases");
+      if (error.response) {
+        return rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
 );
@@ -115,15 +119,15 @@ const roleSlice = createSlice({
     builder
       // Fetch Roles
       .addCase(fetchRoles.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
         state.error = null;
       })
       .addCase(fetchRoles.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         state.roles = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchRoles.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       })
 
@@ -155,15 +159,15 @@ const roleSlice = createSlice({
 
       // Fetch Roles by Company ID
       .addCase(fetchRolesByCompanyId.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
         state.error = null;
       })
       .addCase(fetchRolesByCompanyId.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         state.role = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchRolesByCompanyId.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       });
   },

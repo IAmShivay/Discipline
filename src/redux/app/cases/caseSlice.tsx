@@ -3,26 +3,29 @@ import { DisciplinaryCase } from "../../../types"; // Adjust the import path as 
 import axiosBackend from "../../api/axiosBackend";
 
 // Define the initial state interface
+
 interface CaseState {
   cases: DisciplinaryCase[];
   currentCase: DisciplinaryCase | null;
-  loading: "idle" | "pending" | "succeeded" | "failed";
+  loading: boolean;
   error: string | null;
   employeeResponses: any[]; // Update this type as needed
   adminResponses: any[];
 }
 
 // Initial state
+
 const initialState: CaseState = {
   cases: [],
   currentCase: null,
-  loading: "idle",
+  loading: false,
   error: null,
   employeeResponses: [],
   adminResponses: [],
 };
 
 // Async thunk for creating a case
+
 export const createCase = createAsyncThunk(
   "cases/createCase",
   async (caseData: DisciplinaryCase, { rejectWithValue }) => {
@@ -115,6 +118,7 @@ export const fetchCases = createAsyncThunk(
     }
   }
 );
+
 export const fetchCaseById = createAsyncThunk(
   "cases/fetchCaseById",
   async (id: string, { rejectWithValue }) => {
@@ -252,74 +256,74 @@ const caseSlice = createSlice({
     builder
       // Handle create case
       .addCase(createCase.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
       })
       .addCase(createCase.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         state.cases.push(action.payload);
         state.currentCase = action.payload;
       })
       .addCase(createCase.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       })
       // Handle delete case
       .addCase(deleteCase.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
       })
       .addCase(deleteCase.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         state.cases = state.cases?.filter(
           (case_) => case_.id !== action.payload
         );
       })
       .addCase(deleteCase.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       })
       // Handle update case
       .addCase(updateCase.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
       })
       .addCase(updateCase.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         state.cases = state.cases?.map((case_) =>
           case_.id === action.payload.id ? action.payload : case_
         );
         state.currentCase = action.payload;
       })
       .addCase(updateCase.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       })
       // Handle fetch cases
       .addCase(fetchCases.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
       })
       .addCase(fetchCases.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         state.cases = action.payload.data;
       })
       .addCase(fetchCases.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       })
       .addCase(fetchCaseById.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
       })
       .addCase(fetchCaseById.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         state.currentCase = action.payload.data;
       })
       .addCase(fetchCaseById.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       })
       .addCase(addEmployeeResponse.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
       })
       .addCase(addEmployeeResponse.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         // If currentCase matches the updated one, update it with the new response
         if (
           state.currentCase &&
@@ -332,15 +336,15 @@ const caseSlice = createSlice({
         }
       })
       .addCase(addEmployeeResponse.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       })
       // Handle admin response
       .addCase(addAdminResponse.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
       })
       .addCase(addAdminResponse.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         // If currentCase matches the updated one, update it with the new response
         if (
           state.currentCase &&
@@ -353,18 +357,18 @@ const caseSlice = createSlice({
         }
       })
       .addCase(addAdminResponse.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       })
       .addCase(fetchEmployeeResponses.pending, (state) => {
-        state.loading = "pending";
+        state.loading = true;
       })
       .addCase(fetchEmployeeResponses.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = false;
         state.employeeResponses = action.payload;
       })
       .addCase(fetchEmployeeResponses.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = false;
         state.error = action.payload as string;
       });
   },

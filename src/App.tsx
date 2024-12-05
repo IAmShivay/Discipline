@@ -29,6 +29,7 @@ import {
   loadData,
   fetchCategorie,
   fetchNotification,
+  fetchUserByCompanyId,
 } from "./utility/centralApicalls";
 // Define proper type for RootState
 interface RootState {
@@ -43,15 +44,23 @@ const App: React.FC = () => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state?.verify
   );
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchData = async () => {
       await loadData(dispatch, setError, setLoading); // Fetch user data
       await fetchCategorie(dispatch, setError, setLoading); // Fetch categories
       await fetchNotification(dispatch, setError, setLoading); // Fetch notifications
       await fetchCase(dispatch, setError, setLoading); // Fetch cases
-      await fetchEmployee(dispatch, setError, setLoading); // Fetch employees
+      await fetchEmployee(dispatch, setError, setLoading);
+      await fetchUserByCompanyId(
+        dispatch,
+        setError,
+        setLoading,
+        user?.companyId
+      ); // Fetch employees
     };
     if (error) {
       dispatch(showSnackbar({ message: error, severity: "error" }));
@@ -61,12 +70,6 @@ const App: React.FC = () => {
   if (loading) {
     return <MinimalistHRLoader />;
   }
-  console.log(error);
-  if (error) {
-    // You might want to add proper error handling UI here
-    return <div>Error: {error}</div>;
-  }
-
   return (
     <Router>
       <Routes>

@@ -11,8 +11,8 @@ export const loadData = async (
   setLoading: (state: boolean) => void
 ) => {
   try {
-    setLoading(true);
     await dispatch(loadUser());
+    setLoading(false);
   } catch (err) {
     setError(err instanceof Error ? err.message : "Failed to load user");
   } finally {
@@ -85,10 +85,10 @@ export const fetchEmployee = async (
   }
 };
 export const fetchUserByCompanyId = async (
-  companyId: string,
   dispatch: Dispatch<any>,
   setError: (message: string | null) => void,
-  setLoading: (state: boolean) => void
+  setLoading: (state: boolean) => void,
+  companyId: any,
 ) => {
   try {
     setLoading(true);
@@ -101,6 +101,7 @@ export const fetchUserByCompanyId = async (
     setLoading(false);
   }
 };
+
 // export const fetchNotification = async (
 //   dispatch: Dispatch<any>,
 //   setError: (message: string | null) => void,
