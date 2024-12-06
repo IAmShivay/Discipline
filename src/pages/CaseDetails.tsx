@@ -32,7 +32,7 @@ const CaseDetails: React.FC = () => {
     "details" | "response" | "timeline"
   >("details");
 
-  const case_: DisciplinaryCase | null = useSelector(
+  let case_: DisciplinaryCase | null = useSelector(
     (state: RootState) => state.cases.currentCase
   );
 
@@ -48,12 +48,10 @@ const CaseDetails: React.FC = () => {
       try {
         if (id) {
           const response = await dispatch(fetchCaseById(id));
-
-          // Check if the fetch was unsuccessful
-          if (fetchCaseById.rejected.match(response)) {
-            setLoadError(
-              (response.payload as string) || "Failed to load case details"
-            );
+          if (response.meta.requestStatus === "fulfilled") {
+            case_ = response.payload;
+          } else if (response.meta.requestStatus === "rejected") {
+            setLoadError("Failed to fetch case details");
           }
         } else {
           setLoadError("No case ID provided");
