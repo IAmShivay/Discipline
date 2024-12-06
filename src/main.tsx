@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <Suspense fallback={<MinimalistHRLoader />}>
         <App />
-        <ErrorSnackbar />
+        {/* <ErrorSnackbar /> */}
         <Snackbar />
       </Suspense>
     </Provider>
