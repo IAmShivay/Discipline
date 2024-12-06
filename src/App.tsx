@@ -29,7 +29,6 @@ import {
   loadData,
   fetchCategorie,
   fetchNotification,
-  fetchUserByCompanyId,
 } from "./utility/centralApicalls";
 // Define proper type for RootState
 interface RootState {
@@ -55,12 +54,6 @@ const App: React.FC = () => {
       await fetchNotification(dispatch, setError, setLoading); // Fetch notifications
       await fetchCase(dispatch, setError, setLoading); // Fetch cases
       await fetchEmployee(dispatch, setError, setLoading);
-      await fetchUserByCompanyId(
-        dispatch,
-        setError,
-        setLoading,
-        user?.companyId
-      ); // Fetch employees
     };
     if (error) {
       dispatch(showSnackbar({ message: error, severity: "error" }));

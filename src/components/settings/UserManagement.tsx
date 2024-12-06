@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Plus, Edit2, Trash2, X } from "lucide-react";
@@ -87,10 +87,15 @@ const UserManagement = () => {
   };
 
   useEffect(() => {
-    if (user?.companyId) {
-      dispatch(fetchRolesByCompanyId(user?.companyId));
-    }
-  }, [dispatch, user?.companyId]);
+    (async () => {
+      if (user?.companyId) {
+        const response = await dispatch(fetchRolesByCompanyId(user?.companyId));
+        if (response?.meta.requestStatus === "fulfilled") {
+          setUsers(response.payload);
+        }
+      }
+    })();
+  }, [dispatch, user?.companyId, updateUser]);
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">

@@ -84,23 +84,23 @@ export const fetchEmployee = async (
     setLoading(false);
   }
 };
-export const fetchUserByCompanyId = async (
-  dispatch: Dispatch<any>,
-  setError: (message: string | null) => void,
-  setLoading: (state: boolean) => void,
-  companyId: any,
-) => {
-  try {
-    setLoading(true);
-    await dispatch(fetchRolesByCompanyId(companyId));
-  } catch (err) {
-    setError(
-      err instanceof Error ? err.message : "Failed to load notifications"
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+// export const fetchUserByCompanyId = async (
+//   dispatch: Dispatch<any>,
+//   setError: (message: string | null) => void,
+//   setLoading: (state: boolean) => void,
+//   companyId: any,
+// ) => {
+//   try {
+//     setLoading(true);
+//     await dispatch(fetchRolesByCompanyId(companyId));
+//   } catch (err) {
+//     setError(
+//       err instanceof Error ? err.message : "Failed to load notifications"
+//     );
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
 // export const fetchNotification = async (
 //   dispatch: Dispatch<any>,

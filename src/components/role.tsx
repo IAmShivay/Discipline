@@ -8,9 +8,9 @@ import { createRole, fetchRoles } from "../redux/app/role/roleSlice";
 
 interface Role {
   _id: string | number;
-  name: string;
+  name?: string;
   companyId?: string;
-  description: string;
+  description?: string;
   permissions: string[];
   createdAt?: Date;
   updatedAt?: Date;
@@ -36,7 +36,7 @@ const RoleManagement: React.FC = () => {
   const permissionOptions = ["create", "read", "update", "delete"];
 
   const filteredRoles: Role[] = roles?.filter((role) =>
-    role.name.toLowerCase().includes(searchTerm.toLowerCase())
+    (role?.name ?? "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleAddRole = useCallback(
@@ -49,7 +49,6 @@ const RoleManagement: React.FC = () => {
         _id: Date.now(),
       };
       dispatch(createRole(newRole));
-      window.location.reload();
       setRoles((prev) => [...prev, roleToAdd]);
       setNewRole({ name: "", description: "", permissions: [] });
       setMobileView("list");
@@ -71,12 +70,16 @@ const RoleManagement: React.FC = () => {
     [editingRole]
   );
 
-  // const handleDeleteRole = useCallback((roleId: string | number) => {
-  //   setRoles((prev) => prev?.filter((role) => role._id !== roleId));
-  // }, []);
   useEffect(() => {
-    dispatch(fetchRoles());
+    const fetchData = async () => {
+      const response = await dispatch(fetchRoles());
+      if (response.meta.requestStatus === "fulfilled") {
+        setRoles(response.payload);
+      }
+    };
+    fetchData();
   }, [dispatch]);
+
   const RoleForm = () => (
     <div className="bg-white shadow-lg rounded-xl p-6">
       <h3 className="text-lg font-semibold mb-4 flex items-center">
@@ -201,7 +204,7 @@ const RoleManagement: React.FC = () => {
           >
             <div className="mb-2 sm:mb-0">
               <div className="font-semibold text-gray-800">
-                {role.name.toUpperCase()}
+                {(role?.name ?? "").toUpperCase()}
               </div>
               <div className="text-sm text-gray-500">{role.description}</div>
               {/* <div className="mt-2 flex flex-wrap gap-2">
@@ -247,7 +250,7 @@ const RoleManagement: React.FC = () => {
   );
 
   return (
-    <div className="bg-gray-50 min-h-screen p-4 sm:p-8">
+    <div className="bg-gray-50 min-h-screen p-4 sm:p-8 mt-14">
       <div className="container mx-auto">
         <div className="flex justify-between items-center mb-4 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center">

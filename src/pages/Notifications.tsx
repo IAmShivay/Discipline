@@ -64,7 +64,7 @@ const Notifications: React.FC = () => {
 
   const unreadCount = notifications?.filter((n) => !n.isRead)?.length;
   return (
-    <div className="p-6">
+    <div className="p-6 mt-14">
       <div className="flex justify-between items-center mb-14">
         <div className="flex items-center gap-4">
           <h1 className="text-2xl font-bold">Notifications</h1>

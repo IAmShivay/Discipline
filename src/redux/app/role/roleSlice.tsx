@@ -3,13 +3,13 @@ import axiosBackend from "../../api/axiosBackend";
 import axiosInstance from "../../api/axiosInstance";
 
 // Role Interface
-interface Role {
+export interface Role {
   _id: string;
   name?: string;
-  fullName: string;
-  email: string;
-  status: "active" | "inactive";
-  role: string;
+  fullName?: string;
+  email?: string;
+  status?: "active" | "inactive";
+  role?: string;
   companyId?: string;
   description?: string;
   permissions: string[];
