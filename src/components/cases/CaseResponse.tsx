@@ -13,7 +13,7 @@ import { RootState } from "../../store";
 interface Message {
   message: string;
   createdAt: Date;
-  type: "admin" | "employee";
+  type: "Company" | "employee" | "Super Admin" | "HR Manager"|"admin";
   attachments?: any[];
 }
 
@@ -59,7 +59,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
       const newMessage: Message = {
         message: response,
         createdAt: new Date(),
-        type: user?.role === "admin" ? "admin" : "employee",
+        type: user?.role === "Company" ? "Company" : "employee",
         attachments,
       };
 
@@ -68,7 +68,11 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
 
       // Dispatch to Redux
       if (case_._id) {
-        if (user?.role === "admin") {
+        if (
+          user?.role === "Company" ||
+          user?.role === "Super Admin" ||
+          user?.role === "HR Manager"
+        ) {
           await dispatch(
             addAdminResponse({
               caseId: case_._id,
@@ -78,7 +82,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
               },
             })
           );
-        } else {
+        } else if (user?.role === "employee") {
           await dispatch(
             addEmployeeResponse({
               caseId: case_._id,
@@ -159,11 +163,13 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
           <div
             key={index}
             className={`border rounded-md p-4 ${
-              response.type === "admin" ? "bg-blue-50 ml-4" : "bg-green-50 mr-4"
+              response.type === "admin" 
+                ? "bg-blue-50 ml-4"
+                : "bg-green-50 mr-4"
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
-              {response.type === "admin" ? (
+              {response.type === "Company" ? (
                 <Shield className="w-5 h-5 text-blue-600" />
               ) : (
                 <UserCircle className="w-5 h-5 text-green-600" />
