@@ -94,31 +94,31 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
                     <div className="flex items-center">
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
-                          {case_.title}
+                          {case_?.title}
                         </div>
                         <div className="text-sm text-gray-500">
-                          {case_.description}
+                          {case_?.description}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td
                     className="px-6 py-4 whitespace-nowrap"
-                    onClick={() => navigate(`/cases/${case_.id}`)}
+                    onClick={() => navigate(`/cases/${case_?.id}`)}
                   >
                     <div className="text-sm text-gray-900">
-                      {case_.employeeName}
+                      {case_?.employeeName}
                     </div>
                   </td>
                   <td
                     className="px-6 py-4 whitespace-nowrap"
-                    onClick={() => navigate(`/cases/${case_.id}`)}
+                    onClick={() => navigate(`/cases/${case_?.id}`)}
                   >
-                    <div className="text-sm text-gray-900">{case_.type}</div>
+                    <div className="text-sm text-gray-900">{case_?.type}</div>
                   </td>
                   <td
                     className="px-6 py-4 whitespace-nowrap"
-                    onClick={() => navigate(`/cases/${case_.id}`)}
+                    onClick={() => navigate(`/cases/${case_?.id}`)}
                   >
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
