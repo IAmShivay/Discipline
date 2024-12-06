@@ -58,9 +58,12 @@ export const updateUser = createAsyncThunk(
   "users/update",
   async (userData: User, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`/api/users/${userData._id}`, userData);
+      const response = await axiosInstance.put(
+        `/update-user/${userData?._id}`,
+        userData
+      );
       return response.data;
-    }catch (error: any) {
+    } catch (error: any) {
       if (error.response) {
         return rejectWithValue(
           error?.response?.data?.message || "Failed to fetch cases"

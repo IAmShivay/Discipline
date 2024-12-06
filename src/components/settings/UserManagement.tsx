@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../src/store";
 import { fetchRolesByCompanyId } from "../../redux/app/role/roleSlice";
-
+import { updateUser } from "../../redux/app/auth/userManagementSlice";
 // User interface
 
 interface User {
@@ -58,6 +58,7 @@ const UserManagement = () => {
           user._id === editingUser._id ? { ...values, id: user._id } : user
         )
       );
+      dispatch(updateUser(values));
       setEditingUser(null);
     } else {
       try {
@@ -84,12 +85,13 @@ const UserManagement = () => {
     setEditingUser(user);
     setShowAddUser(true);
   };
-  
+
   useEffect(() => {
     if (user?.companyId) {
       dispatch(fetchRolesByCompanyId(user?.companyId));
     }
   }, [dispatch, user?.companyId]);
+
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
