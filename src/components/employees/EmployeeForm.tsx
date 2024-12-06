@@ -62,13 +62,10 @@ interface StatusOption {
 const EmployeeForm: React.FC<EmployeeFormProps> = ({
   onSubmit,
   onCancel,
-  availableManagers = [],
   companyId,
   initialData,
 }) => {
   // const [customFields, setCustomFields] = useState<CustomField[]>([]);
-  const [canAssignManager, setCanAssignManager] = useState(false);
-
   const [formData, setFormData] = useState<Partial<Employee>>({
     firstName: "",
     lastName: "",
@@ -91,8 +88,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     error,
   } = useSelector((state: RootState) => state?.roles);
   const role = useSelector((state: RootState) => state?.roles?.role);
-  console.log(role);
-  const [filteredManagers, setFilteredManagers] = useState<Manager[]>([]);
+
   useEffect(() => {
     if (initialData) {
       setFormData((prevData) => ({
@@ -101,16 +97,19 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       }));
     }
   }, [initialData]);
+  console.log(role);
   const statusOptions: StatusOption[] = [
     { value: "active", label: "Active" },
     { value: "under_review", label: "Under Review" },
     { value: "hold", label: "On Hold" },
     { value: "terminated", label: "Terminated" },
   ];
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -211,7 +210,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               value={formData?.managerId}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              // disabled={!filteredManagers || filteredManagers?.length === 0}
             >
               <option value="">Select Manager</option>
               {role?.map((manager) => (
