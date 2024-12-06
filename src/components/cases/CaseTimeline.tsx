@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Clock,
   CheckCircle,
@@ -169,16 +169,25 @@ const CaseTimeline: React.FC<any> = ({ case_ }) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [error, setError] = React.useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
-  const timeline = useSelector((state: RootState) => state.timline.items);
-
+  const timelines = useSelector((state: RootState) => state.timline.items);
+  const [timeline, setTimeline] = useState(timelines);
   useEffect(() => {
-    if (case_?._id) {
-      setIsLoading(true);
-      setError(null);
-      dispatch(fetchCaseTimeline(case_._id))
-        .catch((err: Error) => setError(err.message))
-        .finally(() => setIsLoading(false));
-    }
+    const fetchData = async () => {
+      if (case_?._id) {
+        setIsLoading(true);
+        setError(null);
+        const response = await dispatch(fetchCaseTimeline(case_?._id));
+        if (response.meta.requestStatus === "fulfilled") {
+          setTimeline(response.payload);
+        }
+        dispatch(fetchCaseTimeline(case_?._id))
+          .unwrap()
+          .catch((err: Error) => setError(err?.message))
+          .finally(() => setIsLoading(false));
+      }
+    };
+
+    fetchData();
 
     return () => {
       dispatch(clearTimeline());
