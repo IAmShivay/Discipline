@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 160 160">
+  <!-- Outer Ring -->
+  <circle cx="80" cy="80" r="70" fill="none" stroke="#0057D8" stroke-width="12" />
+  <!-- Inner Ring -->
+  <circle cx="80" cy="80" r="50" fill="none" stroke="#004BB5" stroke-width="10" />
+  <!-- Progress Arrow -->
+  <path d="M60 80 L80 100 L110 65" fill="none" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Dynamic Line -->
+  <line x1="80" y1="80" x2="120" y2="50" stroke="#0057D8" stroke-width="6" stroke-linecap="round" />
+</svg>

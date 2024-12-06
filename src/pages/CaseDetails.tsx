@@ -35,7 +35,7 @@ const CaseDetails: React.FC = () => {
   let case_: DisciplinaryCase | null = useSelector(
     (state: RootState) => state.cases.currentCase
   );
-
+  const { error, loading } = useSelector((state: RootState) => state.cases);
   // const loadingStatus = useSelector(
   //   (state: RootState) => state.cases.loading
   // );
@@ -307,7 +307,7 @@ const CaseDetails: React.FC = () => {
 
   return (
     <div className="p-6">
-      {isLoading
+      {loading
         ? renderLoadingState()
         : loadError
         ? renderErrorState()

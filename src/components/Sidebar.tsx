@@ -9,6 +9,7 @@ import {
   X,
   PersonStandingIcon,
 } from "lucide-react";
+import Logo from "../components/assets/logo.svg"
 import { useNavigate, useLocation } from "react-router-dom";
 import UserProfileMenu from "./UserProfileMenu";
 import { RootState } from "../store";
@@ -47,7 +48,7 @@ const Sidebar = () => {
     <>
       {/* Mobile Menu Button */}
       <button
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-900 text-white"
+        className="lg:hidden fixed top-2 left-2 z-50 p-2 rounded-md bg-gray-900 text-white"
         onClick={toggleSidebar}
       >
         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -68,14 +69,15 @@ const Sidebar = () => {
         }`}
       >
         <div
-          className="flex items-center space-x-2 mb-8 cursor-pointer"
+          className="flex items-center space-x-2 mb-8 cursor-pointer mt-6"
           onClick={() => {
             navigate("/");
             if (window.innerWidth < 1024) setIsOpen(false);
           }}
         >
-          <FileText className="w-8 h-8 text-blue-400" />
-          <span className="text-xl font-bold">DisciplineHR</span>
+          {/* <FileText className="w-8 h-8 text-blue-400" />
+          <span className="text-xl font-bold">DisciplineHR</span> */}
+          <img src={Logo} alt="" />
         </div>
 
         <nav className="flex-1">
