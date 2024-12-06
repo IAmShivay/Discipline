@@ -7,6 +7,7 @@ import { logoutUser } from "../redux/app/auth/authSlice";
 import snackbarMessages from "./messages/message";
 import { showSnackbar } from "../redux/app/error/errorSlice";
 import { useNavigate } from "react-router-dom";
+
 interface UserProfile {
   name: string;
   email: string;

@@ -25,13 +25,12 @@ const Cases: React.FC = () => {
   );
   const [cases, setCases] = useState<DisciplinaryCase[]>(casesState);
   const [editingCase, setEditingCase] = useState<DisciplinaryCase | null>(null);
-  
-  // const [filters, setFilters] = useState({
-  //   search: "",
-  //   status: "",
-  //   category: "",
-  //   dateRange: "",
-  // });
+  const [filters, setFilters] = useState({
+    search: "",
+    status: "",
+    category: "",
+    dateRange: "",
+  });
 
   const handleAddCase = async (newCase: DisciplinaryCase) => {
     setCases((prev) => [...prev, newCase]);
@@ -98,20 +97,14 @@ const Cases: React.FC = () => {
     }
   };
 
-  // const handleFilterChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setFilters((prev) => ({ ...prev, [name]: value }));
-  // };
+  const handleFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await dispatch(fetchCases());
-      if (response.meta.requestStatus === "fulfilled") {
-        setCases(response.payload);
-      }
-    };
-    fetchData();
+    dispatch(fetchCases());
   }, [dispatch, updateCase, deleteCase]);
 
   return (

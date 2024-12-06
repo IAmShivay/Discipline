@@ -49,7 +49,6 @@ export const logoutUser = createAsyncThunk(
       await Logout(); // Assume this function handles server-side logout
       return null;
     } catch (error: any) {
-      // thunkAPI.dispatch(showSnackbar({ message: "Logout failed", severity: "error" }));
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
@@ -81,7 +80,14 @@ export const registerUser = createAsyncThunk(
       saveToken(data?.token);
       return data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      if (error.response) {
+        return thunkAPI.rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else
+        return thunkAPI.rejectWithValue(
+          error?.message || "Failed to fetch cases"
+        );
     }
   }
 );

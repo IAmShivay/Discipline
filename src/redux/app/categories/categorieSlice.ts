@@ -50,7 +50,7 @@
 //     return response.data;
 //   } catch (error) {
 //     return rejectWithValue((error as any)?.message);
-    
+
 //   }
 // });
 
@@ -133,11 +133,12 @@
 
 // export default categoriesSlice.reducer;
 
-
-
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { createCategories, getCategories } from "../../api/categories/categoriesApi";
+import {
+  createCategories,
+  getCategories,
+} from "../../api/categories/categoriesApi";
 
 // Define the Category type
 export interface Category {
@@ -180,8 +181,7 @@ export const fetchCategories = createAsyncThunk<
       );
     } else return rejectWithValue(error?.message || "Failed to fetch cases");
   }
-}
-);
+});
 
 export const addCategory = createAsyncThunk<
   Category,
@@ -198,8 +198,7 @@ export const addCategory = createAsyncThunk<
       );
     } else return rejectWithValue(error?.message || "Failed to fetch cases");
   }
-}
-);
+});
 
 const categoriesSlice = createSlice({
   name: "categories",
@@ -217,9 +216,7 @@ const categoriesSlice = createSlice({
         (state, action: PayloadAction<Category[]>) => {
           state.status = "succeeded";
           // Ensure payload is an array
-          state.items = Array.isArray(action.payload) 
-            ? action.payload 
-            : [];
+          state.items = Array.isArray(action.payload) ? action.payload : [];
         }
       )
       .addCase(fetchCategories.rejected, (state, action) => {
@@ -237,7 +234,7 @@ const categoriesSlice = createSlice({
         (state, action: PayloadAction<Category>) => {
           state.status = "succeeded";
           // Ensure items is an array before pushing
-          state.items = Array.isArray(state.items) 
+          state.items = Array.isArray(state.items)
             ? [...state.items, action.payload]
             : [action.payload];
         }

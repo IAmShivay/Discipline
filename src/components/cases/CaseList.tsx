@@ -50,7 +50,6 @@ const CaseList: React.FC<CaseListProps> = ({ cases, onEdit, onDelete }) => {
       </div>
     );
   }
-
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="overflow-x-auto">
