@@ -34,8 +34,9 @@ export const Login = async (credentials: Credentials) => {
   try {
     const response = await axiosInstance.post("/login", credentials);
     return response.data;
-  } catch (error) {
-    handleAxiosError(error);
+  } catch (error:any) {
+    console.log(error);
+    throw new Error(error);
   }
 };
 export const Logout = async () => {

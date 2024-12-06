@@ -33,7 +33,7 @@ const initialState: AuthState = {
   role: "",
 };
 
-interface Credentials {  
+interface Credentials {
   fullName: string;
   companyName: string;
   email: string;
@@ -62,12 +62,17 @@ export const loginUser = createAsyncThunk(
       saveToken(data?.token);
       return data;
     } catch (error: any) {
-      // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
-      return thunkAPI.rejectWithValue(error.response.data);
+      if (error.response) {
+        return thunkAPI.rejectWithValue(
+          error?.response?.data?.message || "Failed to fetch cases"
+        );
+      } else
+        return thunkAPI.rejectWithValue(
+          error?.message || "Failed to fetch cases"
+        );
     }
   }
 );
-
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (credentials: Credentials, thunkAPI) => {
