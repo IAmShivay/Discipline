@@ -32,13 +32,12 @@ const CaseDetails: React.FC = () => {
     "details" | "response" | "timeline"
   >("details");
 
-  let case_: DisciplinaryCase | null = useSelector(
+  const cases: DisciplinaryCase | null = useSelector(
     (state: RootState) => state.cases.currentCase
   );
+  const [case_, setCase] = useState<DisciplinaryCase | null>(cases);
   const { error, loading } = useSelector((state: RootState) => state.cases);
-  // const loadingStatus = useSelector(
-  //   (state: RootState) => state.cases.loading
-  // );
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +48,8 @@ const CaseDetails: React.FC = () => {
         if (id) {
           const response = await dispatch(fetchCaseById(id));
           if (response.meta.requestStatus === "fulfilled") {
-            case_ = response.payload;
+            console.log(response.payload);
+            setCase(response.payload.data);
           } else if (response.meta.requestStatus === "rejected") {
             setLoadError("Failed to fetch case details");
           }
@@ -109,7 +109,7 @@ const CaseDetails: React.FC = () => {
       {case_ ? (
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-2">
-            {case_.title.toUpperCase()}
+            {case_?.title?.toUpperCase()}
           </h1>
           <div className="flex items-center gap-4 text-sm text-gray-500">
             <span>Case ID: {case_._id}</span>
