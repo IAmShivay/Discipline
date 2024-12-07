@@ -50,10 +50,10 @@ const Employees: React.FC = () => {
       ...employee,
       role: roleName,
     };
-
     const response = await dispatch(
       createEmployee(employeeWithRoleName as Employee)
     );
+    console.log(response);
     if (response?.meta?.requestStatus === "fulfilled") {
       dispatch(
         showSnackbar({
@@ -61,16 +61,17 @@ const Employees: React.FC = () => {
           severity: "info",
         })
       );
-    } else if (error) {
-      const { errors }: any = error;
+    }
+    if (response?.meta?.requestStatus === "rejected") {
       dispatch(
         showSnackbar({
-          message: errors?.map((e: any) => e.message) || "An error occurred",
+          message: response.payload,
           severity: "error",
         })
       );
+
+      setShowForm(false);
     }
-    setShowForm(false);
   };
 
   const handleEditEmployee = async (employee: Employee): Promise<void> => {

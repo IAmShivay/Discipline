@@ -28,6 +28,9 @@ export const createEmployee = createAsyncThunk(
       const response = await axiosBackend.post("/employees", employeeData);
       return response.data;
     } catch (error: any) {
+      if (error?.response) {
+        return rejectWithValue(error?.response?.data?.message);
+      }
       return rejectWithValue(error?.message || "Failed to fetch cases");
     }
   }
