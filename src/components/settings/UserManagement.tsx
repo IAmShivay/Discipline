@@ -80,7 +80,7 @@ const UserManagement = () => {
         dispatch(
           showSnackbar({
             message: error,
-            severity: "success",
+            severity: "error",
           })
         );
       }
