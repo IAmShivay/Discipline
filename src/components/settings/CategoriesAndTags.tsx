@@ -465,7 +465,7 @@ const CategoriesAndTags = () => {
           severity: "success",
         })
       );
-
+      window.location.reload();
       setCategories([...categories, newCategoryItem]);
     } else {
       const { errors }: any = error;
