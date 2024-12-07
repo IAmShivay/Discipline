@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../src/store";
 import { fetchRolesByCompanyId } from "../../redux/app/role/roleSlice";
 import { updateUser } from "../../redux/app/auth/userManagementSlice";
+import { showSnackbar } from "../../redux/app/error/errorSlice";
 // User interface
 
 interface User {
@@ -47,7 +48,7 @@ const UserManagement = () => {
   const { user } = useSelector((state: RootState) => state.verify);
   const roles = useSelector((state: RootState) => state.roles.role);
   const dispatch = useDispatch<AppDispatch>();
-  const [users, setUsers] = useState<User[]>(roles);
+  const [users, setUsers] = useState<User[]>(roles as any);
   const [showAddUser, setShowAddUser] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
@@ -65,9 +66,23 @@ const UserManagement = () => {
         const { _id, ...userData } = values;
 
         const resultAction = await dispatch(registerUser(userData)).unwrap();
-        console.log("User registered successfully:", resultAction);
-      } catch (error) {
-        console.error("Error registering user:", error);
+        console.log("resultAction", resultAction);
+        window.location.reload();
+        if (resultAction.meta.requestStatus === "fulfilled") {
+          dispatch(
+            showSnackbar({
+              message: "User registered successfully",
+              severity: "success",
+            })
+          );
+        }
+      } catch (error: any) {
+        dispatch(
+          showSnackbar({
+            message: error,
+            severity: "success",
+          })
+        );
       }
     }
 
@@ -216,8 +231,8 @@ const UserManagement = () => {
                       <option value="">Select Role</option>
                       <option value="Super Admin">Super Admin</option>
                       <option value="HR Manager">HR Manager</option>
-                      <option value="Editor">Editor</option>
-                      <option value="Viewer">Viewer</option>
+                      {/* <option value="Editor">Editor</option>
+                      <option value="Viewer">Viewer</option> */}
                     </Field>
                     <ErrorMessage
                       name="role"
@@ -267,7 +282,7 @@ const UserManagement = () => {
                     )}
                   </div> */}
 
-                  <div>
+                  {/* <div>
                     <label
                       htmlFor="status"
                       className="block text-sm font-medium text-gray-700"
@@ -291,7 +306,7 @@ const UserManagement = () => {
                       component="p"
                       className="mt-1 text-xs text-red-500"
                     />
-                  </div>
+                  </div> */}
 
                   <div className="flex justify-end space-x-2">
                     <button
@@ -332,9 +347,9 @@ const UserManagement = () => {
               {/* <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Permissions
               </th> */}
-              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {/* <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
-              </th>
+              </th> */}
               <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
@@ -375,7 +390,7 @@ const UserManagement = () => {
                     ))}
                   </div>
                 </td> */}
-                <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                {/* <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       user.status === "active"
@@ -385,7 +400,7 @@ const UserManagement = () => {
                   >
                     {user.status}
                   </span>
-                </td>
+                </td> */}
                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex items-center gap-2">
                     <button
@@ -394,12 +409,12 @@ const UserManagement = () => {
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => handleDeleteUser(user._id)}
                       className="text-red-600 hover:text-red-800"
                     >
                       <Trash2 className="w-4 h-4" />
-                    </button>
+                    </button> */}
                   </div>
                 </td>
               </tr>

@@ -46,8 +46,9 @@ export const registerUser = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       if (error.response) {
+        console.log(error.response);
         return rejectWithValue(
-          error?.response?.data?.message || "Failed to fetch cases"
+          error?.response?.data?.error || "Failed to fetch cases"
         );
       } else return rejectWithValue(error?.message || "Failed to fetch cases");
     }
