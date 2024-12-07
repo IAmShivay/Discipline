@@ -69,9 +69,9 @@ const Employees: React.FC = () => {
           severity: "error",
         })
       );
-
       setShowForm(false);
     }
+    setShowForm(false);
   };
 
   const handleEditEmployee = async (employee: Employee): Promise<void> => {
