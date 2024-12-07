@@ -68,7 +68,7 @@ const UserManagement = () => {
         const resultAction = await dispatch(registerUser(userData)).unwrap();
         console.log("resultAction", resultAction);
         window.location.reload();
-        if (resultAction.meta.requestStatus === "fulfilled") {
+        if (resultAction?.meta?.requestStatus === "fulfilled") {
           dispatch(
             showSnackbar({
               message: "User registered successfully",
@@ -79,7 +79,7 @@ const UserManagement = () => {
       } catch (error: any) {
         dispatch(
           showSnackbar({
-            message: error,
+            message: error || "Failed to register user",
             severity: "error",
           })
         );
