@@ -471,7 +471,10 @@ const CategoriesAndTags = () => {
       const { errors }: any = error;
       dispatch(
         showSnackbar({
-          message: errors?.map((e: any) => e.message) || "An error occurred",
+          message:
+            errors?.map((e: any) => e.message) ||
+            "An error occurred" ||
+            response.payload,
           severity: "error",
         })
       );

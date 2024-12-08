@@ -5,6 +5,7 @@ import { RootState } from "../store";
 import { useSelector } from "react-redux";
 import { AppDispatch } from "../store";
 import { createRole, fetchRoles } from "../redux/app/role/roleSlice";
+import { showSnackbar } from "../redux/app/error/errorSlice";
 
 interface Role {
   _id: string | number;
@@ -39,15 +40,31 @@ const RoleManagement: React.FC = () => {
     (role?.name ?? "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleAddRole = (e: React.FormEvent) => {
-    // e.preventDefault();
+  const handleAddRole = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!newRole.name) return;
 
     const roleToAdd: Role = {
       ...newRole,
       _id: Date.now(),
     };
-    dispatch(createRole(newRole));
+    const resultAction = await dispatch(createRole(newRole));
+    if (resultAction.meta.requestStatus === "fulfilled") {
+      dispatch(
+        showSnackbar({
+          message: "Role created successfully",
+          severity: "success",
+        })
+      );
+    }
+    if (resultAction.meta.requestStatus === "rejected") {
+      dispatch(
+        showSnackbar({
+          message: resultAction.payload,
+          severity: "error",
+        })
+      );
+    }
     window.location.reload();
     setRoles((prev) => [...prev, roleToAdd]);
     setNewRole({ name: "", description: "", permissions: [] });

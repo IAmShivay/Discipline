@@ -9,11 +9,12 @@ import {
   fetchCaseById,
 } from "../../redux/app/cases/caseSlice";
 import { RootState } from "../../store";
+import { showSnackbar } from "../../redux/app/error/errorSlice";
 
 interface Message {
   message: string;
   createdAt: Date;
-  type: "Company" | "employee" | "Super Admin" | "HR Manager"|"admin";
+  type: "Company" | "employee" | "Super Admin" | "HR Manager" | "admin";
   attachments?: any[];
 }
 
@@ -73,7 +74,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
           user?.role === "Super Admin" ||
           user?.role === "HR Manager"
         ) {
-          await dispatch(
+          const result = await dispatch(
             addAdminResponse({
               caseId: case_._id,
               responseData: {
@@ -82,8 +83,24 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
               },
             })
           );
+          if (result.meta.requestStatus === "fulfilled") {
+            dispatch(
+              showSnackbar({
+                message: "Response added successfully",
+                severity: "success",
+              })
+            );
+          }
+          if (result.meta.requestStatus === "rejected") {
+            dispatch(
+              showSnackbar({
+                message: result.payload,
+                severity: "error",
+              })
+            );
+          }
         } else if (user?.role === "employee") {
-          await dispatch(
+          const result = await dispatch(
             addEmployeeResponse({
               caseId: case_._id,
               responseData: {
@@ -92,6 +109,22 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
               },
             })
           );
+          if (result.meta.requestStatus === "fulfilled") {
+            dispatch(
+              showSnackbar({
+                message: "Response added successfully",
+                severity: "success",
+              })
+            );
+          }
+          if (result.meta.requestStatus === "rejected") {
+            dispatch(
+              showSnackbar({
+                message: result.payload,
+                severity: "error",
+              })
+            );
+          }
         }
 
         // Fetch updated case data
@@ -163,9 +196,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
           <div
             key={index}
             className={`border rounded-md p-4 ${
-              response.type === "admin" 
-                ? "bg-blue-50 ml-4"
-                : "bg-green-50 mr-4"
+              response.type === "admin" ? "bg-blue-50 ml-4" : "bg-green-50 mr-4"
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
