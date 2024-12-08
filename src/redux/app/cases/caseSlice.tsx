@@ -52,6 +52,7 @@ export const createCase = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
+      console.log(error);
       if (error.response) {
         return rejectWithValue(
           error?.response?.data?.message || "Failed to fetch cases"
