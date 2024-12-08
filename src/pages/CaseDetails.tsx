@@ -107,7 +107,7 @@ const CaseDetails: React.FC = () => {
   const renderCaseContent = () => (
     <>
       {case_ ? (
-        <div className="mb-6">
+        <div className="mb-6 mt-14">
           <h1 className="text-2xl font-bold mb-2">
             {case_?.title?.toUpperCase()}
           </h1>
