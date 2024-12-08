@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { AppDispatch } from "../store";
 import type { Notification } from "../types";
-// import { fetchNotifications } from "../redux/app/notification/notificationSlice";
+import { fetchNotifications } from "../redux/app/notification/notificationSlice";
 // import { showSnackbar } from "../redux/app/error/errorSlice";
 import { updateNotificationStatus } from "../redux/app/notification/notificationSlice";
 const Notifications: React.FC = () => {
@@ -68,6 +68,17 @@ const Notifications: React.FC = () => {
   });
 
   const unreadCount = notifications?.filter((n) => !n.isRead)?.length;
+
+  useEffect(() => {
+    const fetchAndSetNotifications = async () => {
+      const response = await dispatch(fetchNotifications());
+      if (fetchNotifications.fulfilled.match(response)) {
+        setNotifications(response?.payload?.data);
+      }
+    };
+
+    fetchAndSetNotifications();
+  }, [dispatch]);
   return (
     <div className="p-6 mt-14">
       <div className="flex justify-between items-center mb-14">
