@@ -39,22 +39,20 @@ const RoleManagement: React.FC = () => {
     (role?.name ?? "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleAddRole = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!newRole.name) return;
+  const handleAddRole = (e: React.FormEvent) => {
+    // e.preventDefault();
+    if (!newRole.name) return;
 
-      const roleToAdd: Role = {
-        ...newRole,
-        _id: Date.now(),
-      };
-      dispatch(createRole(newRole));
-      setRoles((prev) => [...prev, roleToAdd]);
-      setNewRole({ name: "", description: "", permissions: [] });
-      setMobileView("list");
-    },
-    [newRole]
-  );
+    const roleToAdd: Role = {
+      ...newRole,
+      _id: Date.now(),
+    };
+    dispatch(createRole(newRole));
+    window.location.reload();
+    setRoles((prev) => [...prev, roleToAdd]);
+    setNewRole({ name: "", description: "", permissions: [] });
+    setMobileView("list");
+  };
 
   const handleUpdateRole = useCallback(
     (e: React.FormEvent) => {
@@ -74,7 +72,7 @@ const RoleManagement: React.FC = () => {
     const fetchData = async () => {
       const response = await dispatch(fetchRoles());
       if (response.meta.requestStatus === "fulfilled") {
-        setRoles(response.payload);
+        setRoles(response?.payload);
       }
     };
     fetchData();
