@@ -104,21 +104,30 @@ const Cases: React.FC = () => {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await dispatch(fetchCases());
-      console.log(response);
-      if (response.meta.requestStatus === "fulfilled") {
-        setCases(response.payload.data);
-      } else if (response.meta.requestStatus === "rejected") {
-        dispatch(
-          showSnackbar({
-            message: response.payload,
-            severity: "error",
-          })
-        );
-      }
-    };
-    fetchData();
+    try {
+      const fetchData = async () => {
+        const response = await dispatch(fetchCases());
+        console.log(response);
+        if (response.meta.requestStatus === "fulfilled") {
+          setCases(response.payload.data);
+        } else if (response.meta.requestStatus === "rejected") {
+          dispatch(
+            showSnackbar({
+              message: response.payload,
+              severity: "error",
+            })
+          );
+        }
+      };
+      fetchData();
+    } catch (error: any) {
+      dispatch(
+        showSnackbar({
+          message: error.message,
+          severity: "error",
+        })
+      );
+    }
   }, [dispatch, updateCase, deleteCase]);
   return (
     <div className="p-6">
