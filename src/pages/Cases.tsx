@@ -13,6 +13,7 @@ import { updateCase } from "../redux/app/cases/caseSlice";
 import { deleteCase } from "../redux/app/cases/caseSlice";
 import snackbarMessages from "../components/messages/message";
 import { showSnackbar } from "../redux/app/error/errorSlice";
+import MinimalistHRLoader from "./Loading";
 
 const Cases: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -129,6 +130,10 @@ const Cases: React.FC = () => {
       );
     }
   }, [dispatch, updateCase, deleteCase]);
+
+  if (loading) {
+    return <MinimalistHRLoader/>
+  }
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6 mt-14">

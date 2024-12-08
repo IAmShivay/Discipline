@@ -16,6 +16,7 @@ import {
 import snackbarMessages from "../components/messages/message";
 import { fetchRolesByCompanyId } from "../redux/app/role/roleSlice";
 import { showSnackbar } from "../redux/app/error/errorSlice";
+import MinimalistHRLoader from "./Loading";
 
 type AlertState = {
   message: string;
@@ -167,6 +168,10 @@ const Employees: React.FC = () => {
   useEffect(() => {
     dispatch(fetchRolesByCompanyId(companyId as any));
   }, [companyId, updateEmployee, deleteEmployee, dispatch]);
+
+  if (loading === "pending") {
+    return <MinimalistHRLoader />;
+  }
   // Main content renderer
   const renderEmployeeContent = () => (
     <>
