@@ -82,7 +82,7 @@ const snackbarMessages: SnackbarMessages = {
       "The requested case could not be found. Please verify the case ID.",
   },
   info: {
-    passwordResetMessage: "Enter your email to receive a password reset link.",
+    passwordResetMessage: "We have sent you an email with password reset instructions.",
     logoutMessage: "You have been logged out. Redirecting to login page...",
     employeeEditing: "Employee data updated successfully.",
     fillEmployeeDetails:
