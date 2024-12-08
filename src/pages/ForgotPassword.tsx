@@ -34,7 +34,7 @@ const ResetPasswordInitiatePage: React.FC = () => {
       // TODO: Replace with actual backend API call to initiate password reset
 
       const response = await dispatch(sendPasswordResetLink(values.email));
-
+      console.log(response);
       if (response?.meta?.requestStatus === "fulfilled") {
         dispatch(
           showSnackbar({
@@ -45,10 +45,10 @@ const ResetPasswordInitiatePage: React.FC = () => {
 
         // Optionally navigate to a confirmation page
         // navigate("/auth/reset-password-sent");
-      } else {
+      } else if (response?.meta?.requestStatus === "rejected") {
         dispatch(
           showSnackbar({
-            message: snackbarMessages.info.passwordResetFailed,
+            message: response.payload,
             severity: "error",
           })
         );

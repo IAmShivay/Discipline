@@ -39,6 +39,7 @@ const snackbarMessages: SnackbarMessages = {
     caseDeleted: "Case deleted successfully.",
   },
   error: {
+    
     employeeOnboardingFailed:
       "Failed to onboard the employee. Please try again.",
     payrollProcessFailed: "Payroll processing failed. Please try again later.",

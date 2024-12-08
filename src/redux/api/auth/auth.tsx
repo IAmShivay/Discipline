@@ -25,8 +25,8 @@ export const resetPassword = async (email: string) => {
   try {
     const response = await axiosInstance.post("/forgot-password", { email });
     return response.data;
-  } catch (error) {
-    handleAxiosError(error);
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.error);
   }
 };
 

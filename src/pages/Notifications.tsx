@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { AppDispatch } from "../store";
 import type { Notification } from "../types";
-import { fetchNotifications } from "../redux/app/notification/notificationSlice";
-import { showSnackbar } from "../redux/app/error/errorSlice";
+// import { fetchNotifications } from "../redux/app/notification/notificationSlice";
+// import { showSnackbar } from "../redux/app/error/errorSlice";
 import { updateNotificationStatus } from "../redux/app/notification/notificationSlice";
 const Notifications: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,7 +15,8 @@ const Notifications: React.FC = () => {
     (state: RootState) => state.notificationReducer.notifications
   ) as Notification[];
 
-  const [notifications, setNotifications] = useState<Notification[]>(caseNotifications);
+  const [notifications, setNotifications] =
+    useState<Notification[]>(caseNotifications);
   const [filters, setFilters] = useState({
     search: "",
     type: "",
@@ -48,8 +49,12 @@ const Notifications: React.FC = () => {
 
   const filteredNotifications = notifications?.filter((notification) => {
     const matchesSearch =
-      notification.title.toLowerCase().includes(filters?.search.toLowerCase()) ||
-      notification.message.toLowerCase().includes(filters?.search.toLowerCase());
+      notification.title
+        .toLowerCase()
+        .includes(filters?.search.toLowerCase()) ||
+      notification.message
+        .toLowerCase()
+        .includes(filters?.search.toLowerCase());
 
     const matchesType = filters?.type
       ? notification.type === filters?.type

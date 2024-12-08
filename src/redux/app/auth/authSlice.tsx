@@ -146,7 +146,7 @@ export const sendPasswordResetLink = createAsyncThunk(
       const data = await resetPassword(email);
       return data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error?.message);
     }
   }
 );
