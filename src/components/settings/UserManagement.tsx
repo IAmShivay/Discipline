@@ -230,6 +230,7 @@ const UserManagement = () => {
                     >
                       <option value="">Select Role</option>
                       <option value="Super Admin">Super Admin</option>
+                      <option value="employee">Employee</option>
                       <option value="HR Manager">HR Manager</option>
                       {/* <option value="Editor">Editor</option>
                       <option value="Viewer">Viewer</option> */}

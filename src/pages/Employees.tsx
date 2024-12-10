@@ -30,7 +30,7 @@ const Employees: React.FC = () => {
   const companyId = useSelector(
     (state: RootState) => state.verify.user?.companyId
   );
-
+  const user = useSelector((state: RootState) => state.verify.user);
   const { error, loading } = useSelector((state: RootState) => state.employee);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [employees, setEmployees] = useState<Employee[]>(employee || []);
@@ -248,9 +248,11 @@ const Employees: React.FC = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Join Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
+                  {user?.role !== "employee" && (
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">

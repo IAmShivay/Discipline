@@ -207,7 +207,8 @@ const CaseForm: React.FC<CaseFormProps> = ({
               />
             </label>
             <span className="text-sm text-gray-500">
-              {initialData?.attachments[0].url
+              {initialData?.attachments[0]?.url ||
+              formData?.attachments?.length === 0
                 ? "0 files selected"
                 : `${formData.attachments?.length} files selected`}
             </span>
@@ -232,9 +233,10 @@ const CaseForm: React.FC<CaseFormProps> = ({
                     }
                     className="text-red-500 hover:text-red-700"
                   >
-                    {!initialData?.attachments[0].url && (
-                      <X className="w-4 h-4" />
-                    )}
+                    {!initialData?.attachments[0]?.url ||
+                      (formData?.attachments?.length === 0 && (
+                        <X className="w-4 h-4" />
+                      ))}
                   </button>
                 </li>
               ))}
