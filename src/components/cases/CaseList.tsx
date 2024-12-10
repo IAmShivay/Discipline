@@ -225,7 +225,7 @@ const CaseList: React.FC<CaseListProps> = ({
   );
 
   const handleCaseNavigation = (caseId: string) => {
-    if (!caseId) {
+    if (!caseId && caseId?.length === 0) {
       <LoadingSpinner />;
     }
     navigate(`/cases/${caseId}`);
@@ -267,7 +267,7 @@ const CaseList: React.FC<CaseListProps> = ({
                 "Category",
                 "Status",
                 "Date",
-                "Actions",
+                ...(user?.role !== "employee" ? ["Actions"] : []), // Conditionally add "Actions"
               ].map((header) => (
                 <th
                   key={header}
