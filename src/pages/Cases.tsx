@@ -223,7 +223,6 @@
 
 // export default Cases;
 
-
 import React, { useState, useEffect } from "react";
 import { Plus, Filter } from "lucide-react";
 import CaseList from "../components/cases/CaseList";
@@ -243,17 +242,17 @@ import MinimalistHRLoader from "./Loading";
 const Cases: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [showForm, setShowForm] = useState(false);
-  
+
   // Use optional chaining and provide a default empty array
   const casesState = useSelector(
-    (state: { cases: { cases: DisciplinaryCase[] } }) => 
+    (state: { cases: { cases: DisciplinaryCase[] } }) =>
       state.cases?.cases || []
   );
-  
+
   const { error, loading } = useSelector(
     (state: { cases: { error: string; loading: boolean } }) => state.cases
   );
-  
+
   const [cases, setCases] = useState<DisciplinaryCase[]>([]);
   const [editingCase, setEditingCase] = useState<DisciplinaryCase | null>(null);
   const [filters, setFilters] = useState({
@@ -273,6 +272,8 @@ const Cases: React.FC = () => {
       const response = await dispatch(createCase(newCase));
       if (response.meta.requestStatus === "fulfilled") {
         // Refresh cases after successful creation
+        setCases(response.payload.data);
+
         await dispatch(fetchCases());
         dispatch(
           showSnackbar({
@@ -311,8 +312,9 @@ const Cases: React.FC = () => {
         const response = await dispatch(
           updateCase({ id: updatedCase._id, caseData: updatedCase })
         );
-        
+
         if (response.meta.requestStatus === "fulfilled") {
+          setCases(response.payload.data);
           // Refresh cases after successful update
           await dispatch(fetchCases());
           dispatch(
@@ -339,7 +341,7 @@ const Cases: React.FC = () => {
     try {
       if (window.confirm("Are you sure you want to delete this case?")) {
         const response = await dispatch(deleteCase(caseId));
-        
+
         if (response.meta.requestStatus === "fulfilled") {
           // Refresh cases after successful deletion
           await dispatch(fetchCases());
@@ -392,7 +394,7 @@ const Cases: React.FC = () => {
         );
       }
     };
-    
+
     fetchData();
   }, [dispatch]);
 

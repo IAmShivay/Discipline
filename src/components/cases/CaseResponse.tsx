@@ -161,7 +161,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
   };
 
   return (
-    <div className="space-y-6 h-[50vh]">
+    <div className="space-y-6">
       <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
         <div className="flex">
           <div className="ml-3">
@@ -247,7 +247,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
 
       {/* Response Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="mt-10">
+        <div>
           <label
             htmlFor="response"
             className="block text-sm font-medium text-gray-700"
@@ -269,15 +269,12 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
           <label className="block text-sm font-medium text-gray-700">
             Supporting Documents (Optional)
           </label>
-          <div
-            className="mt-1 cursor-pointer flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md "
-            onClick={() => {
-              const fileInput = document.getElementById("file-upload");
-              if (fileInput) {
-                fileInput.click();
-              }
-            }}
-          >
+          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md "onClick={() => {
+            const fileInput = document.getElementById('file-upload');
+            if (fileInput) {
+              fileInput.click();
+            }
+          }}>
             <div className="space-y-1 text-center">
               <div className="flex text-sm text-gray-600">
                 <label
