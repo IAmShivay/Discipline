@@ -24,7 +24,7 @@ const Cases: React.FC = () => {
   const { error, loading } = useSelector(
     (state: { cases: { error: string; loading: boolean } }) => state.cases
   );
-  const [cases, setCases] = useState<DisciplinaryCase[]>(casesState);
+  const [cases, setCases] = useState<DisciplinaryCase[]>([]);
   const [editingCase, setEditingCase] = useState<DisciplinaryCase | null>(null);
   const [filters, setFilters] = useState({
     search: "",
@@ -211,7 +211,7 @@ const Cases: React.FC = () => {
           </div> */}
 
           <CaseList
-            cases={casesState}
+            cases={cases}
             onEdit={handleEditCase}
             onDelete={handleDeleteCase}
           />
