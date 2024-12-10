@@ -116,7 +116,7 @@ const LoginPage: React.FC = () => {
         <div className="w-full max-w-md">
           <div className="bg-white rounded-xl shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              Login to HR Manager
+              Login to TrackerHR
             </h2>
 
             <Formik

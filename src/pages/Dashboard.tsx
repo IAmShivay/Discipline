@@ -13,9 +13,12 @@ import { DisciplinaryCase } from "../types";
 
 function Dashboard() {
   const dispatch: AppDispatch = useDispatch();
-  const cases: DisciplinaryCase[] = useSelector((state: RootState) => state.cases.cases);
+  const cases: DisciplinaryCase[] = useSelector(
+    (state: RootState) => state.cases.cases
+  );
   const openCases = cases?.filter((c) => c.status === "OPEN")?.length;
   const closedCases = cases?.filter((c) => c.status === "CLOSED")?.length;
+  const { user } = useSelector((state: RootState) => state.verify);
   const pendingResponses = cases?.filter(
     (c) => c.status === "PENDING_RESPONSE"
   )?.length;
@@ -44,7 +47,7 @@ function Dashboard() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 mt-14">Dashboard</h1>
-        <p className="text-gray-500 mt-5">Welcome back, Admin</p>
+        <p className="text-gray-500 mt-5">Welcome back, {user?.fullName}</p>
       </div>
 
       <DashboardStats stats={mockStats} />
