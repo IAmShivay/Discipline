@@ -15,7 +15,7 @@ interface SignupFormValues {
   companyName: string;
   email: string;
   password: string;
-  mobileNumber: string;
+  mobile: string;
   terms: boolean | undefined;
 }
 
@@ -49,7 +49,7 @@ const SignupSchema = Yup.object().shape({
   //         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
   //     )
   //     .required('Password is required'),
-  mobileNumber: Yup.string()
+  mobile: Yup.string()
     .matches(/^\+?[1-9]\d{1,14}$/, "Invalid phone number")
     .required("Mobile number is required"),
   terms: Yup.boolean().oneOf(
@@ -63,7 +63,7 @@ const initialValues: SignupFormValues = {
   companyName: "",
   email: "",
   password: "",
-  mobileNumber: "",
+  mobile: "",
   terms: false,
 };
 
@@ -172,7 +172,7 @@ const SignupPage: React.FC = () => {
                   <InputField
                     icon={Phone}
                     type="tel"
-                    name="mobileNumber"
+                    name="mobile"
                     placeholder="Enter your mobile number"
                   />
                   <InputField

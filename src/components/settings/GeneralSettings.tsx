@@ -106,7 +106,7 @@ const GeneralSettings = () => {
     setEditedProfileData(profileData);
     setIsEditing((prev) => ({ ...prev, profile: false }));
   };
-
+console.log(editedProfileData)
   return (
     <div className="bg-white shadow-xl rounded-2xl  mx-auto overflow-hidden">
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6">
@@ -188,7 +188,7 @@ const GeneralSettings = () => {
                   <input
                     type="tel"
                     name="mobile"
-                    value={editedProfileData.mobile}
+                    value={editedProfileData?.mobile}
                     onChange={handleProfileUpdate}
                     className="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
                     placeholder="Enter your phone number"

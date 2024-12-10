@@ -38,7 +38,7 @@ interface Credentials {
   companyName: string;
   email: string;
   password?: string;
-  mobileNumber: string;
+  mobile: string;
   terms: boolean | undefined;
 }
 

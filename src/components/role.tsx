@@ -211,7 +211,8 @@ const RoleManagement: React.FC = () => {
         </div>
       </div>
 
-      <div className="space-y-4">
+      {/* Fixed height and scrollable container */}
+      <div className="space-y-4 h-[70vh] overflow-y-auto">
         {filteredRoles?.map((role) => (
           <div
             key={role._id}
@@ -222,6 +223,7 @@ const RoleManagement: React.FC = () => {
                 {(role?.name ?? "").toUpperCase()}
               </div>
               <div className="text-sm text-gray-500">{role.description}</div>
+              {/* Uncomment if needed to display permissions */}
               {/* <div className="mt-2 flex flex-wrap gap-2">
                 {role.permissions.map((perm) => (
                   <span
@@ -233,6 +235,7 @@ const RoleManagement: React.FC = () => {
                 ))}
               </div> */}
             </div>
+            {/* Uncomment for edit and delete buttons */}
             {/* <div className="flex space-x-2">
               <button
                 onClick={() => {
@@ -265,7 +268,7 @@ const RoleManagement: React.FC = () => {
   );
 
   return (
-    <div className="bg-gray-50 min-h-screen p-4 sm:p-8 mt-14">
+    <div className="bg-gray-50 min-h-screen p-4 sm:p-8">
       <div className="container mx-auto">
         <div className="flex justify-between items-center mb-4 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center">
