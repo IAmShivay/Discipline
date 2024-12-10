@@ -37,7 +37,6 @@ const CaseDetails: React.FC = () => {
   );
   const [case_, setCase] = useState<DisciplinaryCase | null>(cases);
   const { error, loading } = useSelector((state: RootState) => state.cases);
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,7 +110,7 @@ const CaseDetails: React.FC = () => {
           <h1 className="text-2xl font-bold mb-2">
             {case_?.title?.toUpperCase()}
           </h1>
-          <div className="flex items-center gap-4 text-sm text-gray-500">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
             <span>Case ID: {case_._id}</span>
             <span>•</span>
             <span>
@@ -124,7 +123,7 @@ const CaseDetails: React.FC = () => {
         </div>
       ) : null}
 
-      <div className="bg-white rounded-lg shadow-md">
+      <div className="bg-white rounded-lg shadow-lg mx-auto">
         <div className="border-b border-gray-200">
           <nav className="flex space-x-8 px-6" aria-label="Tabs">
             {tabs?.map(({ id, label, icon: Icon }) => (
