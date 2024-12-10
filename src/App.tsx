@@ -30,6 +30,7 @@ import {
   fetchCategorie,
   fetchNotification,
 } from "./utility/centralApicalls";
+import WelcomeDashboard from "./components/EmployeeDash";
 // Define proper type for RootState
 interface RootState {
   verify: {
@@ -131,6 +132,8 @@ const ProtectedRoutes: React.FC<PrivateRouteProps> = ({
           {/* Routes for employees */}
           {role === "employee" && (
             <>
+              {" "}
+              <Route path="dashboard" element={<WelcomeDashboard />} />
               <Route path="settings" element={<Settings />} />
               <Route path="cases" element={<Cases />} />
               <Route path="cases/:id" element={<CaseDetails />} />
