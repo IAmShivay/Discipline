@@ -134,7 +134,7 @@ const ProtectedRoutes: React.FC<PrivateRouteProps> = ({
               <Route path="settings" element={<Settings />} />
               <Route path="cases" element={<Cases />} />
               <Route path="cases/:id" element={<CaseDetails />} />
-              <Route path="notifications" element={<Notifications />} />
+              {/* <Route path="notifications" element={<Notifications />} /> */}
             </>
           )}
 

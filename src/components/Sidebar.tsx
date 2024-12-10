@@ -9,7 +9,7 @@ import {
   X,
   PersonStandingIcon,
 } from "lucide-react";
-import Logo from "../components/assets/logo.svg"
+import Logo from "../components/assets/logo.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserProfileMenu from "./UserProfileMenu";
 import { RootState } from "../store";
@@ -33,7 +33,7 @@ const Sidebar = () => {
   const getFilteredMenuItems = (role: string) => {
     if (role === "employee") {
       return menuItems?.filter((item) =>
-        ["Cases", "Settings", "Notifications"].includes(item.label)
+        ["Cases", "Settings"].includes(item.label)
       );
     }
     return menuItems; // Default to all menu items for other roles
