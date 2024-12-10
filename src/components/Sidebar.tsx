@@ -9,7 +9,7 @@ import {
   X,
   PersonStandingIcon,
 } from "lucide-react";
-import Logo from "../components/assets/logo.svg";
+import Logo from "../components/assets/logo.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserProfileMenu from "./UserProfileMenu";
 import { RootState } from "../store";
