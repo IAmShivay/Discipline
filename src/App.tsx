@@ -131,6 +131,7 @@ const ProtectedRoutes: React.FC<PrivateRouteProps> = ({
           {/* Routes for employees */}
           {role === "employee" && (
             <>
+              <Route path="settings" element={<Settings />} />
               <Route path="cases" element={<Cases />} />
               <Route path="cases/:id" element={<CaseDetails />} />
               <Route path="notifications" element={<Notifications />} />
