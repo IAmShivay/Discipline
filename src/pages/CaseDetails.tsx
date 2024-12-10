@@ -35,7 +35,7 @@ const CaseDetails: React.FC = () => {
   const cases: DisciplinaryCase | null = useSelector(
     (state: RootState) => state.cases.currentCase
   );
-  const [case_, setCase] = useState<DisciplinaryCase | null>(cases);
+  const [case_, setCase] = useState<DisciplinaryCase | null>();
   const { error, loading } = useSelector((state: RootState) => state.cases);
 
   useEffect(() => {
