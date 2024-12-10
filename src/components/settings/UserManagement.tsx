@@ -14,6 +14,7 @@ import { showSnackbar } from "../../redux/app/error/errorSlice";
 interface User {
   _id: string;
   fullName: string;
+  mobile: string;
   email: string;
   role: string;
   status: "active" | "inactive";
@@ -33,6 +34,9 @@ const UserSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
+  mobile: Yup.string()
+    .matches(/^\+?[1-9]\d{1,14}$/, "Invalid phone number")
+    .required("Mobile number is required"),
   role: Yup.string()
     .required("Role is required")
     .oneOf(
@@ -183,6 +187,7 @@ const UserManagement = () => {
                   _id: "",
                   fullName: "",
                   email: "",
+                  mobile: "",
                   role: "",
                   status: "active",
                   permissions: ["read"],
@@ -237,7 +242,28 @@ const UserManagement = () => {
                       className="mt-1 text-xs text-red-500"
                     />
                   </div>
-
+                  <div>
+                    <label
+                      htmlFor="mobile"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Mobile
+                    </label>
+                    <Field
+                      name="mobile"
+                      type="mobile"
+                      className={`mt-1 block w-full h-[42px] rounded-md border ${
+                        errors.mobile && touched.mobile
+                          ? "border-red-500 focus:ring-red-500"
+                          : "border-gray-300 focus:ring-blue-500"
+                      } shadow-sm focus:border-blue-500 focus:ring-1`}
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component="p"
+                      className="mt-1 text-xs text-red-500"
+                    />
+                  </div>
                   <div>
                     <label
                       htmlFor="role"
