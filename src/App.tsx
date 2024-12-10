@@ -67,7 +67,7 @@ const App: React.FC = () => {
         <Route path="/auth/*" element={<PublicRoutes />} />
         <Route
           path="/*"
-          element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}
+          element={<ProtectedRoutes isAuthenticated={isAuthenticated} role={user?.role} />}
         />
       </Routes>
     </Router>
@@ -76,6 +76,7 @@ const App: React.FC = () => {
 
 interface PrivateRouteProps {
   isAuthenticated: boolean;
+  role: string;
 }
 
 const PublicRoutes: React.FC = () => {
@@ -90,7 +91,7 @@ const PublicRoutes: React.FC = () => {
   );
 };
 
-const ProtectedRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
+const ProtectedRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated ,role}) => {
   const location = useLocation();
 
   if (!isAuthenticated) {
