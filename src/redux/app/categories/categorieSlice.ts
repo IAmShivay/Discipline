@@ -192,6 +192,7 @@ export const addCategory = createAsyncThunk<
     const response = await createCategories(category as Category);
     return response.data;
   } catch (error: any) {
+    console.log(error, "error");
     if (error.response) {
       return rejectWithValue(
         error?.response?.data?.message || "Failed to fetch cases"

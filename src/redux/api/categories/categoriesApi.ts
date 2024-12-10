@@ -2,14 +2,12 @@
 
 import axiosBackend from "../axiosBackend";
 import { Category } from "../../app/categories/categorieSlice";
-import { useDispatch } from "react-redux";
-import { showSnackbar } from "../../app/error/errorSlice";
 export const createCategories = async (Data: Category) => {
   try {
     const response = await axiosBackend.post("/catagories/create", Data);
     return response.data;
-  } catch (error) {
-    handleAxiosError(error);
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
   }
 };
 
@@ -17,17 +15,7 @@ export const getCategories = async () => {
   try {
     const response = await axiosBackend.get("/catagories/get"); // Typo in the endpoint
     return response.data;
-  } catch (error) {
-    handleAxiosError(error);
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
   }
 };
-
-function handleAxiosError(error: any) {
-  const dispatch = useDispatch();
-  if (error.response) {
-    const errorMessage = error.response.data.message;
-    dispatch(showSnackbar({ message: errorMessage, severity: "error" }));
-  } else {
-    throw error.message;
-  }
-}

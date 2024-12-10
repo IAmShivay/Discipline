@@ -458,7 +458,9 @@ const CategoriesAndTags = () => {
     };
 
     const response = await dispatch(addCategoryAction(newCategoryItem));
+    console.log(response);
     if (addCategoryAction.fulfilled.match(response)) {
+      console.log(response);
       dispatch(
         showSnackbar({
           message: "Category added successfully",
@@ -468,13 +470,9 @@ const CategoriesAndTags = () => {
       window.location.reload();
       setCategories([...categories, newCategoryItem]);
     } else {
-      const { errors }: any = error;
       dispatch(
         showSnackbar({
-          message:
-            errors?.map((e: any) => e.message) ||
-            "An error occurred" ||
-            response.payload,
+          message: response.payload || "An error occurred",
           severity: "error",
         })
       );
