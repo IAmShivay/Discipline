@@ -35,7 +35,17 @@ const UserSchema = Yup.object().shape({
     .required("Email is required"),
   role: Yup.string()
     .required("Role is required")
-    .oneOf(["Super Admin", "HR Manager", "Editor", "Viewer,", "employee","Employee"], "Invalid role"),
+    .oneOf(
+      [
+        "Super Admin",
+        "HR Manager",
+        "Editor",
+        "Viewer,",
+        "employee",
+        "Employee",
+      ],
+      "Invalid role"
+    ),
   status: Yup.string()
     .oneOf(["active", "inactive"], "Invalid status")
     .required("Status is required"),
@@ -59,7 +69,23 @@ const UserManagement = () => {
           user._id === editingUser._id ? { ...values, id: user._id } : user
         )
       );
-      dispatch(updateUser(values));
+      const response = await dispatch(updateUser(values));
+      if (response?.meta.requestStatus === "fulfilled") {
+        dispatch(
+          showSnackbar({
+            message: "User updated successfully",
+            severity: "success",
+          })
+        );
+      } else {
+        dispatch(
+          showSnackbar({
+            message: response.payload || "Failed to update user",
+            severity: "error",
+          })
+        );
+      }
+
       setEditingUser(null);
     } else {
       try {
