@@ -187,6 +187,7 @@ import { AlertCircle, CheckCircle, Clock, Edit, Trash2 } from "lucide-react";
 import type { DisciplinaryCase } from "../../types";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
+import MinimalistHRLoader from "../../pages/Loading";
 
 interface CaseListProps {
   cases: DisciplinaryCase[];
@@ -223,10 +224,13 @@ const CaseList: React.FC<CaseListProps> = ({
   );
 
   const handleCaseNavigation = (caseId: string) => {
+    if (!caseId) {
+      <MinimalistHRLoader />;
+    }
     navigate(`/cases/${caseId}`);
   };
 
-  if (isLoading) {
+  if (isLoading && cases.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
         <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4 animate-spin" />

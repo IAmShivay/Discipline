@@ -398,7 +398,7 @@ const Cases: React.FC = () => {
     fetchData();
   }, [dispatch]);
 
-  if (loading) {
+  if (loading && cases.length === 0) {
     return <MinimalistHRLoader />;
   }
 
