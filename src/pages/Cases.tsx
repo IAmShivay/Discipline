@@ -238,7 +238,7 @@ import { deleteCase } from "../redux/app/cases/caseSlice";
 import snackbarMessages from "../components/messages/message";
 import { showSnackbar } from "../redux/app/error/errorSlice";
 import MinimalistHRLoader from "./Loading";
-
+import { RootState } from "../store";
 const Cases: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [showForm, setShowForm] = useState(false);
@@ -252,7 +252,7 @@ const Cases: React.FC = () => {
   const { error, loading } = useSelector(
     (state: { cases: { error: string; loading: boolean } }) => state.cases
   );
-
+  const { user } = useSelector((state: RootState) => state.verify);
   const [cases, setCases] = useState<DisciplinaryCase[]>([]);
   const [editingCase, setEditingCase] = useState<DisciplinaryCase | null>(null);
   const [filters, setFilters] = useState({
@@ -406,16 +406,18 @@ const Cases: React.FC = () => {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6 mt-14">
         <h1 className="text-2xl font-bold">Disciplinary Cases</h1>
-        <button
-          onClick={() => setShowForm(true)}
-          className="btn btn-primary flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Create Case
-        </button>
+        {user?.role !== "employee" ? (
+          <button
+            onClick={() => setShowForm(true)}
+            className="btn btn-primary flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Create Case
+          </button>
+        ) : null}
       </div>
 
-      {showForm ? (
+      {showForm && user?.role !== "employee" ? (
         <CaseForm
           onSubmit={editingCase ? handleUpdateCase : handleAddCase}
           onCancel={() => {

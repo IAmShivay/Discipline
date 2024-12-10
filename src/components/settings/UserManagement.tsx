@@ -140,7 +140,7 @@ const UserManagement = () => {
         }
       }
     })();
-  }, [dispatch, user?.companyId, updateUser]);
+  }, [dispatch, user?.companyId, updateUser, editingUser]);
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">

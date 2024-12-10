@@ -99,6 +99,7 @@ const Employees: React.FC = () => {
       })
     );
     if (response.meta.requestStatus === "fulfilled") {
+      window.location.reload();
       dispatch(
         showSnackbar({
           message: snackbarMessages?.info?.employeeEditing,

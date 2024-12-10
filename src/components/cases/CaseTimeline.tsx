@@ -156,7 +156,7 @@ const EmptyState: React.FC = () => (
   </div>
 );
 
-const LoadingSpinner: React.FC = () => (
+export const LoadingSpinner: React.FC = () => (
   <div className="flex flex-col items-center justify-center p-8">
     <Loader className="h-10 w-10 animate-spin text-gray-500" />
     <p className="mt-3 text-sm font-medium text-gray-600">

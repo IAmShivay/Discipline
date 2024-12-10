@@ -188,6 +188,7 @@ import type { DisciplinaryCase } from "../../types";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
 import MinimalistHRLoader from "../../pages/Loading";
+import { LoadingSpinner } from "./CaseTimeline";
 
 interface CaseListProps {
   cases: DisciplinaryCase[];
@@ -225,7 +226,7 @@ const CaseList: React.FC<CaseListProps> = ({
 
   const handleCaseNavigation = (caseId: string) => {
     if (!caseId) {
-      <MinimalistHRLoader />;
+      <LoadingSpinner />;
     }
     navigate(`/cases/${caseId}`);
   };
