@@ -252,7 +252,7 @@ const UserManagement = () => {
                     <Field
                       name="mobile"
                       type="mobile"
-                      className={`mt-1 block w-full h-[42px] rounded-md border ${
+                      className={`mt-1 px-3 block w-full h-[42px] rounded-md border ${
                         errors.mobile && touched.mobile
                           ? "border-red-500 focus:ring-red-500"
                           : "border-gray-300 focus:ring-blue-500"
@@ -397,6 +397,9 @@ const UserManagement = () => {
               <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Role
               </th>
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Mobile
+              </th>
               {/* <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Permissions
               </th> */}
@@ -421,6 +424,9 @@ const UserManagement = () => {
                 </td>
                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{user.role}</div>
+                </td>
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{user.mobile}</div>
                 </td>
                 {/* <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                   <div className="flex flex-wrap gap-1">
