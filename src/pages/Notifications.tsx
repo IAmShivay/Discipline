@@ -80,8 +80,8 @@ const Notifications: React.FC = () => {
     fetchAndSetNotifications();
   }, [dispatch]);
   return (
-    <div className="p-6 mt-14">
-      <div className="flex justify-between items-center mb-14">
+    <div className="p-6">
+      <div className="flex justify-between items-center overflow-y-visible">
         <div className="flex items-center gap-4">
           <h1 className="text-2xl font-bold">Notifications</h1>
           {unreadCount > 0 && (
