@@ -69,7 +69,7 @@ const NotificationList: React.FC<NotificationListProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md divide-y divide-gray-200">
+    <div className="bg-white rounded-lg shadow-md divide-y divide-gray-200 h-[50vh]">
       {notifications?.map((notification) => {
         const Icon = notificationIcons[notification.type];
         return (
