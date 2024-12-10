@@ -67,7 +67,12 @@ const App: React.FC = () => {
         <Route path="/auth/*" element={<PublicRoutes />} />
         <Route
           path="/*"
-          element={<ProtectedRoutes isAuthenticated={isAuthenticated} role={user?.role} />}
+          element={
+            <ProtectedRoutes
+              isAuthenticated={isAuthenticated}
+              role={user?.role}
+            />
+          }
         />
       </Routes>
     </Router>
@@ -91,7 +96,10 @@ const PublicRoutes: React.FC = () => {
   );
 };
 
-const ProtectedRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated ,role}) => {
+const ProtectedRoutes: React.FC<PrivateRouteProps> = ({
+  isAuthenticated,
+  role,
+}) => {
   const location = useLocation();
 
   if (!isAuthenticated) {
@@ -104,14 +112,32 @@ const ProtectedRoutes: React.FC<PrivateRouteProps> = ({ isAuthenticated ,role}) 
       <Sidebar />
       <main className="flex-1 overflow-auto">
         <Routes>
+          {/* Default route to dashboard */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="roles" element={<RoleManagement />} />
-          <Route path="employees" element={<Employees />} />
-          <Route path="cases" element={<Cases />} />
-          <Route path="cases/:id" element={<CaseDetails />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route path="settings" element={<Settings />} />
+
+          {/* Routes for admin */}
+          {role !== "employee" && (
+            <>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="roles" element={<RoleManagement />} />
+              <Route path="employees" element={<Employees />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="cases" element={<Cases />} />
+              <Route path="cases/:id" element={<CaseDetails />} />
+              <Route path="notifications" element={<Notifications />} />
+            </>
+          )}
+
+          {/* Routes for employees */}
+          {role === "employee" && (
+            <>
+              <Route path="cases" element={<Cases />} />
+              <Route path="cases/:id" element={<CaseDetails />} />
+              <Route path="notifications" element={<Notifications />} />
+            </>
+          )}
+
+          {/* Catch-all route */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </main>
