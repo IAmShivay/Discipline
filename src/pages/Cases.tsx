@@ -72,6 +72,7 @@ const Cases: React.FC = () => {
       );
       window.location.reload();
       if (response.meta.requestStatus === "fulfilled") {
+        setCases(response.payload.data);
         dispatch(
           showSnackbar({
             message: snackbarMessages.success.caseUpdated,
@@ -132,7 +133,7 @@ const Cases: React.FC = () => {
   }, [dispatch, updateCase, deleteCase]);
 
   if (loading) {
-    return <MinimalistHRLoader/>
+    return <MinimalistHRLoader />;
   }
   return (
     <div className="p-6">

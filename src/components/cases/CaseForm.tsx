@@ -39,6 +39,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
       attachments: "",
     }
   );
+  console.log();
   useEffect(() => {
     dispatch(fetchEmployees());
   }, [dispatch]);
@@ -168,7 +169,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
             <input
               type="date"
               name="incidentDate"
-              value={formData.incidentDate}
+              value={formData?.incidentDate?.split("T")[0]}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               required
@@ -206,7 +207,9 @@ const CaseForm: React.FC<CaseFormProps> = ({
               />
             </label>
             <span className="text-sm text-gray-500">
-              {formData.attachments?.length} files selected
+              {initialData?.attachments[0].url
+                ? "0 files selected"
+                : `${formData.attachments?.length} files selected`}
             </span>
           </div>
           {formData?.attachments?.length > 0 && (
@@ -229,7 +232,9 @@ const CaseForm: React.FC<CaseFormProps> = ({
                     }
                     className="text-red-500 hover:text-red-700"
                   >
-                    <X className="w-4 h-4" />
+                    {!initialData?.attachments[0].url && (
+                      <X className="w-4 h-4" />
+                    )}
                   </button>
                 </li>
               ))}
