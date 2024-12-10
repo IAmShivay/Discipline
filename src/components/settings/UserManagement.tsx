@@ -35,7 +35,7 @@ const UserSchema = Yup.object().shape({
     .required("Email is required"),
   role: Yup.string()
     .required("Role is required")
-    .oneOf(["Super Admin", "HR Manager", "Editor", "Viewer,", "employee"], "Invalid role"),
+    .oneOf(["Super Admin", "HR Manager", "Editor", "Viewer,", "employee","Employee"], "Invalid role"),
   status: Yup.string()
     .oneOf(["active", "inactive"], "Invalid status")
     .required("Status is required"),
