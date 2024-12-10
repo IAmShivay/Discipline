@@ -197,7 +197,7 @@ const CaseDetails: React.FC = () => {
                               } else {
                                 dispatch(
                                   showSnackbar({
-                                    message: "Failed to update case status",
+                                    message: response.payload,
                                     severity: "error",
                                   })
                                 );
