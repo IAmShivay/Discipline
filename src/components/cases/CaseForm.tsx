@@ -207,12 +207,12 @@ const CaseForm: React.FC<CaseFormProps> = ({
                 className="hidden"
               />
             </label>
-            <span className="text-sm text-gray-500">
-              {initialData?.attachments[0]?.url ||
+            {/* <span className="text-sm text-gray-500">
+              {initialData?.attachments[0]?.url &&
               formData?.attachments?.length === 0
                 ? "0 files selected"
                 : `${formData.attachments?.length} files selected`}
-            </span>
+            </span> */}
           </div>
           {formData?.attachments?.length > 0 && (
             <ul className="mt-2 space-y-1">
@@ -222,23 +222,29 @@ const CaseForm: React.FC<CaseFormProps> = ({
                   className="text-sm text-gray-600 flex items-center space-x-2"
                 >
                   <span>{file.name}</span>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        attachments: prev?.attachments?.filter(
-                          (_: any, i: number) => i !== index
-                        ),
-                      }))
-                    }
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    {!initialData?.attachments[0]?.url ||
-                      (formData?.attachments?.length === 0 && (
+                  {/* Conditional cross button logic */}
+                  {
+                    // Show cross button if:
+                    // 1. There's no initial URL, OR
+                    // 2. The current files are newly uploaded during editing
+                    (!initialData?.attachments[0]?.url ||
+                      file instanceof File) && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            attachments: prev?.attachments?.filter(
+                              (_: any, i: number) => i !== index
+                            ),
+                          }))
+                        }
+                        className="text-red-500 hover:text-red-700"
+                      >
                         <X className="w-4 h-4" />
-                      ))}
-                  </button>
+                      </button>
+                    )
+                  }
                 </li>
               ))}
             </ul>
