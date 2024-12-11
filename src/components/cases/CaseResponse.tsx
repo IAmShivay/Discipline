@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Send, UserCircle, Shield, Download } from "lucide-react";
+import { Send, UserCircle, Shield, Download, FileText, X } from "lucide-react";
 import type { DisciplinaryCase } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../store";
@@ -155,7 +155,11 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-
+  const removeFile = (indexToRemove: number) => {
+    setAttachments((prev) =>
+      prev.filter((_, index) => index !== indexToRemove)
+    );
+  };
   const formatDate = (date: string | Date) => {
     return new Date(date).toLocaleString();
   };
@@ -233,7 +237,7 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
                           className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-600 hover:text-blue-800"
                         >
                           <Download className="w-4 h-4 mr-1" />
-                          Download
+                          Download 
                         </button>
                       </li>
                     )
@@ -266,38 +270,70 @@ const CaseResponse: React.FC<CaseResponseProps> = ({ case_ }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Supporting Documents (Optional)
-          </label>
-          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md "onClick={() => {
-            const fileInput = document.getElementById('file-upload');
-            if (fileInput) {
-              fileInput.click();
-            }
-          }}>
-            <div className="space-y-1 text-center">
-              <div className="flex text-sm text-gray-600">
-                <label
-                  htmlFor="file-upload"
-                  className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
-                >
-                  <span>Upload files</span>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    multiple
-                    className="sr-only"
-                    onChange={handleFileChange}
-                  />
-                </label>
-                <p className="pl-1">or drag and drop</p>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Supporting Documents (Optional)
+            </label>
+            <label
+              htmlFor="file-upload"
+              className="mt-1 block w-full px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-blue-500 transition-colors"
+            >
+              <input
+                id="file-upload"
+                type="file"
+                multiple
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <div className="space-y-1 text-center">
+                <div className="flex justify-center text-sm text-gray-600">
+                  <span>Upload files or drag and drop</span>
+                </div>
+                <p className="text-xs text-gray-500">
+                  PDF, DOC, DOCX, or image files up to 10MB each
+                </p>
+                {attachments.length > 0 && (
+                  <div className="mt-2 text-sm text-gray-700">
+                    Selected files:{" "}
+                    {attachments.map((file) => file.name).join(", ")}
+                  </div>
+                )}
               </div>
-              <p className="text-xs text-gray-500">
-                PDF, DOC, DOCX, or image files up to 10MB each
-              </p>
-            </div>
+            </label>
           </div>
+          {attachments.length > 0 && (
+            <div className="mt-4 space-y-2">
+              <p className="text-sm font-medium text-gray-700">
+                Selected Files:
+              </p>
+              {attachments.map((file, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between bg-gray-100 p-2 rounded-md"
+                >
+                  <div className="flex items-center space-x-2">
+                    <FileText className="w-5 h-5 text-blue-500" />
+                    <div>
+                      <p className="text-sm font-medium">{file.name}</p>
+                      <p className="text-xs text-gray-500">
+                        {file.type || "Unknown type"}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeFile(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+
+        <div></div>
 
         <div className="flex justify-end">
           <button
