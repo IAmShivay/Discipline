@@ -1,4 +1,3 @@
-import React from 'react';
 import { Paperclip, AlertCircle } from 'lucide-react';
 
 const AttachmentLabel = ({ maxAttachments }: { maxAttachments:string }) => {
