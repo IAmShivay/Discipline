@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { Employee } from "../employees/EmployeeForm";
 
 import { fetchCategories } from "../../redux/app/categories/categorieSlice";
+import AttachmentLabel from "../AttachementLabel";
 
 interface CaseFormProps {
   onSubmit: (case_: DisciplinaryCase) => void;
@@ -193,7 +194,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Attachments
+            <AttachmentLabel maxAttachments={"3MB"} />{" "}
           </label>
           <div className="flex items-center space-x-2">
             <label className="btn btn-secondary flex items-center gap-2 cursor-pointer">

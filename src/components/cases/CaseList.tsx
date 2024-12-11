@@ -212,7 +212,6 @@ const statusIcons = {
   UNDER_REVIEW: AlertCircle,
   CLOSED: CheckCircle,
 };
-
 const CaseList: React.FC<CaseListProps> = ({
   cases,
   onEdit,
@@ -223,6 +222,7 @@ const CaseList: React.FC<CaseListProps> = ({
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.verify
   );
+  console.log(user?.role)
 
   const handleCaseNavigation = (caseId: string) => {
     if (!caseId && caseId?.length === 0) {
@@ -267,7 +267,7 @@ const CaseList: React.FC<CaseListProps> = ({
                 "Category",
                 "Status",
                 "Date",
-                ...(user?.role !== "employee" ? ["Actions"] : []), // Conditionally add "Actions"
+                ...(user?.role !== "employee" || "HR Manager"? ["Actions"] : []), // Conditionally add "Actions"
               ].map((header) => (
                 <th
                   key={header}
