@@ -326,6 +326,14 @@ const Cases: React.FC = () => {
           setShowForm(false);
           setEditingCase(null);
         }
+        else if( response.meta.requestStatus === "rejected"){
+          dispatch(
+            showSnackbar({
+              message: response.payload,
+              severity: "error",
+            })
+          );
+        }
       }
     } catch (err) {
       dispatch(
