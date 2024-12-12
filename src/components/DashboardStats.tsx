@@ -119,7 +119,7 @@ const Header = ({
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors bg-gray-300"
+            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors bg-gray-600"
           >
             <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
               <span className="text-sm font-medium text-white">
