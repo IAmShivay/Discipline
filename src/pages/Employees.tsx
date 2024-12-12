@@ -297,8 +297,15 @@ const Employees: React.FC = () => {
                       {employee?.managerId || "No Manager"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {new Date(employee?.joinDate).toLocaleDateString()}
+                      {employee?.joinDate
+                        ? new Intl.DateTimeFormat("en-GB", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          }).format(new Date(employee?.joinDate))
+                        : "No Date"}
                     </td>
+
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <div className="flex gap-2">
                         <button

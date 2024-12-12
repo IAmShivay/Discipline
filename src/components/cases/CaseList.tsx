@@ -333,10 +333,15 @@ const CaseList: React.FC<CaseListProps> = ({
                       ),
                     },
                     {
-                      content: case_.incidentDate
-                        ? new Date(case_.incidentDate).toLocaleDateString()
+                      content: case_?.incidentDate
+                        ? new Intl.DateTimeFormat('en-GB', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          }).format(new Date(case_?.incidentDate))
                         : "No Date",
-                    },
+                    }
+                    ,
                     {
                       content:
                         isAuthenticated &&
