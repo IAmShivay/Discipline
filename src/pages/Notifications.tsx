@@ -122,10 +122,10 @@ const Notifications: React.FC = () => {
             <option value="CASE_CREATED">Case Created</option>
             <option value="CASE_UPDATED">Case Updated</option>
             <option value="CASE_CLOSED">Case Closed</option>
-            <option value="EMPLOYEE_JOINED">Employee Joined</option>
+            {/* <option value="EMPLOYEE_JOINED">Employee Joined</option>
             <option value="RESPONSE_SUBMITTED">Response Submitted</option>
             <option value="REMINDER">Reminder</option>
-            <option value="STRIKE_RECORDED">Strike Recorded</option>
+            <option value="STRIKE_RECORDED">Strike Recorded</option> */}
           </select>
           <select
             name="readStatus"

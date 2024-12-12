@@ -222,7 +222,7 @@ const CaseList: React.FC<CaseListProps> = ({
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.verify
   );
-  console.log(user?.role)
+  console.log(user?.role);
 
   const handleCaseNavigation = (caseId: string) => {
     if (!caseId && caseId?.length === 0) {
@@ -267,7 +267,7 @@ const CaseList: React.FC<CaseListProps> = ({
                 "Category",
                 "Status",
                 "Date",
-                ...(user?.role !== "employee" || "HR Manager"? ["Actions"] : []), // Conditionally add "Actions"
+                ...(user?.role !== "employee" ? ["Actions"] : []), // Conditionally add "Actions"
               ].map((header) => (
                 <th
                   key={header}
@@ -294,10 +294,16 @@ const CaseList: React.FC<CaseListProps> = ({
                       content: (
                         <div className="flex items-center">
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
+                            <div
+                              className="text-sm font-medium text-gray-900 truncate"
+                              style={{ maxWidth: "200px" }} // Adjust the width as needed
+                            >
                               {case_?.title || "Untitled Case"}
                             </div>
-                            <div className="text-sm text-gray-500">
+                            <div
+                              className="text-sm text-gray-500 truncate"
+                              style={{ maxWidth: "200px" }} // Adjust the width as needed
+                            >
                               {case_?.description || "No description"}
                             </div>
                           </div>
@@ -334,21 +340,20 @@ const CaseList: React.FC<CaseListProps> = ({
                     },
                     {
                       content: case_?.incidentDate
-                        ? new Intl.DateTimeFormat('en-GB', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
+                        ? new Intl.DateTimeFormat("en-GB", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
                           }).format(new Date(case_?.incidentDate))
                         : "No Date",
-                    }
-                    ,
+                    },
                     {
                       content:
                         isAuthenticated &&
                         [
                           "Company",
                           "Super Admin",
-                          "Hr Manager",
+                          "HR Manager",
                           "Editor",
                         ].includes(user?.role || "") ? (
                           <div className="text-right">
