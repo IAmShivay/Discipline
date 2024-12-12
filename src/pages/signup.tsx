@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { showSnackbar } from "../redux/app/error/errorSlice";
 import snackbarMessages from "../components/messages/message";
+import logo from "../components/assets/Black.png";
 interface SignupFormValues {
   fullName: string;
   companyName: string;
@@ -137,7 +138,7 @@ const SignupPage: React.FC = () => {
   );
 
   return (
-    <div className="h-screen flex flex-col lg:flex-row">
+    <div className="h-screen flex flex-col lg:flex-row shadow-md ">
       <div className="hidden lg:flex lg:w-1/2 bg-blue-600 p-12 flex-col justify-between relative">
         <div className="text-white">
           <h1 className="text-4xl font-bold mb-4">Join HR Manager</h1>
@@ -152,10 +153,16 @@ const SignupPage: React.FC = () => {
       </div>
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-8 bg-gray-50">
         <div className="w-full max-w-md">
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-              Create an Account
-            </h2>
+          <div className="px-8 py-10">
+            {/* Logo Section */}
+            <div className="flex justify-center mb-6">
+              <img
+                src={logo}
+                alt="Company Logo"
+                className="h-16 w-auto object-contain"
+              />
+            </div>
+
             <Formik
               initialValues={initialValues}
               validationSchema={SignupSchema}

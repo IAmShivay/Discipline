@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import { loginUser } from "../redux/app/auth/authSlice";
 import { showSnackbar } from "../redux/app/error/errorSlice";
 import snackbarMessages from "../components/messages/message";
-
+import logo from "../components/assets/Black.png";
 interface LoginFormValues {
   email: string;
   password: string;
@@ -114,10 +114,15 @@ const LoginPage: React.FC = () => {
 
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
         <div className="w-full max-w-md">
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              Login to TrackerHR
-            </h2>
+        <div className="px-8 py-10">
+            {/* Logo Section */}
+            <div className="flex justify-center mb-6">
+              <img
+                src={logo}
+                alt="Company Logo"
+                className="h-16 w-auto object-contain"
+              />
+            </div>
 
             <Formik
               initialValues={initialValues}
