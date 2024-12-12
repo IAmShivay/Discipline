@@ -1,61 +1,3 @@
-// import React from 'react';
-// import { AlertCircle, CheckCircle2, Clock, Files } from 'lucide-react';
-// import type { DashboardStats } from '../types';
-
-// interface StatsCardProps {
-//   title: string;
-//   value: number;
-//   icon: React.ReactNode;
-//   color: string;
-// }
-
-// const StatsCard = ({ title, value, icon, color }: StatsCardProps) => (
-//   <div className="bg-white rounded-lg p-6 shadow-md">
-//     <div className="flex items-center justify-between">
-//       <div>
-//         <p className="text-gray-500 text-sm">{title}</p>
-//         <p className="text-2xl font-bold mt-1">{value}</p>
-//       </div>
-//       <div className={`${color} p-3 rounded-full`}>
-//         {icon}
-//       </div>
-//     </div>
-//   </div>
-// );
-
-// const DashboardStats = ({ stats }: { stats: DashboardStats }) => {
-//   return (
-//     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-//       <StatsCard
-//         title="Total Cases"
-//         value={stats.totalCases}
-//         icon={<Files className="w-6 h-6 text-blue-600" />}
-//         color="bg-blue-100"
-//       />
-//       <StatsCard
-//         title="Open Cases"
-//         value={stats.openCases}
-//         icon={<Clock className="w-6 h-6 text-yellow-600" />}
-//         color="bg-yellow-100"
-//       />
-//       <StatsCard
-//         title="Closed Cases"
-//         value={stats.closedCases}
-//         icon={<CheckCircle2 className="w-6 h-6 text-green-600" />}
-//         color="bg-green-100"
-//       />
-//       <StatsCard
-//         title="Pending Actions"
-//         value={stats.pendingActions}
-//         icon={<AlertCircle className="w-6 h-6 text-red-600" />}
-//         color="bg-red-100"
-//       />
-//     </div>
-//   );
-// };
-
-// export default DashboardStats;
-
 import React, { useState, useEffect } from "react";
 import {
   AlertCircle,
@@ -65,7 +7,6 @@ import {
   Bell,
   User,
   ChevronDown,
-  LogOut,
 } from "lucide-react";
 import type { DashboardStats } from "../types";
 
@@ -78,6 +19,9 @@ import { fetchNotifications } from "../redux/app/notification/notificationSlice"
 import { RootState } from "../store";
 import { showSnackbar } from "../redux/app/error/errorSlice";
 import snackbarMessages from "./messages/message";
+import { useRef } from "react";
+import { Settings, LogOut } from "lucide-react";
+
 interface StatsCardProps {
   title: string;
   value: number;
@@ -98,16 +42,20 @@ const StatsCard = ({ title, value, icon, color }: StatsCardProps) => (
 );
 
 const Header = ({
+  email,
   username,
   unreadNotifications,
 }: {
+  email: string;
   username: string;
   unreadNotifications: number;
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const error = useSelector((state: RootState) => state.auth.error);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     const response = await dispatch(logoutUser());
     if (response.meta.requestStatus === "fulfilled") {
@@ -127,6 +75,24 @@ const Header = ({
       );
     }
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsProfileMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isProfileMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isProfileMenuOpen]);
+
   return (
     <div className="flex justify-between items-center mb-6">
       <div>
@@ -137,7 +103,7 @@ const Header = ({
       </div>
       <div className="flex items-center space-x-4">
         {/* Notification Icon */}
-        <div className="relative">
+        <div className="relative" onClick={() => navigate("/notifications")}>
           <Bell className="w-6 h-6 text-gray-600 hover:text-gray-800 cursor-pointer" />
           {unreadNotifications > 0 && (
             <span
@@ -150,39 +116,63 @@ const Header = ({
         </div>
 
         {/* Profile Dropdown */}
-        <div className="relative">
+        <div className="relative" ref={menuRef}>
           <button
             onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-            className="flex items-center focus:outline-none"
+            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors bg-gray-300"
           >
-            <div className="bg-gray-200 rounded-full p-2">
-              <User className="w-5 h-5 text-gray-600" />
+            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+              <span className="text-sm font-medium text-white">
+                {username?.charAt(0)}
+              </span>
+              <span className="text-sm font-medium text-white"></span>
             </div>
-            <ChevronDown className="w-4 h-4 ml-1 text-gray-600" />
+            <div className="flex-1 text-left hidden md:block">
+              <p className="text-sm font-medium text-white">{username}</p>
+              <p className="text-sm font-medium text-white">{email}</p>
+
+            </div>
+            <ChevronDown className="w-4 h-4 text-white" />
           </button>
+
           {isProfileMenuOpen && (
-            <div className="absolute right-0 mt-2 w-56 bg-white border rounded-lg shadow-lg z-10">
-              <div
-                className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-                onClick={() => {
-                  // Handle profile click
-                  setIsProfileMenuOpen(false);
-                  navigate("/settings");
-                }}
-              >
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+            <div className="absolute top-full right-0 mb-2 w-72 bg-white rounded-lg shadow-lg py-2 z-10">
+              <div className="px-4 py-2">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                    <span className="text-lg font-medium text-white">
+                      {username?.charAt(0)}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {username}
+                    </p>
+                    <p className="text-sm font-medium text-gray-900">{email}</p>
+                  </div>
+                </div>
               </div>
-              <div
-                className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-                onClick={() => {
-                  // Handle logout
-                  setIsProfileMenuOpen(false);
-                  handleLogout();
-                }}
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Logout</span>
+              <div className="border-t border-gray-100 mt-2">
+                <button
+                  onClick={() => {
+                    navigate("/settings");
+                    setIsProfileMenuOpen(false);
+                  }}
+                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <Settings className="w-4 h-4 mr-3" />
+                  Edit Profile
+                </button>
+                <button
+                  className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+                  onClick={() => {
+                    handleLogout();
+                    setIsProfileMenuOpen(false);
+                  }}
+                >
+                  <LogOut className="w-4 h-4 mr-3" />
+                  Sign Out
+                </button>
               </div>
             </div>
           )}
@@ -205,7 +195,11 @@ const DashboardStats = ({ stats }: { stats: DashboardStats }) => {
   const count = notifications.filter((n) => n.isRead === false).length;
   return (
     <div>
-      <Header username={user?.fullName || "User"} unreadNotifications={count} />
+      <Header
+        username={user?.fullName || "User"}
+        unreadNotifications={count}
+        email={user?.email || ""}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard
           title="Total Cases"

@@ -10,8 +10,8 @@ interface CaseStatusUpdateProps {
 const statusOptions: { value: CaseStatus; label: string }[] = [
   { value: "DRAFT", label: "Draft" },
   { value: "OPEN", label: "Open" },
-  { value: "PENDING_RESPONSE", label: "Pending Response" },
-  { value: "UNDER_REVIEW", label: "Under Review" },
+  // { value: "PENDING_RESPONSE", label: "Pending Response" },
+  // { value: "UNDER_REVIEW", label: "Under Review" },
   { value: "CLOSED", label: "Closed" },
 ];
 

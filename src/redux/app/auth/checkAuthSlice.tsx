@@ -8,7 +8,8 @@ interface User {
   companyId: string;
   companyName: string;
   fullName: string;
-  userId: string; // Adjust according to your user object structure
+  userId: string; 
+  email?: string; // Adjust according to your user object structure
   // Add other fields as needed
 }
 
