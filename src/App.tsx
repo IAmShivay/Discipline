@@ -31,6 +31,7 @@ import {
   fetchNotification,
 } from "./utility/centralApicalls";
 import WelcomeDashboard from "./components/EmployeeDash";
+import CategoriesAndTags from "./components/settings/CategoriesAndTags";
 // Define proper type for RootState
 interface RootState {
   verify: {

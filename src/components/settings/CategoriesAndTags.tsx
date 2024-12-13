@@ -400,7 +400,7 @@ import {
 import { showSnackbar } from "../../redux/app/error/errorSlice";
 import { useSelector } from "react-redux";
 import { Suspense } from "react";
-
+import { useNavigate } from "react-router-dom";
 interface Category {
   _id?: string;
   name: string;
@@ -438,7 +438,7 @@ const CategoriesAndTags = () => {
 
   const [categoryError, setCategoryError] = useState("");
   const [tagError, setTagError] = useState("");
-
+const navigate = useNavigate();
   const addCategory = async () => {
     // Validate category input
     if (!newCategory.name.trim()) {
@@ -446,10 +446,10 @@ const CategoriesAndTags = () => {
       return;
     }
 
-    if (!newCategory.description.trim()) {
-      setCategoryError("Category description is required");
-      return;
-    }
+    // if (!newCategory.description.trim()) {
+    //   setCategoryError("Category description is required");
+    //   return;
+    // }
 
     const newCategoryItem = {
       id: (categories?.length + 1).toString(),
@@ -468,6 +468,7 @@ const CategoriesAndTags = () => {
         })
       );
       window.location.reload();
+      
       setCategories([...categories, newCategoryItem]);
     } else {
       dispatch(

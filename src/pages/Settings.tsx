@@ -1,12 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Users,
   Tags,
-  // Bell,
-  // GitBranch,
-  // Mail,
-  // Shield,
-  // Link,
   Settings as SettingsIcon,
 } from "lucide-react";
 import UserManagement from "../components/settings/UserManagement";
@@ -19,23 +14,31 @@ import IntegrationSettings from "../components/settings/IntegrationSettings";
 import GeneralSettings from "../components/settings/GeneralSettings";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Settings = () => {
-  const [activeTab, setActiveTab] = useState("general");
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.verify
   );
+
+  // Use search param for initial tab, default to 'general'
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get('tab') || 'general'
+  );
+
+  // Update URL when tab changes
+  useEffect(() => {
+    // Replace the current search params with the new tab
+    navigate(`?tab=${activeTab}`, { replace: true });
+  }, [activeTab, navigate]);
 
   const tabs = [
     ...(user?.role === "Company" || user?.role === "Super Admin"
       ? [{ id: "user-management", label: "User Management", icon: Users }]
       : []),
     { id: "categories-tags", label: "Categories & Tags", icon: Tags },
-    // { id: "notifications", label: "Notifications", icon: Bell },
-    // { id: "workflow", label: "Workflow", icon: GitBranch },
-    // { id: "email-templates", label: "Email Templates", icon: Mail },
-    // { id: "data-privacy", label: "Data & Privacy", icon: Shield },
-    // { id: "integrations", label: "Integrations", icon: Link },
     { id: "general", label: "General", icon: SettingsIcon },
   ];
 
