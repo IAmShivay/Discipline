@@ -38,6 +38,7 @@ const Employees: React.FC = () => {
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [alert, setAlert] = useState<AlertState | null>(null);
   const roles = useSelector((state: RootState) => state.roles.roles);
+  const casesCount = useSelector((state: RootState) => state.cases.cases);
 
   const handleAddEmployee = async (employee: Employee): Promise<void> => {
     const roleObject = roles?.find(
@@ -173,6 +174,12 @@ const Employees: React.FC = () => {
   if (loading === "pending") {
     return <MinimalistHRLoader />;
   }
+  const employeeCasesCount = (employeeId: string) => {
+    return (
+      casesCount?.filter((caseItem: any) => caseItem?.employeeId === employeeId)
+        ?.length || 0
+    );
+  };
   // Main content renderer
   const renderEmployeeContent = () => (
     <>
@@ -235,6 +242,10 @@ const Employees: React.FC = () => {
                     Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Total Case
+                  </th>
+
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Contact
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -278,6 +289,14 @@ const Employees: React.FC = () => {
                           </div>
                         </div>
                       </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {employee?._id && (
+                        <td className="flex items-center h-12">
+                          <span className="mr-2 font-semibold">Total Cases</span> 
+                          <span className="mr-2 font-semibold">{employeeCasesCount(employee?._id)}</span>
+                        </td>
+                      )}{" "}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
