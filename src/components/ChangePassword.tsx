@@ -10,6 +10,7 @@ import { changeUserPassword } from "../redux/app/auth/authSlice";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import logo from "../components/assets/Black.png";
 // Validation Schema
 const ChangePasswordSchema = Yup.object().shape({
   currentPassword: Yup.string().required("Current password is required"),
@@ -115,10 +116,15 @@ const ChangePasswordPage: React.FC = () => {
 
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
         <div className="w-full max-w-md">
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              Update Your Password
-            </h2>
+        <div className="px-8 py-10">
+            {/* Logo Section */}
+            <div className="flex justify-center mb-6">
+              <img
+                src={logo}
+                alt="Company Logo"
+                className="h-16 w-auto object-contain"
+              />
+            </div>
 
             <Formik
               initialValues={{
