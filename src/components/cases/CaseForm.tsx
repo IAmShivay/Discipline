@@ -7,7 +7,7 @@ import { fetchEmployees } from "../../redux/app/employees/employeeSlice";
 import { AppDispatch } from "../../store";
 import { useSelector } from "react-redux";
 import { Employee } from "../employees/EmployeeForm";
-
+import MinimalistHRLoader from "../../pages/Loading";
 import { fetchCategories } from "../../redux/app/categories/categorieSlice";
 import AttachmentLabel from "../AttachementLabel";
 
@@ -27,7 +27,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
 
   const categorie = useSelector((state: any) => state.categories.items);
   const employee = useSelector((state: any) => state.employee.employees);
-
+  const { loading } = useSelector((state: any) => state.cases);
   const [formData, setFormData] = useState<DisciplinaryCase>(
     initialData || {
       type: "",
@@ -91,6 +91,7 @@ const CaseForm: React.FC<CaseFormProps> = ({
     };
     onSubmit(newCase);
   };
+  if (loading) return <MinimalistHRLoader />;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">

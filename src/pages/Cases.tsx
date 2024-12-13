@@ -406,9 +406,7 @@ const Cases: React.FC = () => {
     fetchData();
   }, [dispatch]);
 
-  if (loading && cases?.length === 0) {
-    return <MinimalistHRLoader />;
-  }
+  
 
   return (
     <div className="p-6">
