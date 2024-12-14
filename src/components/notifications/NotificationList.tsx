@@ -69,13 +69,13 @@ const NotificationList: React.FC<NotificationListProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md divide-y divide-gray-200 h-[80vh]">
+    <div className="bg-white rounded-lg shadow-md divide-y divide-gray-200 h-[80vh]  overflow-auto ">
       {notifications?.map((notification) => {
         const Icon = notificationIcons[notification.type];
         return (
           <div
             key={notification._id}
-            className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
+            className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors overflow-auto ${
               !notification.isRead ? 'bg-blue-50' : ''
             }`}
             onClick={() => handleClick(notification)}
